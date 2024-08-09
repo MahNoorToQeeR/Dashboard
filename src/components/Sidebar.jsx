@@ -9,7 +9,7 @@ import logo from '../data/logo-image1.png';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
-  const currentColor = '#67a0cd';
+  const currentColor = '#0171BE';
 
   const activeLink =
     'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2 bg-green-500';

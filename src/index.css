@@ -13,6 +13,12 @@ body {
   --tw-bg-opacity: 1;
   background-color: rgb(103 160 205 / 14%) !important;
 }
-.css-i02g0k-MuiTableCell-root{
+.css-i02g0k-MuiTableCell-root {
   text-align: start !important;
+}
+.css-177gid-MuiTableCell-root {
+  text-align: start !important;
+}
+.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  height: 190px !important;
 }

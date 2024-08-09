@@ -33,7 +33,7 @@ const Navbar = () => {
     screenSize,
   } = useStateContext();
 
-  const currentColor = 'rgb(103, 160, 205)'; 
+  const currentColor = '#0171BE'; 
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);

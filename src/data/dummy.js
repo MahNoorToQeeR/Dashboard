@@ -23,55 +23,55 @@ export const links = [
         icon: <FiShoppingBag />,
       },
       {
-        name: 'Assign offer',
+        name: 'Assignoffer',
         icon: <FiClipboard />,
       },
       {
-        name: 'add offer',
+        name: 'addoffer',
         icon: <FiClipboard />,
       },
       {
-        name: 'add domain',
+        name: 'adddomain',
         icon: <FiGlobe />,
       },
       {
-        name: 'Landding Pages',
+        name: 'LanddingPages',
         icon: <FiGlobe />,
       },
       {
-        name: 'User Report',
+        name: 'UserReport',
         icon: <FiUser />,
       },
       {
-        name: 'Offer Report',
+        name: 'OfferReport',
         icon: <FiClipboard />,
       },
       {
-        name: 'All Offers',
+        name: 'AllOffers',
         icon: <FiClipboard />,
       },
       {
-        name: 'Network Report',
+        name: 'NetworkReport',
         icon: <FiTrendingUp />,
       },
       {
-        name: 'All User Offers',
+        name: 'AllUserOffers',
         icon: <FiUserCheck />,
       },
       {
-        name: 'Click Report',
+        name: 'ClickReport',
         icon: <FiBarChart2 />,
       },
       {
-        name: 'Today Report',
+        name: 'TodayReport',
         icon: <FiClock />,
       },
       {
-        name: 'Yesterday Report',
+        name: 'YesterdayReport',
         icon: <FiClock />,
       },
       {
-        name: 'Day Report',
+        name: 'DayReport',
         icon: <FiCalendar />,
       },
       {
