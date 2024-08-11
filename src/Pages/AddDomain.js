@@ -20,7 +20,7 @@ const AssignOffer = () => {
           fontSize: "30px",
         }}
       >
-        Add Domain{" "}
+        Add Domain
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={12} sm={6}>
@@ -28,25 +28,28 @@ const AssignOffer = () => {
             <Box sx={{ backgroundColor: "#0171BE", padding: "10px" }}>
               <Typography sx={{ color: "#fff" }}>Add Domain Page</Typography>
             </Box>
-            <CardContent sx={{ display: "flex", gap: "5px" }}>
-              <TextField
-                label="Domain Name"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Domain URL"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-              />
+            <CardContent>
+              <Box
+                sx={{ display: "flex", flexDirection: "row", gap: "10px" }}
+              >
+                <TextField
+                  label="Domain Name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Domain URL"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                />
+              </Box>
               <Box
                 sx={{
-                  alignItems: "center",
-                  textAlign: "center",
-                  justifyContent: "center",
                   display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
                 }}
               >
                 <Button variant="contained" color="primary">
