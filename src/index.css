@@ -22,3 +22,7 @@ body {
 .css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   height: 190px !important;
 }
+.css-17vbkzs-MuiFormControl-root-MuiTextField-root{
+  width: 50% !important;
+    float: inline-end !important;
+}
