@@ -23,13 +23,17 @@ export const links = [
         icon: <FiShoppingBag />,
       },
       {
-        name: 'Assignoffer',
+        name: 'AllOffers',
         icon: <FiClipboard />,
       },
-      {
-        name: 'addoffer',
-        icon: <FiClipboard />,
-      },
+      // {
+      //   name: 'Assignoffer',
+      //   icon: <FiClipboard />,
+      // },
+      // {
+      //   name: 'addoffer',
+      //   icon: <FiClipboard />,
+      // },
       {
         name: 'adddomain',
         icon: <FiGlobe />,
@@ -44,10 +48,6 @@ export const links = [
       },
       {
         name: 'OfferReport',
-        icon: <FiClipboard />,
-      },
-      {
-        name: 'AllOffers',
         icon: <FiClipboard />,
       },
       {
