@@ -11,6 +11,7 @@ import LandingPage from "../src/Pages/LandingPage";
 import UserReport from "../src/Pages/UserReport";
 import OfferReport from "../src/Pages/OfferReport";
 import AllOffers from "../src/Pages/AllOffers";
+import Login from "../src/Pages/Login";
 import "./App.css";
 
 
@@ -56,6 +57,7 @@ const App = () => {
                 <Route path="/userrepot" element={<UserReport />} />
                 <Route path="/offerreport" element={<OfferReport />} />
                 <Route path="/AllOffers" element={<AllOffers />} />
+                <Route path="/Login" element={<Login />} />
               </Routes>
             </div>
             <Footer />

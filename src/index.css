@@ -20,9 +20,53 @@ body {
   text-align: start !important;
 }
 .css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-  height: 190px !important;
+  height: 100px !important;
+}
+.css-12ogz78-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input[multiple]{
+  height: 128px !important;
 }
 .css-17vbkzs-MuiFormControl-root-MuiTextField-root{
   width: 50% !important;
     float: inline-end !important;
+}
+.css-1q9tgf0-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: #fafafa !important;
+    border: 1px solid #fff !important;
+    color: #0378d5 !important;
+}
+.css-1txhpeq-MuiFormControl-root-MuiTextField-root .MuiFormLabel-root{
+  top: -5px !important;
+}
+.css-1txhpeq-MuiFormControl-root-MuiTextField-root{
+  margin-bottom: 8px !important;
+  margin-top: unset !important;
+}
+.css-k21izb-MuiTypography-root{
+  margin-bottom: 0px !important;
+  font-size: 12px !important;
+}
+.css-11l1cwa-MuiFormControl-root-MuiTextField-root{
+  margin-top: 6px !important;
+}
+.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root{
+  font-size: 12px !important;
+}
+.css-1p2kogn-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: #fafafa !important;
+    border: 1px solid #fff !important;
+    color: #0378d5 !important;
+}
+.css-3j27ba{
+  padding: 100px !important;
+  border-radius: 20px !important;
+}
+.css-mobf2q-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: #fafafa !important;
+    border: 1px solid #fff !important;
+    color: #0378d5 !important;
+}
+.css-1r5mxfv-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: #0378d5 !important;
+    border: 1px solid #0378d5 !important;
+    color: #fff !important;
 }
