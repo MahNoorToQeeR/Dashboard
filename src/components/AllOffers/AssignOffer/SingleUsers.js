@@ -3,10 +3,12 @@ import {
   Box,
   Typography,
   Card,
-  Paper,
   TextField,
-  Button,
   Grid,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
   MenuItem,
 } from "@mui/material";
 
@@ -22,61 +24,94 @@ const SingleUsers = () => {
           Multi Offers for Single User
         </Typography>
       </Box>
-      <Box>
-        <Grid container spacing={2} fullWidth>
-          <Grid item md={12}>
-            <TextField
-              select
-              label="Select User"
-              variant="outlined"
-              fullWidth
-              size="small"
-              margin="normal"
+      <Grid container spacing={2} sx={{ padding: "8px" }}>
+        <Grid item xs={12}>
+          <Grid container spacing={2} sx={{width: "50%"}}>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
+                Select User
+              </Typography>
+              <TextField
+                select
+                label="select user"
+                variant="outlined"
+                fullWidth
+                size="small"
+                margin="normal"
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              >
+                <MenuItem value="Option 1">1</MenuItem>
+                <MenuItem value="Option 2">2</MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
+                Select Offers
+              </Typography>
+              <TextField
+                select
+                label="Plesae select offers"
+                variant="outlined"
+                fullWidth
+                size="small"
+                margin="normal"
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              >
+                <MenuItem value="Option 1">1</MenuItem>
+                <MenuItem value="Option 2">2</MenuItem>
+              </TextField>
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "5px",
+              justifyContent: "end",
+              marginTop: "20px",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
               sx={{
-                "& .MuiInputBase-root": {
-                  height: 32,
-                },
-                "& .MuiOutlinedInput-input": {
-                  padding: "6px 14px",
-                },
+                color: "#fff",
+                borderColor: "#fff",
+                height: "25px",
+                fontSize: "10px",
               }}
             >
-              <MenuItem value="Option 1">Option 1</MenuItem>
-              <MenuItem value="Option 2">Option 2</MenuItem>
-            </TextField>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item md={12}>
-            <TextField
-              select
-              label="Select Offers"
+              Submit
+            </Button>
+            <Button
               variant="outlined"
-              fullWidth
-              size="small"
-              margin="normal"
+              color="primary"
+              type="submit"
               sx={{
-                "& .MuiInputBase-root": {
-                  height: 32,
-                },
-                "& .MuiOutlinedInput-input": {
-                  padding: "6px 14px",
-                },
+                color: "#0171be",
+                borderColor: "#0171be",
+                height: "25px",
+                fontSize: "10px",
               }}
             >
-              <MenuItem value="Option 1">Option 1</MenuItem>
-              <MenuItem value="Option 2">Option 2</MenuItem>
-            </TextField>
-          </Grid>
+              Reset
+            </Button>
+          </Box>
         </Grid>
-      </Box>
-      <Grid item xs={12} display="flex" justifyContent="flex-end">
-        <Button variant="contained" color="primary" sx={{ mr: 1 }}>
-          Submit
-        </Button>
-        <Button variant="outlined" color="primary">
-          Reset
-        </Button>
       </Grid>
     </Card>
   );

@@ -1,35 +1,61 @@
 import React, { useState } from "react";
-import { Box, Button, Card, Typography, TextField } from "@mui/material";
+import { Box, Button, Card, Typography, TextField, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const rows = [
-  { id: 1, name: "User One", email: "user1@example.com", password: "*****" },
-  { id: 2, name: "User Two", email: "user2@example.com", password: "*****" },
+  { no: 1, name: "User One", email: "user1@example.com", password: "*****" },
+  { no: 2, name: "User Two", email: "user2@example.com", password: "*****" },
 ];
+const handleEdit = (no) => {
+  console.log(`Edit row with id: ${no}`);
+};
 
+const handleDelete = (no) => {
+  console.log(`Delete row with id: ${no}`);
+};
+const handleSearch = (no) => {
+  console.log(`Search row with id: ${no}`);
+};
+
+const handleInsertDriveFileIcon = (no) => {
+  console.log(`Insert File row with id: ${no}`);
+};
+const handleRemoveRedEyeIcon = (no) => {
+  console.log(`view row with id: ${no}`);
+};
 const columns = [
-  { field: "id", headerName: "No", width: 70 },
+  { field: "no", headerName: "No", width: 90 },
   { field: "name", headerName: "Name", width: 150 },
   { field: "email", headerName: "Email", width: 200 },
   { field: "password", headerName: "Password", width: 150 },
   {
     field: "actions",
-    headerName: "Action",
-    width: 300,
+    headerName: "Actions",
+    width: 250,
+    sortable: false,
     renderCell: (params) => (
-      <Box display="flex" gap="10px">
-        <SearchIcon sx={{ color: "green", fontSize: "20px" }} />
-        <EditIcon sx={{ color: "#03A9F4", fontSize: "20px" }} />
-        <DeleteIcon sx={{ color: "red", fontSize: "20px" }} />
-        <InsertDriveFileIcon sx={{ color: "#3F51B5", fontSize: "20px" }} />
-        <RemoveRedEyeIcon sx={{ color: "#3F51B5", fontSize: "20px" }} />
+      <Box>
+        <IconButton color="primary" onClick={() => handleSearch(params.row.no)}>
+          <SearchIcon />
+        </IconButton>
+        <IconButton color="primary" onClick={() => handleEdit(params.row.no)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton color="error" onClick={() => handleDelete(params.row.no)}>
+          <DeleteIcon />
+        </IconButton>
+        <IconButton color="primary" onClick={() => handleInsertDriveFileIcon(params.row.no)}>
+          <InsertDriveFileIcon />
+        </IconButton>
+        <IconButton color="primary" onClick={() => handleRemoveRedEyeIcon(params.row.no)}>
+          <RemoveRedEyeIcon />
+        </IconButton>
       </Box>
     ),
   },
@@ -40,13 +66,21 @@ const CardComponent = () => {
   const navigate = useNavigate();
 
   const handleAddOffer = () => {
-    navigate("/addoffer");
+    navigate("/add offer");
   };
+  const handleAddUser = () => {
+    navigate("/add user");
+  };
+  const handleAddDomian = () => {
+    navigate("/add domain");
+  };
+
   return (
     <Card sx={{ mt: 4 }}>
       <Box
         display="flex"
         justifyContent="space-between"
+        flexWrap="wrap"
         sx={{
           backgroundColor: "rgb(1, 113, 190)",
           padding: "8px",
@@ -56,7 +90,7 @@ const CardComponent = () => {
         <Typography sx={{ color: "#fff", fontSize: "16px" }}>
           All Users
         </Typography>
-        <Box display="flex" justifyContent="end" sx={{ gap: "5px" }}>
+        <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
             sx={{
@@ -65,6 +99,7 @@ const CardComponent = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={handleAddDomian}
           >
             Add Domain
           </Button>
@@ -76,6 +111,7 @@ const CardComponent = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={handleAddUser}
           >
             Add User
           </Button>
@@ -105,7 +141,7 @@ const CardComponent = () => {
         </Box>
       </Box>
       <Box sx={{ p: 2 }}>
-      <TextField
+        <TextField
           label="Search"
           variant="outlined"
           size="small"
@@ -115,7 +151,7 @@ const CardComponent = () => {
           onChange={(e) => setSearch(e.target.value)}
           sx={{
             "& .MuiInputBase-root": {
-              height: 32, 
+              height: 32,
             },
             "& .MuiOutlinedInput-input": {
               padding: "6px 14px",
@@ -126,9 +162,16 @@ const CardComponent = () => {
           <DataGrid
             rows={rows}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10, 25]}
-            disableSelectionOnClick
+            getRowId={(row) => row.no}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
           />
         </Box>
       </Box>

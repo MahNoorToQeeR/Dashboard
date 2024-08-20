@@ -1,16 +1,12 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
   Typography,
-  TextField,
-  Button,
-  MenuItem,
-  Grid,
   Box,
 } from "@mui/material";
+import DomainManagement from "../components/AddDomain/DomainManagement";
 
-const AssignOffer = () => {
+
+const AddDomain = () => {
   return (
     <Box sx={{ margin: "20px" }}>
       <Typography
@@ -22,46 +18,10 @@ const AssignOffer = () => {
       >
         Add Domain
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={12} sm={6}>
-          <Card>
-            <Box sx={{ backgroundColor: "#0171BE", padding: "10px" }}>
-              <Typography sx={{ color: "#fff" }}>Add Domain Page</Typography>
-            </Box>
-            <CardContent>
-              <Box
-                sx={{ display: "flex", flexDirection: "row", gap: "10px" }}
-              >
-                <TextField
-                  label="Domain Name"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  label="Domain URL"
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "20px",
-                }}
-              >
-                <Button variant="contained" color="primary">
-                  Submit
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      <DomainManagement/>
+
     </Box>
   );
 };
 
-export default AssignOffer;
+export default AddDomain;

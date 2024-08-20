@@ -55,7 +55,7 @@ export const links = [
         icon: <FiTrendingUp />,
       },
       {
-        name: 'AllUser Offers',
+        name: 'All User Offers',
         icon: <FiUserCheck />,
       },
       {

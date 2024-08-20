@@ -7,11 +7,12 @@ import { useStateContext } from "./contexts/ContextProvider";
 import AssignOffer from "../src/Pages/AssignOffer";
 import AddOffer from "../src/Pages/AddOffer";
 import AddDomain from "../src/Pages/AddDomain";
-import LandingPage from "../src/Pages/LandingPage";
+import LanddingPages from "./Pages/LanddingPages";
 import UserReport from "../src/Pages/UserReport";
 import OfferReport from "../src/Pages/OfferReport";
 import AllOffers from "../src/Pages/AllOffers";
 import Login from "../src/Pages/Login";
+import AddUser from "../src/components/AddUser"
 import "./App.css";
 
 
@@ -50,14 +51,16 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/assignoffer" element={<AssignOffer />} />
-                <Route path="/addoffer" element={<AddOffer />} />
-                <Route path="/adddomain" element={<AddDomain />} />
-                <Route path="/landingpage" element={<LandingPage />} />
-                <Route path="/userrepot" element={<UserReport />} />
-                <Route path="/offerreport" element={<OfferReport />} />
-                <Route path="/AllOffers" element={<AllOffers />} />
+                <Route path="/assign offer" element={<AssignOffer />} />
+                <Route path="/add offer" element={<AddOffer />} />
+                <Route path="/add domain" element={<AddDomain />} />
+                <Route path="/landding pages" element={<LanddingPages />} />
+                <Route path="/user repot" element={<UserReport />} />
+                <Route path="/offer report" element={<OfferReport />} />
+                <Route path="/All Offers" element={<AllOffers />} />
                 <Route path="/Login" element={<Login />} />
+                <Route path="/Add User" element={<AddUser />} />
+
               </Routes>
             </div>
             <Footer />

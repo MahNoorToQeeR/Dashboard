@@ -12,7 +12,7 @@ const CardComponent = () => {
       <Box
         display="flex"
         justifyContent="space-between"
-        sx={{ backgroundColor: "rgb(103, 160, 205)", padding: "10px", gap: "5px" }}
+        sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px" }}
       >
         <Typography sx={{ color: "#fff" }}></Typography>
       </Box>

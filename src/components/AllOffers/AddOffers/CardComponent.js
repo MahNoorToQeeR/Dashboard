@@ -33,10 +33,10 @@ const CardComponent = () => {
   const navigate = useNavigate();
 
   const handleAssginOffer = () => {
-    navigate("/assignoffer");
+    navigate("/assign offer");
   };
   const handleAllOffer = () => {
-    navigate("/alloffers");
+    navigate("/all offers");
   };
   const handleChangeMultiple = (event) => {
     const { options } = event.target;

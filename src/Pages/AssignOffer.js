@@ -10,6 +10,8 @@ import {
   Box,
 } from "@mui/material";
 import SingleUsers from "../components/AllOffers/AssignOffer/SingleUsers";
+import MultiUsers from "../components/AllOffers/AssignOffer/MultiUsers";
+
 
 const AssignOffer = () => {
   return (
@@ -23,10 +25,11 @@ const AssignOffer = () => {
       >
         Assign Offer
       </Typography>
-      <Grid container spacing={2} fullWidth mt={4}>
+        <Box sx={{display: "flex",justifyContent: "space-between", gap: "20px"}}>
         <SingleUsers />
-        <SingleUsers />
-      </Grid>
+        <MultiUsers />
+        </Box>
+
     </Box>
   );
 };

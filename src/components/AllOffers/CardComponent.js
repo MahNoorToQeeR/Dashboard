@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Card, TextField, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  TextField,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,39 +17,55 @@ import SwitchWithLabel from "../SwitchWithLabel";
 
 const CardComponent = () => {
   const [search, setSearch] = useState("");
-  const [pageSize, setPageSize] = useState(5);
   const navigate = useNavigate();
 
-  const offers = [
-    { id: 1, name: "Offer 1" },
-    { id: 2, name: "Offer 2" },
-    { id: 3, name: "Offer 3" },
+  const rows = [
+    { no: 1, name: "Offer 1" },
+    { no: 2, name: "Offer 2" },
+    { no: 3, name: "Offer 3" },
   ];
 
-  const filteredOffers = offers.filter((offer) =>
-    offer.name.toLowerCase().includes(search.toLowerCase())
-  );
-
   const handleAddOffer = () => {
-    navigate("/addoffer");
+    navigate("/add offer");
   };
 
   const handleAssignOffer = () => {
-    navigate("/assignoffer");
+    navigate("/assign offer");
   };
-
+  const handleEdit = (no) => {
+    console.log(`Edit row with id: ${no}`);
+  };
+  const handleDelete = (no) => {
+    console.log(`Edit row with id: ${no}`);
+  };
+  const handleSearch = (no) => {
+    console.log(`Edit row with id: ${no}`);
+  };
   const columns = [
-    { field: "id", headerName: "No", width: 90 },
+    { field: "no", headerName: "No", width: 90 },
     { field: "name", headerName: "Name", width: 150 },
     {
       field: "actions",
-      headerName: "Action",
-      width: 300,
+      headerName: "Actions",
+      width: 150,
+      sortable: false,
       renderCell: (params) => (
-        <Box display="flex" gap="20px" alignItems="center">
-          <SearchIcon sx={{ color: "green" }} />
-          <EditIcon sx={{ color: "#03A9F4" }} />
-          <DeleteIcon sx={{ color: "red" }} />
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={() => handleSearch(params.row.no)}
+          >
+            <SearchIcon />
+          </IconButton>
+          <IconButton color="primary" onClick={() => handleEdit(params.row.no)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            color="error"
+            onClick={() => handleDelete(params.row.no)}
+          >
+            <DeleteIcon />
+          </IconButton>
           <SwitchWithLabel />
         </Box>
       ),
@@ -109,12 +133,18 @@ const CardComponent = () => {
 
         <Box style={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={filteredOffers}
+            rows={rows}
             columns={columns}
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 25]}
-            pagination
+            getRowId={(row) => row.no}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
           />
         </Box>
       </Paper>

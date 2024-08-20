@@ -8,16 +8,17 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-function CardComponent() {
+function AddUsers() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    phone_no: "",
+    CNIC: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,18 +27,22 @@ function CardComponent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-
     setTimeout(() => {
       console.log(formData);
-      setFormData({ email: "", password: "" });
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone_no: "",
+        CNIC: "",
+      });
       setLoading(false);
-      navigate("/dashboard");
-    }, 2000);
+    }, 2000); // Simulate an API call with a 2-second delay
   };
 
   return (
     <Container
-      maxWidth="xs" 
+      maxWidth="xs" // Set maxWidth to xs to ensure responsiveness
       style={{
         display: "flex",
         flexDirection: "column",
@@ -47,7 +52,7 @@ function CardComponent() {
     >
       <Box
         sx={{
-          padding: { xs: 2, sm: 4 },
+          padding: { xs: 2, sm: 4 }, // Adjust padding based on screen size
           boxShadow: 3,
           borderRadius: 2,
           backgroundColor: "white",
@@ -56,18 +61,43 @@ function CardComponent() {
       >
         <Typography
           variant="h5"
-          sx={{ mb: { xs: 2, sm: 3 } }}
+          sx={{ mb: { xs: 2, sm: 3 } }} // Adjust margin bottom based on screen size
         >
-          Login
+          Add User
         </Typography>
         <form Validate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="body1" align="left" gutterBottom>
+                Name
+              </Typography>
+              <TextField
+                label="Name"
+                name="name"
+                variant="outlined"
+                size="small"
+                fullWidth
+                margin="normal"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
                 Email
               </Typography>
               <TextField
-                label="Enter Your Email"
+                label="Email"
                 name="email"
                 variant="outlined"
                 size="small"
@@ -92,7 +122,7 @@ function CardComponent() {
                 Password
               </Typography>
               <TextField
-                label="Enter Your Password"
+                label="Password"
                 name="password"
                 variant="outlined"
                 size="small"
@@ -101,6 +131,56 @@ function CardComponent() {
                 type="password"
                 required
                 value={formData.password}
+                onChange={handleChange}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
+                Phone Number
+              </Typography>
+              <TextField
+                label="Phone Number"
+                name="phone_no"
+                variant="outlined"
+                size="small"
+                fullWidth
+                margin="normal"
+                type="number"
+                required
+                value={formData.phone_no}
+                onChange={handleChange}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
+                CNIC
+              </Typography>
+              <TextField
+                label="CNIC"
+                name="CNIC"
+                variant="outlined"
+                size="small"
+                fullWidth
+                margin="normal"
+                type="number"
+                required
+                value={formData.CNIC}
                 onChange={handleChange}
                 sx={{
                   "& .MuiInputBase-root": {
@@ -126,7 +206,7 @@ function CardComponent() {
                 }}
                 disabled={loading}
               >
-                {loading ? <CircularProgress size={18} color="inherit" /> : "Login"}
+                {loading ? <CircularProgress size={18} /> : "Add User"}
               </Button>
             </Grid>
           </Grid>
@@ -136,4 +216,4 @@ function CardComponent() {
   );
 }
 
-export default CardComponent;
+export default AddUsers;
