@@ -20,7 +20,7 @@ const DataCards = () => {
         />
       ),
       count: "120",
-      percentage: { label: "Today Signup", color: "#F44336" },
+      percentage: { label: "Today", color: "#F44336" },
       iconColor: "#B71C1C",
     },
     {
@@ -36,7 +36,7 @@ const DataCards = () => {
         />
       ),
       count: "1,200",
-      percentage: { label: "Yesterday Signup", color: "#2196F3" },
+      percentage: { label: "Yesterday", color: "#2196F3" },
       iconColor: "#0D47A1",
     },
     {
@@ -52,24 +52,24 @@ const DataCards = () => {
         />
       ),
       count: "$34,000",
-      percentage: { label: "This Month Signup", color: "green" },
+      percentage: { label: "This Month", color: "green" },
       iconColor: "#1B5E20",
     },
     {
       color: "#D1C4E9",
-      icon: (
-        <CalendarMonthIcon
-          sx={{
-            display: " flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "16px",
-          }}
-        />
-      ),
+      // icon: (
+      //   <CalendarMonthIcon
+      //     sx={{
+      //       display: " flex",
+      //       alignItems: "center",
+      //       justifyContent: "center",
+      //       fontSize: "16px",
+      //     }}
+      //   />
+      // ),
       count: "5,000",
-      percentage: { label: "Last Month Signup", color: "purple" },
-      iconColor: "#4A148C",
+      percentage: { label: "Last Month", color: "purple" },
+      // iconColor: "#4A148C",
     },
   ];
 
@@ -81,8 +81,8 @@ const DataCards = () => {
           sx={{
             flex: "1 1 calc(25% - 0.5rem)",
             padding: "0.5rem",
-            backgroundColor: "transparent", 
-            border: `1px solid ${card.percentage.color}`, 
+            backgroundColor: "transparent", // Make background transparent
+            border: `1px solid ${card.percentage.color}`, // Colored border
             "@media (max-width: 600px)": {
               flex: "1 1 100%",
             },
@@ -93,7 +93,7 @@ const DataCards = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box
+            {/* <Box
               textAlign="center"
               bgcolor={card.color}
               borderRadius="50%"
@@ -106,15 +106,8 @@ const DataCards = () => {
               <Icon style={{ fontSize: "16px", color: card.iconColor }}>
                 {card.icon}
               </Icon>
-            </Box>
-            <Box textAlign="right">
-              <Typography variant="body2" fontSize="0.8rem">
-                {card.count}
-              </Typography>
-            </Box>
-          </Box>
-          <Divider style={{ margin: "0.5rem 0" }} />
-          <Box>
+            </Box> */}
+            <Box>
             <Typography variant="caption" display="flex" alignItems="center">
               <Typography
                 component="span"
@@ -126,6 +119,13 @@ const DataCards = () => {
               </Typography>
             </Typography>
           </Box>
+          <Box textAlign="right">
+              <Typography variant="body2" fontSize="0.8rem">
+                {card.count}
+              </Typography>
+            </Box>
+          </Box>
+          
         </Card>
       ))}
     </Box>

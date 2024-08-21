@@ -6,9 +6,6 @@ import {
   TextField,
   Grid,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
 } from "@mui/material";
 
@@ -26,8 +23,8 @@ const SingleUsers = () => {
       </Box>
       <Grid container spacing={2} sx={{ padding: "8px" }}>
         <Grid item xs={12}>
-          <Grid container spacing={2} sx={{width: "50%"}}>
-            <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}  sx={{width: "430px",}}>
               <Typography variant="body1" align="left" gutterBottom>
                 Select User
               </Typography>
@@ -47,8 +44,8 @@ const SingleUsers = () => {
                   },
                 }}
               >
-                <MenuItem value="Option 1">1</MenuItem>
-                <MenuItem value="Option 2">2</MenuItem>
+                <MenuItem value="Option 1">Option 1</MenuItem>
+                <MenuItem value="Option 2">Option 2</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12}>
@@ -71,8 +68,8 @@ const SingleUsers = () => {
                   },
                 }}
               >
-                <MenuItem value="Option 1">1</MenuItem>
-                <MenuItem value="Option 2">2</MenuItem>
+                <MenuItem value="Option 1">Option 1</MenuItem>
+                <MenuItem value="Option 2">Option 2</MenuItem>
               </TextField>
             </Grid>
           </Grid>

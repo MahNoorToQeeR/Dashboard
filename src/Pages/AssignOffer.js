@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import SingleUsers from "../components/AllOffers/AssignOffer/SingleUsers";
 import MultiUsers from "../components/AllOffers/AssignOffer/MultiUsers";
+import SingleOffer from "../components/AllOffers/AssignOffer/SingleOffer";
+
 
 
 const AssignOffer = () => {
@@ -25,11 +27,11 @@ const AssignOffer = () => {
       >
         Assign Offer
       </Typography>
-        <Box sx={{display: "flex",justifyContent: "space-between", gap: "20px"}}>
+        <Box sx={{display: "flex", justifyContent:"center", gap:"10px"}}>
         <SingleUsers />
         <MultiUsers />
         </Box>
-
+        <SingleOffer/>
     </Box>
   );
 };
