@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
-import { Navbar, Footer, Sidebar} from "./components";
+import { Navbar, Sidebar} from "./components";
 import Dashboard from "../src/Pages/Dashboard";
 import { useStateContext } from "./contexts/ContextProvider";
 import AssignOffer from "../src/Pages/AssignOffer";
@@ -63,7 +63,6 @@ const App = () => {
 
               </Routes>
             </div>
-            <Footer />
           </div>
         </div>
       </BrowserRouter>
