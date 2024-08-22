@@ -14,6 +14,8 @@ import AllOffers from "../src/Pages/AllOffers";
 import Login from "../src/Pages/Login";
 import AddUser from "../src/components/AddUser"
 import "./App.css";
+import NetworkReport from "./Pages/NetworkReport";
+import AllUserOffers from "./Pages/AllUserOffers";
 
 
 const App = () => {
@@ -60,6 +62,9 @@ const App = () => {
                 <Route path="/All Offers" element={<AllOffers />} />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Add User" element={<AddUser />} />
+                <Route path="/Network Report" element={<NetworkReport />} />
+                <Route path="/All User Offers" element={<AllUserOffers />} />
+
 
               </Routes>
             </div>

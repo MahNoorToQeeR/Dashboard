@@ -16,46 +16,57 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import SwitchWithLabel from "../SwitchWithLabel";
 
-const UserReportTable = () => {
-  const [search, setSearch] = useState("");
+const OfferReportTable = () => {
   const navigate = useNavigate();
-
-  // Sample data for the rows
-  const rows = [
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [search, setSearch] = useState("");
+  const [rows, setRows] = useState([
     {
       no: 1,
       name: "User 1",
+      offernetwork: "Network 1",
+      offerlink: "Link 1",
       totalClicks: 120,
       totalSignup: 45,
       totalDiverts: 10,
+      status: "Active",
     },
     {
       no: 2,
       name: "User 2",
+      offernetwork: "Network 2",
+      offerlink: "Link 2",
       totalClicks: 98,
       totalSignup: 32,
       totalDiverts: 7,
+      status: "",
     },
     {
       no: 3,
       name: "User 3",
+      offernetwork: "Network 3",
+      offerlink: "Link 3",
       totalClicks: 150,
       totalSignup: 67,
       totalDiverts: 20,
+      status: "Active",
     },
     {
       no: 4,
       name: "User 4",
+      offernetwork: "Network 4",
+      offerlink: "Link 4",
       totalClicks: 120,
       totalSignup: 45,
       totalDiverts: 10,
+      status: "Active",
     },
-  ];
+  ]);
   const totalClicks = rows.reduce((acc, row) => acc + row.totalClicks, 0);
   const totalSignup = rows.reduce((acc, row) => acc + row.totalSignup, 0);
   const totalDiverts = rows.reduce((acc, row) => acc + row.totalDiverts, 0);
 
-  const handleUserDR = () => {
+  const handleOfferStatus = () => {
     navigate("/");
   };
 
@@ -74,20 +85,19 @@ const UserReportTable = () => {
   const handleSearch = (no) => {
     console.log(`Search row with id: ${no}`);
   };
-
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "User Report");
-    XLSX.writeFile(workbook, "UserReport.xlsx");
+  const handleDeleteSelectedRows = () => {
+    setRows(rows.filter((row) => !selectedRows.includes(row.no)));
   };
 
   const columns = [
     { field: "no", headerName: "No", width: 90 },
-    { field: "name", headerName: "User Name", width: 150 },
+    { field: "name", headerName: "Offer Name", width: 150 },
+    { field: "offernetwork", headerName: "Offer Network", width: 150 },
+    { field: "offerlink", headerName: "Offer Link", width: 150 },
     { field: "totalClicks", headerName: "Total Clicks", width: 150 },
     { field: "totalSignup", headerName: "Total Signup", width: 150 },
     { field: "totalDiverts", headerName: "Total Diverts", width: 150 },
+    { field: "status", headerName: "Status", width: 150 },
     {
       field: "actions",
       headerName: "Actions",
@@ -98,7 +108,7 @@ const UserReportTable = () => {
           <Box>
             <IconButton
               color="primary"
-              onClick={() => handleSearch(params.row.no)}
+              onClick={() => handleSearch(`Search row with id: ${params.row.no}`)}
             >
               <SearchIcon />
             </IconButton>
@@ -119,7 +129,6 @@ const UserReportTable = () => {
         ),
     },
   ];
-
   return (
     <Card sx={{ mt: 4 }}>
       <Box
@@ -131,7 +140,7 @@ const UserReportTable = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff" }}>User Reports</Typography>
+        <Typography sx={{ color: "#fff" }}>Offer Reports</Typography>
         <Box display="flex" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
@@ -141,9 +150,31 @@ const UserReportTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleUserDR}
+            onClick={handleOfferStatus}
           >
-            User D/R
+            Offer Status
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
+            Pakistan
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
+            USA
           </Button>
           <Button
             variant="outlined"
@@ -158,20 +189,30 @@ const UserReportTable = () => {
             Offer D/R
           </Button>
           <Button
-          variant="outlined"
-          sx={{
-            color: "#fff",
-            borderColor: "#fff",
-            height: "25px",
-            fontSize: "10px",
-          }}
-            onClick={exportToExcel}
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+            onClick={handleDeleteSelectedRows}
           >
-            Export to Excel
+            Delete Selected
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
+           Show Fields
           </Button>
         </Box>
       </Box>
-
       <Paper sx={{ padding: "16px" }}>
         <TextField
           label="Search"
@@ -207,6 +248,10 @@ const UserReportTable = () => {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
+            checkboxSelection
+            onRowSelectionModelChange={(newSelection) => {
+              setSelectedRows(newSelection);
+            }}
           />
         </Box>
       </Paper>
@@ -214,4 +259,4 @@ const UserReportTable = () => {
   );
 };
 
-export default UserReportTable;
+export default OfferReportTable;

@@ -98,6 +98,7 @@ const DomainModel = ({ open, onClose }) => {
             height: "25px",
             fontSize: "10px",
           }}
+          onClick={onClose}
         >
           Cancel
         </Button>

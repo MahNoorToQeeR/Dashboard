@@ -51,7 +51,7 @@ const columns = [
           <DeleteIcon />
         </IconButton>
         <IconButton color="primary" onClick={() => handleInsertDriveFileIcon(params.row.no)}>
-          <InsertDriveFileIcon />
+          <InsertDriveFileIcon  />
         </IconButton>
         <IconButton color="primary" onClick={() => handleRemoveRedEyeIcon(params.row.no)}>
           <RemoveRedEyeIcon />

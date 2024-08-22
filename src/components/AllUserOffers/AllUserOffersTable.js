@@ -9,57 +9,55 @@ import {
   IconButton,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import SwitchWithLabel from "../SwitchWithLabel";
 
-const UserReportTable = () => {
-  const [search, setSearch] = useState("");
+const AllUserOffers = () => {
   const navigate = useNavigate();
-
-  // Sample data for the rows
-  const rows = [
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [search, setSearch] = useState("");
+  const [rows, setRows] = useState([
     {
       no: 1,
-      name: "User 1",
-      totalClicks: 120,
-      totalSignup: 45,
-      totalDiverts: 10,
+      user: "User 1",
+      offer: "Offer 1",
+      network: "Network 1",
+      rate: "$10",
+      status: "Active",
     },
     {
       no: 2,
-      name: "User 2",
-      totalClicks: 98,
-      totalSignup: 32,
-      totalDiverts: 7,
+      user: "User 2",
+      offer: "Offer 2",
+      network: "Network 2",
+      rate: "$15",
+      status: "Inactive",
     },
     {
       no: 3,
-      name: "User 3",
-      totalClicks: 150,
-      totalSignup: 67,
-      totalDiverts: 20,
+      user: "User 3",
+      offer: "Offer 3",
+      network: "Network 3",
+      rate: "$20",
+      status: "Active",
     },
     {
       no: 4,
-      name: "User 4",
-      totalClicks: 120,
-      totalSignup: 45,
-      totalDiverts: 10,
+      user: "User 4",
+      offer: "Offer 4",
+      network: "Network 4",
+      rate: "$25",
+      status: "Inactive",
     },
-  ];
-  const totalClicks = rows.reduce((acc, row) => acc + row.totalClicks, 0);
-  const totalSignup = rows.reduce((acc, row) => acc + row.totalSignup, 0);
-  const totalDiverts = rows.reduce((acc, row) => acc + row.totalDiverts, 0);
+  ]);
 
-  const handleUserDR = () => {
+  const handleActiveOffers = () => {
     navigate("/");
   };
 
-  const handleOfferDR = () => {
+  const handleDeactiveOffers = () => {
     navigate("/");
   };
 
@@ -71,23 +69,17 @@ const UserReportTable = () => {
     console.log(`Delete row with id: ${no}`);
   };
 
-  const handleSearch = (no) => {
-    console.log(`Search row with id: ${no}`);
-  };
-
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "User Report");
-    XLSX.writeFile(workbook, "UserReport.xlsx");
+  const handleDeleteSelectedRows = () => {
+    setRows(rows.filter((row) => !selectedRows.includes(row.no)));
   };
 
   const columns = [
     { field: "no", headerName: "No", width: 90 },
-    { field: "name", headerName: "User Name", width: 150 },
-    { field: "totalClicks", headerName: "Total Clicks", width: 150 },
-    { field: "totalSignup", headerName: "Total Signup", width: 150 },
-    { field: "totalDiverts", headerName: "Total Diverts", width: 150 },
+    { field: "user", headerName: "User", width: 150 },
+    { field: "offer", headerName: "Offer", width: 150 },
+    { field: "network", headerName: "Network", width: 150 },
+    { field: "rate", headerName: "Rate", width: 150 },
+    { field: "status", headerName: "Offer Status", width: 150 },
     {
       field: "actions",
       headerName: "Actions",
@@ -96,12 +88,6 @@ const UserReportTable = () => {
       renderCell: (params) =>
         params.row.no === "Total" ? null : (
           <Box>
-            <IconButton
-              color="primary"
-              onClick={() => handleSearch(params.row.no)}
-            >
-              <SearchIcon />
-            </IconButton>
             <IconButton
               color="primary"
               onClick={() => handleEdit(params.row.no)}
@@ -131,7 +117,7 @@ const UserReportTable = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff" }}>User Reports</Typography>
+        <Typography sx={{ color: "#fff" }}>All Offers</Typography>
         <Box display="flex" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
@@ -141,9 +127,9 @@ const UserReportTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleUserDR}
+            onClick={handleActiveOffers}
           >
-            User D/R
+            Active Offer
           </Button>
           <Button
             variant="outlined"
@@ -153,25 +139,24 @@ const UserReportTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleOfferDR}
+            onClick={handleDeactiveOffers}
           >
-            Offer D/R
+            Deactive Offer
           </Button>
           <Button
-          variant="outlined"
-          sx={{
-            color: "#fff",
-            borderColor: "#fff",
-            height: "25px",
-            fontSize: "10px",
-          }}
-            onClick={exportToExcel}
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+            onClick={handleDeleteSelectedRows}
           >
-            Export to Excel
+            Delete Selected
           </Button>
         </Box>
       </Box>
-
       <Paper sx={{ padding: "16px" }}>
         <TextField
           label="Search"
@@ -192,12 +177,9 @@ const UserReportTable = () => {
         />
         <Box style={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={[
-              ...rows,
-              { no: "Total", name: "", totalClicks, totalSignup, totalDiverts },
-            ]}
+            rows={rows}
             columns={columns}
-            getRowId={(row) => row.no || "total"}
+            getRowId={(row) => row.no}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -207,6 +189,10 @@ const UserReportTable = () => {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
+            checkboxSelection
+            onRowSelectionModelChange={(newSelection) => {
+              setSelectedRows(newSelection);
+            }}
           />
         </Box>
       </Paper>
@@ -214,4 +200,4 @@ const UserReportTable = () => {
   );
 };
 
-export default UserReportTable;
+export default AllUserOffers;
