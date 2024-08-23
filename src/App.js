@@ -16,6 +16,7 @@ import AddUser from "../src/components/AddUser"
 import "./App.css";
 import NetworkReport from "./Pages/NetworkReport";
 import AllUserOffers from "./Pages/AllUserOffers";
+import ClickReports from "./Pages/ClickReports";
 
 
 const App = () => {
@@ -64,8 +65,7 @@ const App = () => {
                 <Route path="/Add User" element={<AddUser />} />
                 <Route path="/Network Report" element={<NetworkReport />} />
                 <Route path="/All User Offers" element={<AllUserOffers />} />
-
-
+                <Route path="/Clicks Report" element={<ClickReports />} />
               </Routes>
             </div>
           </div>

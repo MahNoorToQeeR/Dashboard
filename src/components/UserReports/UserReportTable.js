@@ -19,8 +19,6 @@ import SwitchWithLabel from "../SwitchWithLabel";
 const UserReportTable = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-
-  // Sample data for the rows
   const rows = [
     {
       no: 1,
