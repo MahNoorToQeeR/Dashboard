@@ -51,3 +51,20 @@
 .pl-70{
   padding-left: 70px;
 }
+.text-gray-700 {
+  background-color: #0171be !important;
+  color: #fff !important;
+}
+.active .css-cveggr-MuiListItemIcon-root {
+  color: #fff
+}
+.full-page-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full viewport height */
+  background-image: url('./data/background-login.png');
+
+  background-size: cover; /* Cover the entire container */
+  background-position: center; /* Center the background image */
+}

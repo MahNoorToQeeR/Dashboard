@@ -7,6 +7,7 @@ import {
   Typography,
   Grid,
   CircularProgress,
+  Link,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -37,8 +38,8 @@ function CardComponent() {
 
   return (
     <Container
-      maxWidth="xs" 
-      style={{
+      maxWidth="xs"
+      sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -47,27 +48,22 @@ function CardComponent() {
     >
       <Box
         sx={{
-          padding: { xs: 2, sm: 4 },
+          padding: { xs: 3, sm: 4 },
           boxShadow: 3,
           borderRadius: 2,
-          backgroundColor: "white",
+          backgroundColor: "rgba(255, 255, 255, 0.9)", 
           textAlign: "center",
+          backdropFilter: "blur(10px)", 
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ mb: { xs: 2, sm: 3 } }}
-        >
+        <Typography variant="h5" sx={{ mb: { xs: 2, sm: 3 } }}>
           Login
         </Typography>
         <form Validate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="body1" align="left" gutterBottom>
-                Email
-              </Typography>
               <TextField
-                label="Enter Your Email"
+                label="Email"
                 name="email"
                 variant="outlined"
                 size="small"
@@ -79,20 +75,17 @@ function CardComponent() {
                 onChange={handleChange}
                 sx={{
                   "& .MuiInputBase-root": {
-                    height: 32,
+                    height: 40,
                   },
                   "& .MuiOutlinedInput-input": {
-                    padding: "6px 14px",
+                    padding: "8px 14px",
                   },
                 }}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1" align="left" gutterBottom>
-                Password
-              </Typography>
               <TextField
-                label="Enter Your Password"
+                label="Password"
                 name="password"
                 variant="outlined"
                 size="small"
@@ -104,10 +97,10 @@ function CardComponent() {
                 onChange={handleChange}
                 sx={{
                   "& .MuiInputBase-root": {
-                    height: 32,
+                    height: 40,
                   },
                   "& .MuiOutlinedInput-input": {
-                    padding: "6px 14px",
+                    padding: "8px 14px",
                   },
                 }}
               />
@@ -120,14 +113,19 @@ function CardComponent() {
                 type="submit"
                 sx={{
                   color: "#fff",
-                  borderColor: "#fff",
-                  height: "25px",
-                  fontSize: "10px",
+                  height: "35px",
+                  fontSize: "14px",
+                  mt: 2,
                 }}
                 disabled={loading}
               >
                 {loading ? <CircularProgress size={18} color="inherit" /> : "Login"}
               </Button>
+            </Grid>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <Link href="#" underline="none" variant="body2">
+                Forgot Password?
+              </Link>
             </Grid>
           </Grid>
         </form>

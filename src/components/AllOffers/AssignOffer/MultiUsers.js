@@ -11,17 +11,17 @@ import {
 
 const CardComponent = () => {
   return (
-      <Card sx={{ mt: 4 }}>
+      <Card sx={{ mt: 4,  width: "100%" }}>
         <Box
           display="flex"
           justifyContent="space-between"
-          sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px" }}
+          sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px", }}
         >
           <Typography sx={{ color: "#fff" }}>
             Multi Offers for Multi Users
           </Typography>
         </Box>
-        <Grid container spacing={2} sx={{ padding: "8px" }}>
+        <Grid container spacing={2} sx={{ padding: "8px", }}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12}  sx={{width: "430px",}}>

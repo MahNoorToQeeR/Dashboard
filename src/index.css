@@ -82,5 +82,11 @@ body {
   }
 }
 .w-87{
-  width: 87% !important;
+  width: 85% !important;
+}
+.bg-color{
+  background-color: #cedde938 !important;
+}
+.p-4{
+  padding: 0px !important;
 }

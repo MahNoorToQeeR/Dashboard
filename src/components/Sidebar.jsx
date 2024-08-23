@@ -10,9 +10,29 @@ const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
   const currentColor = '#0171BE';
 
-  const activeLinkStyle = {
-    backgroundColor: currentColor,
+  const activeLink = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+    borderRadius: '8px',
     color: '#fff',
+    fontSize: '16px',
+    margin: '8px',
+    backgroundColor: currentColor,
+   
+
+    
+  };
+
+  const normalLink = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    color: 'gray',
+    margin: '8px',
+    
   };
 
   const drawerWidth = 240;
@@ -50,21 +70,24 @@ const Sidebar = () => {
       <List>
         {links.map((item) => (
           <div key={item.title}>
-            {item.links.map((link)=> (
+            {item.links.map((link) => (
               <NavLink
                 to={`/${link.name}`}
                 key={link.name}
-                className={({ isActive }) =>
-                  isActive ? 'text-gray-700 dark:text-gray-200 hover:bg-light-gray' : ''
-                }
-                style={({ isActive }) => (isActive ? activeLinkStyle : {})}
+                style={({ isActive }) => (isActive ? activeLink : normalLink)}
               >
                 <ListItem button>
-                  <ListItemIcon style={{ color: currentColor }}>
+                  <ListItemIcon
+                    style={{ color: link.isActive ? "#fff" : '' }} 
+                  >
                     {link.icon}
                   </ListItemIcon>
                   {activeMenu && (
-                    <ListItemText primary={link.name} className="capitalize" />
+                    <ListItemText
+                      primary={link.name}
+                      className="capitalize"
+                      style={{ color: link.isActive ? '#fff' : '' }}
+                    />
                   )}
                 </ListItem>
               </NavLink>

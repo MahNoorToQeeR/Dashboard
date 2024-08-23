@@ -11,7 +11,7 @@ import {
 
 const SingleUsers = () => {
   return (
-    <Card sx={{ mt: 4 }}>
+    <Card sx={{ mt: 4,  width: "100%"  }}>
       <Box
         display="flex"
         justifyContent="space-between"
