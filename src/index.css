@@ -76,3 +76,11 @@ body {
 .css-i4bv87-MuiSvgIcon-root{
   font-size: 15px !important;
 }
+@media (min-width: 768px) {
+  .md\:ml-72 {
+      margin-left: 15rem !important;
+  }
+}
+.w-87{
+  width: 87% !important;
+}

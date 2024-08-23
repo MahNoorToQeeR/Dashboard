@@ -1,67 +1,79 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { MdOutlineCancel } from 'react-icons/md';
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
-import { links } from '../data/dummy';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { useStateContext } from '../contexts/ContextProvider';
+import { links } from '../data/dummy';
 import logo from '../data/logo-image1.png';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
   const currentColor = '#0171BE';
 
-  const activeLink =
-    'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2 bg-green-500';
-  const normalLink =
-    'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
+  const activeLinkStyle = {
+    backgroundColor: currentColor,
+    color: '#fff',
+  };
+
+  const drawerWidth = 240;
 
   return (
-    <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
-      {activeMenu && (
-        <>
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center gap-3 ml-3 text-3xl font-extrabold">
-              <img src={logo} alt="logo" className="w-20 h-20" />
-              <span>Media</span>
-            </div>
-            <TooltipComponent content="Menu" position="BottomCenter">
-              <button
-                type="button"
-                onClick={() => setActiveMenu(!activeMenu)}
-                style={{ color: currentColor }}
-                className="text-xl rounded-full p-3 hover:bg-light-green block md:hidden"
+    <Drawer
+      variant="permanent"
+      open={activeMenu}
+      sx={{
+        width: activeMenu ? drawerWidth : 72,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: activeMenu ? drawerWidth : 72,
+          boxSizing: 'border-box',
+          transition: 'width 0.3s',
+          overflowX: 'hidden',
+        },
+      }}
+    >
+      <div className="flex justify-between items-center mt-4">
+        <div className="flex items-center gap-3 ml-3">
+          <img src={logo} alt="logo" className="w-10 h-10" />
+          {activeMenu && <span className="text-3xl font-extrabold">Media</span>}
+        </div>
+        <Tooltip title="Toggle Drawer" placement="right">
+          <IconButton
+            onClick={() => setActiveMenu(!activeMenu)}
+            style={{ color: currentColor }}
+          >
+            {activeMenu ? <MdKeyboardArrowLeft /> : <MdKeyboardArrowRight />}
+          </IconButton>
+        </Tooltip>
+      </div>
+
+      <List>
+        {links.map((item) => (
+          <div key={item.title}>
+            {item.links.map((link)=> (
+              <NavLink
+                to={`/${link.name}`}
+                key={link.name}
+                className={({ isActive }) =>
+                  isActive ? 'text-gray-700 dark:text-gray-200 hover:bg-light-gray' : ''
+                }
+                style={({ isActive }) => (isActive ? activeLinkStyle : {})}
               >
-                <MdOutlineCancel />
-              </button>
-            </TooltipComponent>
-          </div>
-          <div className="">
-            {links.map((item) => (
-              <div key={item.title}>
-                {item.links.map((link) => (
-                  <NavLink
-                    to={`/${link.name}`}
-                    key={link.name}
-                    style={({ isActive }) => ({
-                      backgroundColor: isActive ? currentColor : '',
-                    })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
+                <ListItem button>
+                  <ListItemIcon style={{ color: currentColor }}>
                     {link.icon}
-                    <span className="capitalize ">{link.name}</span>
-                  </NavLink>
-                ))}
-              </div>
+                  </ListItemIcon>
+                  {activeMenu && (
+                    <ListItemText primary={link.name} className="capitalize" />
+                  )}
+                </ListItem>
+              </NavLink>
             ))}
           </div>
-        </>
-      )}
-    </div>
+        ))}
+      </List>
+    </Drawer>
   );
 };
 
 export default Sidebar;
-  
