@@ -59,7 +59,7 @@ export const links = [
         icon: <FiUserCheck />,
       },
       {
-        name: 'Click Report',
+        name: 'Clicks Report',
         icon: <FiBarChart2 />,
       },
       {
