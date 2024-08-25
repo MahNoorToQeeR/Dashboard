@@ -11,6 +11,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import * as XLSX from "xlsx";
 
 const ClickReportsTable = () => {
+  // Sample data for rows
   const rows = [
     {
       no: 1,
@@ -28,6 +29,7 @@ const ClickReportsTable = () => {
       os: "Windows",
       ip: "192.168.1.1",
       proxy: "No",
+      comment: "First comment",  // Add a sample comment for demonstration
     },
     {
       no: 2,
@@ -45,10 +47,15 @@ const ClickReportsTable = () => {
       os: "iOS",
       ip: "192.168.1.2",
       proxy: "Yes",
+      comment: "Second comment",  // Add a sample comment for demonstration
     },
     // Add more rows as needed
   ];
 
+  // State to toggle the visibility of the 'Comment' column
+  const [showCommentColumn, setShowCommentColumn] = useState(false);
+
+  // Function to download the report as an Excel file
   const downloadReport = () => {
     const worksheet = XLSX.utils.json_to_sheet(rows);
     const workbook = XLSX.utils.book_new();
@@ -56,6 +63,7 @@ const ClickReportsTable = () => {
     XLSX.writeFile(workbook, "ClickReport.xlsx");
   };
 
+  // Column definitions
   const columns = [
     { field: "no", headerName: "No", width: 90 },
     { field: "subid", headerName: "SubID", width: 150 },
@@ -72,6 +80,8 @@ const ClickReportsTable = () => {
     { field: "os", headerName: "OS", width: 150 },
     { field: "ip", headerName: "IP", width: 150 },
     { field: "proxy", headerName: "Proxy", width: 150 },
+    // Conditionally add the 'Comment' column based on the state
+    ...(showCommentColumn ? [{ field: "comment", headerName: "Comment", width: 200 }] : []),
   ];
 
   return (
@@ -107,8 +117,9 @@ const ClickReportsTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={() => setShowCommentColumn(!showCommentColumn)}
           >
-            Show Fields
+            {showCommentColumn ? "Hide Fields" : "Show Fields"}
           </Button>
         </Box>
       </Box>
