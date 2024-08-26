@@ -8,11 +8,21 @@ import {
   Grid,
   CircularProgress,
   Link,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function CardComponent() {
   const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    role: "user",
+  });
+
+  const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
@@ -24,16 +34,55 @@ function CardComponent() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleRoleChange = (e) => {
+    setFormData({ ...formData, role: e.target.value });
+  };
+
+  const validate = () => {
+    let tempErrors = { email: "", password: "" };
+    let isValid = true;
+
+    // Email Validation
+    if (!formData.email) {
+      tempErrors.email = "Email is required.";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Email is not valid.";
+      isValid = false;
+    }
+
+    // Password Validation
+    if (!formData.password) {
+      tempErrors.password = "Password is required.";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    if (validate()) {
+      setLoading(true);
+      setTimeout(() => {
+        console.log(formData);
+        setFormData({ email: "", password: "", role: "user" });
+        setLoading(false);
+        navigate("/dashboard");
+      }, 2000);
+    }
+  };
 
-    setTimeout(() => {
-      console.log(formData);
-      setFormData({ email: "", password: "" });
-      setLoading(false);
-      navigate("/dashboard");
-    }, 2000);
+  const letterAnimation = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+      },
+    }),
   };
 
   return (
@@ -43,23 +92,64 @@ function CardComponent() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        alignItems: "center", 
         minHeight: "100vh",
+        position: "relative",
+        color: "#0171be",
+        textAlign: "center",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        },
       }}
     >
       <Box
         sx={{
-          padding: { xs: 3, sm: 4 },
+          marginBottom: 4,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {"Welcome to SS Media".split("").map((char, index) => (
+          <motion.span
+            key={index}
+            custom={index}
+            variants={letterAnimation}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: "inline-block",
+              margin: "0 2px",
+              fontSize: "2.5rem", 
+              fontWeight: "bold",
+            }}
+          >
+            {char}
+          </motion.span>
+        ))}
+      </Box>
+      <Box
+        sx={{
+          width: { xs: '90%', sm: '400px', md: '500px' },
+          padding: { xs: 3, sm: 5 },
           boxShadow: 3,
-          borderRadius: 2,
-          backgroundColor: "rgba(255, 255, 255, 0.9)", 
-          textAlign: "center",
-          backdropFilter: "blur(10px)", 
+          borderRadius: "1.5rem", 
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          mx: "auto", 
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography variant="h5" sx={{ mb: { xs: 2, sm: 3 } }}>
           Login
         </Typography>
-        <form Validate autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -73,6 +163,8 @@ function CardComponent() {
                 required
                 value={formData.email}
                 onChange={handleChange}
+                error={Boolean(errors.email)}
+                helperText={errors.email}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 40,
@@ -95,6 +187,8 @@ function CardComponent() {
                 required
                 value={formData.password}
                 onChange={handleChange}
+                error={Boolean(errors.password)}
+                helperText={errors.password}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 40,
@@ -104,6 +198,26 @@ function CardComponent() {
                   },
                 }}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <RadioGroup
+                name="role"
+                value={formData.role}
+                onChange={handleRoleChange}
+                row
+                sx={{ justifyContent: "center", mt: 2 }}
+              >
+                <FormControlLabel
+                  value="admin"
+                  control={<Radio />}
+                  label="Admin"
+                />
+                <FormControlLabel
+                  value="user"
+                  control={<Radio />}
+                  label="User"
+                />
+              </RadioGroup>
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -119,7 +233,11 @@ function CardComponent() {
                 }}
                 disabled={loading}
               >
-                {loading ? <CircularProgress size={18} color="inherit" /> : "Login"}
+                {loading ? (
+                  <CircularProgress size={18} color="inherit" />
+                ) : (
+                  "Login"
+                )}
               </Button>
             </Grid>
             <Grid item xs={12} sx={{ mt: 2 }}>

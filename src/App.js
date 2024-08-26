@@ -17,6 +17,11 @@ import LoginLayout from "./layouts/LoginLayout";
 import MainLayout from "./layouts/MainLayout"; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./App.css";
+import TodayReport from "./Pages/TodayReport";
+import YesterdayReport from "./Pages/YesterdayReport";
+import DayReport from "./Pages/DayReport";
+import Salary from "./Pages/Salary";
+import Settings from "./Pages/Setting";
 
 const App = () => {
   return (
@@ -41,6 +46,11 @@ const App = () => {
           <Route path="/Network Report" element={<NetworkReport />} />
           <Route path="/All User Offers" element={<AllUserOffers />} />
           <Route path="/Clicks Report" element={<ClickReports />} />
+          <Route path="/Today Report" element={<TodayReport />} />
+          <Route path="/Yesterday Report" element={<YesterdayReport />} />
+          <Route path="/Day Report" element={<DayReport />} />
+          <Route path="/Salary" element={<Salary />} />
+          <Route path="/Settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
