@@ -22,22 +22,80 @@ const Settings = () => {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+    setErrors({
+      ...errors,
+      [name]: "", // Clear error when user starts typing
+    });
+  };
+
+  const validate = () => {
+    let isValid = true;
+    let newErrors = {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+
+    if (!formData.username) {
+      newErrors.username = "Username is required";
+      isValid = false;
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleUpdate = () => {
-    // Add your update logic here
-    console.log("Update clicked", formData);
+    if (validate()) {
+      console.log("Update clicked", formData);
+    }
   };
 
   const handleCancel = () => {
-    // Add your cancel logic here
-    console.log("Cancel clicked");
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setErrors({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
 
   return (
@@ -98,6 +156,8 @@ const Settings = () => {
             size="small"
             fullWidth
             margin="normal"
+            error={!!errors.username}
+            helperText={errors.username}
             sx={{
               "& .MuiInputBase-root": {
                 height: 32,
@@ -116,6 +176,8 @@ const Settings = () => {
             size="small"
             fullWidth
             margin="normal"
+            error={!!errors.email}
+            helperText={errors.email}
             sx={{
               "& .MuiInputBase-root": {
                 height: 32,
@@ -135,6 +197,8 @@ const Settings = () => {
             size="small"
             fullWidth
             margin="normal"
+            error={!!errors.password}
+            helperText={errors.password}
             sx={{
               "& .MuiInputBase-root": {
                 height: 32,
@@ -154,6 +218,8 @@ const Settings = () => {
             size="small"
             fullWidth
             margin="normal"
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
             sx={{
               "& .MuiInputBase-root": {
                 height: 32,
@@ -166,19 +232,7 @@ const Settings = () => {
         </Box>
         <Divider sx={{ my: 2 }} />
         <Box display="flex" justifyContent="flex-end" gap={2}>
-          <Button
-            variant="outlined"
-            onClick={handleCancel}
-            sx={{
-              color: "#0171be",
-              borderColor: "#0171be",
-              height: "25px",
-              fontSize: "10px",
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
+        <Button
             variant="contained"
             color="primary"
             onClick={handleUpdate}
@@ -190,6 +244,18 @@ const Settings = () => {
             }}
           >
             Update
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleCancel}
+            sx={{
+              color: "#0171be",
+              borderColor: "#0171be",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
+            Reset
           </Button>
         </Box>
       </Paper>

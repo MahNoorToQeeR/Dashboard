@@ -1,40 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
   Card,
-  TextField,
   Grid,
-  Button,
+  TextField,
   MenuItem,
+  Button,
 } from "@mui/material";
 
-const SingleUsers = () => {
+const CardComponent = () => {
+  const [user, setUser] = useState("");
+  const [offer, setOffer] = useState("");
+  const [errors, setErrors] = useState({ user: "", offer: "" });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let hasError = false;
+
+    if (!user) {
+      setErrors((prev) => ({ ...prev, user: "User is required" }));
+      hasError = true;
+    }
+
+    if (!offer) {
+      setErrors((prev) => ({ ...prev, offer: "Offer is required" }));
+      hasError = true;
+    }
+
+    if (!hasError) {
+      // Log form data to the console
+      console.log({
+        user,
+        offer,
+      });
+    }
+  };
+
+  const handleReset = () => {
+    setUser("");
+    setOffer("");
+    setErrors({ user: "", offer: "" });
+  };
+
   return (
-    <Card sx={{ mt: 4,  width: "100%"  }}>
+    <Card sx={{ mt: 4, width: "100%" }}>
       <Box
         display="flex"
         justifyContent="space-between"
         sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px" }}
       >
         <Typography sx={{ color: "#fff" }}>
-          Multi Offers for Single User
+        Multi Offers for Single User
         </Typography>
       </Box>
       <Grid container spacing={2} sx={{ padding: "8px" }}>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12}  sx={{width: "430px",}}>
+            <Grid item xs={12} sx={{ width: "430px" }}>
               <Typography variant="body1" align="left" gutterBottom>
                 Select User
               </Typography>
               <TextField
                 select
-                label="select user"
+                label="Select User"
                 variant="outlined"
                 fullWidth
                 size="small"
                 margin="normal"
+                value={user}
+                onChange={(e) => {
+                  setUser(e.target.value);
+                  setErrors((prev) => ({ ...prev, user: "" }));
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -43,6 +81,8 @@ const SingleUsers = () => {
                     padding: "6px 14px",
                   },
                 }}
+                error={!!errors.user}
+                helperText={errors.user}
               >
                 <MenuItem value="Option 1">Option 1</MenuItem>
                 <MenuItem value="Option 2">Option 2</MenuItem>
@@ -54,11 +94,16 @@ const SingleUsers = () => {
               </Typography>
               <TextField
                 select
-                label="Plesae select offers"
+                label="Please select offers"
                 variant="outlined"
                 fullWidth
                 size="small"
                 margin="normal"
+                value={offer}
+                onChange={(e) => {
+                  setOffer(e.target.value);
+                  setErrors((prev) => ({ ...prev, offer: "" }));
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -67,6 +112,8 @@ const SingleUsers = () => {
                     padding: "6px 14px",
                   },
                 }}
+                error={!!errors.offer}
+                helperText={errors.offer}
               >
                 <MenuItem value="Option 1">Option 1</MenuItem>
                 <MenuItem value="Option 2">Option 2</MenuItem>
@@ -84,7 +131,7 @@ const SingleUsers = () => {
             <Button
               variant="contained"
               color="primary"
-              type="submit"
+              onClick={handleSubmit}
               sx={{
                 color: "#fff",
                 borderColor: "#fff",
@@ -97,7 +144,7 @@ const SingleUsers = () => {
             <Button
               variant="outlined"
               color="primary"
-              type="submit"
+              onClick={handleReset}
               sx={{
                 color: "#0171be",
                 borderColor: "#0171be",
@@ -114,4 +161,4 @@ const SingleUsers = () => {
   );
 };
 
-export default SingleUsers;
+export default CardComponent;

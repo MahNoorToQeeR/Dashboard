@@ -30,6 +30,25 @@ const names = [
 
 const CardComponent = () => {
   const [personName, setPersonName] = React.useState([]);
+  const [formValues, setFormValues] = React.useState({
+    offerName: "",
+    defaultOffer: "",
+    domain: "",
+    network: "",
+    users: [],
+    landingPage: "",
+    countries: "",
+    offerRate: "",
+    comment: "",
+    webOffer: "",
+    androidOffer: "",
+    iosOffer: "",
+    divertOffer: "",
+    referralStatus: "",
+    proxyStatus: "",
+    devices: "",
+  });
+  const [errors, setErrors] = React.useState({});
   const navigate = useNavigate();
 
   const handleAssginOffer = () => {
@@ -47,6 +66,58 @@ const CardComponent = () => {
       }
     }
     setPersonName(value);
+
+    // Clear the error if there are selected users
+    if (value.length > 0) {
+      setErrors({ ...errors, users: '' });
+    }
+  };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+    setErrors({ ...errors, [name]: "" }); 
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    // Check for empty fields
+    Object.keys(formValues).forEach((key) => {
+      if (!formValues[key] || formValues[key].length === 0) {
+        newErrors[key] = "This field is required";
+      }
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      // Submit the form or perform further actions
+      console.log("Form submitted successfully", formValues);
+    }
+  };
+  const handleReset = () => {
+    setFormValues({
+      offerName: "",
+      defaultOffer: "",
+      domain: "",
+      network: "",
+      users: [],
+      landingPage: "",
+      countries: "",
+      offerRate: "",
+      comment: "",
+      webOffer: "",
+      androidOffer: "",
+      iosOffer: "",
+      divertOffer: "",
+      referralStatus: "",
+      proxyStatus: "",
+      devices: "",
+    });
+    setErrors({});
+    setPersonName([]);
   };
   return (
     <Card sx={{ mt: 4 }}>
@@ -100,11 +171,16 @@ const CardComponent = () => {
                       Offer Name *
                     </Typography>
                     <TextField
+                      name="offerName"
+                      value={formValues.offerName}
+                      onChange={handleInputChange}
                       label="Offer Name"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.offerName}
+                      helperText={errors.offerName}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -118,11 +194,16 @@ const CardComponent = () => {
                       Default Offer *
                     </Typography>
                     <TextField
+                      name="defaultOffer"
+                      value={formValues.defaultOffer}
+                      onChange={handleInputChange}
                       label="Default Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.defaultOffer}
+                      helperText={errors.defaultOffer}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -136,12 +217,17 @@ const CardComponent = () => {
                       Select Domain *
                     </Typography>
                     <TextField
+                      name="domain"
+                      value={formValues.domain}
+                      onChange={handleInputChange}
                       select
                       label="Select Domain"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.domain}
+                      helperText={errors.domain}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -158,12 +244,17 @@ const CardComponent = () => {
                       Select Network *
                     </Typography>
                     <TextField
+                      name="network"
+                      value={formValues.network}
+                      onChange={handleInputChange}
                       select
                       label="Select Network"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.network}
+                      helperText={errors.network}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -184,6 +275,7 @@ const CardComponent = () => {
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.users}
                       sx={{
                         mt: 1,
                         minWidth: 120,
@@ -210,25 +302,29 @@ const CardComponent = () => {
                         }}
                       >
                         {names.map((name) => (
-                          <option
-                            key={name}
-                            value={name}
-                          >
+                          <option key={name} value={name}>
                             {name}
                           </option>
                         ))}
                       </Select>
+                      {errors.users && (
+                        <Typography color="error">{errors.users}</Typography>
+                      )}
                     </FormControl>
                     <Typography variant="body1" align="left" gutterBottom>
                       Select LandingPage *
                     </Typography>
                     <TextField
-                      select
-                      label="Select LandingPage"
+                      name="landingPage"
+                      value={formValues.landingPage}
+                      onChange={handleInputChange}
+                      label="Landing Page"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.landingPage}
+                      helperText={errors.landingPage}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -246,11 +342,16 @@ const CardComponent = () => {
                     </Typography>
                     <TextField
                       select
-                      label="Select Countries"
+                      name="countries"
+                      value={formValues.countries}
+                      onChange={handleInputChange}
+                      label="Countries"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.countries}
+                      helperText={errors.countries}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -269,11 +370,16 @@ const CardComponent = () => {
                       Offer Rate *
                     </Typography>
                     <TextField
+                      name="offerRate"
+                      value={formValues.offerRate}
+                      onChange={handleInputChange}
                       label="Offer Rate"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.offerRate}
+                      helperText={errors.offerRate}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -287,11 +393,16 @@ const CardComponent = () => {
                       Enter Commente *
                     </Typography>
                     <TextField
-                      label="Enter Comment"
+                      name="comment"
+                      value={formValues.comment}
+                      onChange={handleInputChange}
+                      label="Comment"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.comment}
+                      helperText={errors.comment}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -305,11 +416,16 @@ const CardComponent = () => {
                       Web Offer *
                     </Typography>
                     <TextField
+                      name="webOffer"
+                      value={formValues.webOffer}
+                      onChange={handleInputChange}
                       label="Web Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.webOffer}
+                      helperText={errors.webOffer}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -323,11 +439,16 @@ const CardComponent = () => {
                       Android Offer *
                     </Typography>
                     <TextField
+                      name="androidOffer"
+                      value={formValues.androidOffer}
+                      onChange={handleInputChange}
                       label="Android Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.androidOffer}
+                      helperText={errors.androidOffer}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -341,11 +462,16 @@ const CardComponent = () => {
                       Ios Offer *
                     </Typography>
                     <TextField
-                      label="Ios Offer"
+                      name="iosOffer"
+                      value={formValues.iosOffer}
+                      onChange={handleInputChange}
+                      label="iOS Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.iosOffer}
+                      helperText={errors.iosOffer}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -359,11 +485,16 @@ const CardComponent = () => {
                       Divert offer *
                     </Typography>
                     <TextField
-                      label="Divert offer"
+                      name="divertOffer"
+                      value={formValues.divertOffer}
+                      onChange={handleInputChange}
+                      label="Divert Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.divertOffer}
+                      helperText={errors.divertOffer}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -378,11 +509,16 @@ const CardComponent = () => {
                     </Typography>
                     <TextField
                       select
+                      name="referralStatus"
+                      value={formValues.referralStatus}
+                      onChange={handleInputChange}
                       label="Referral Status"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.referralStatus}
+                      helperText={errors.referralStatus}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -400,11 +536,16 @@ const CardComponent = () => {
                     </Typography>
                     <TextField
                       select
+                      name="proxyStatus"
+                      value={formValues.proxyStatus}
+                      onChange={handleInputChange}
                       label="Proxy Status"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.proxyStatus}
+                      helperText={errors.proxyStatus}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -421,11 +562,16 @@ const CardComponent = () => {
                       Devices *
                     </Typography>
                     <TextField
-                      label="Devices*"
+                      name="devices"
+                      value={formValues.devices}
+                      onChange={handleInputChange}
+                      label="Devices"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
+                      error={!!errors.devices}
+                      helperText={errors.devices}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -455,6 +601,7 @@ const CardComponent = () => {
                       height: "25px",
                       fontSize: "10px",
                     }}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
@@ -468,6 +615,7 @@ const CardComponent = () => {
                       height: "25px",
                       fontSize: "10px",
                     }}
+                    onClick={handleReset}
                   >
                     Reset
                   </Button>

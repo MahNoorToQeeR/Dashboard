@@ -6,6 +6,7 @@ import {
   TextField,
   Paper,
   IconButton,
+  Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import SwitchWithLabel from "../SwitchWithLabel";
 
-const NetworkReportTable = () => {
+const NetworkReportTable = ({ onAddNetwork }) => {
   const [search, setSearch] = useState("");
   const rows = [
     {
@@ -109,6 +110,25 @@ const NetworkReportTable = () => {
         }}
       >
         <Typography sx={{ color: "#fff" }}>Network Reports</Typography>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="end"
+          sx={{ gap: "5px" }}
+        >
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+            onClick={onAddNetwork}
+          >
+            Add Networks
+          </Button>
+        </Box>
       </Box>
       <Paper sx={{ padding: "16px" }}>
         <TextField

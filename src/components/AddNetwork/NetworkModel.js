@@ -11,30 +11,30 @@ import {
 } from "@mui/material";
 
 const DomainModel = ({ open, onClose }) => {
-  const [domainName, setDomainName] = useState("");
-  const [domainURL, setDomainURL] = useState("");
-  const [errors, setErrors] = useState({ domainName: "", domainURL: "" });
+  const [networkName, setNetworkName] = useState("");
+  const [networkURL, setNetworkURL] = useState("");
+  const [errors, setErrors] = useState({ networkName: "", networkURL: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let hasError = false;
 
     // Validation
-    if (!domainName) {
-      setErrors((prev) => ({ ...prev, domainName: "Domain Name is required" }));
+    if (!networkName) {
+      setErrors((prev) => ({ ...prev, networkName: "Network Name is required" }));
       hasError = true;
     }
 
-    if (!domainURL) {
-      setErrors((prev) => ({ ...prev, domainURL: "Domain URL is required" }));
+    if (!networkURL) {
+      setErrors((prev) => ({ ...prev, networkURL: "Network URL is required" }));
       hasError = true;
     }
 
     if (!hasError) {
       // Log data to console
       console.log({
-        domainName,
-        domainURL,
+        networkName,
+        networkURL,
       });
       // Optionally close the dialog here
       handleCancel(); // Close the dialog and reset form
@@ -43,9 +43,9 @@ const DomainModel = ({ open, onClose }) => {
 
   const handleCancel = () => {
     // Clear the form and errors
-    setDomainName("");
-    setDomainURL("");
-    setErrors({ domainName: "", domainURL: "" });
+    setNetworkName("");
+    setNetworkURL("");
+    setErrors({ networkName: "", networkURL: "" });
     onClose(); // Close the dialog
   };
 
@@ -53,16 +53,16 @@ const DomainModel = ({ open, onClose }) => {
     <Dialog
       open={open}
       onClose={handleCancel}
-      aria-labelledby="add-domain-dialog-title"
-      aria-describedby="add-domain-dialog-description"
+      aria-labelledby="add-network-dialog-title"
+      aria-describedby="add-network-dialog-description"
       maxWidth="md"
       fullWidth
     >
       <DialogTitle
-        id="add-domain-dialog-title"
+        id="add-network-dialog-title"
         sx={{ backgroundColor: "#0171BE", color: "#fff" }}
       >
-        Add Domain Page
+        Add Network Page
       </DialogTitle>
       <DialogContent dividers>
         <Grid container spacing={2}>
@@ -70,7 +70,7 @@ const DomainModel = ({ open, onClose }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body1" align="left" gutterBottom>
-                  Domain Name
+                  Network Name
                 </Typography>
                 <TextField
                   label="Enter Name"
@@ -78,10 +78,10 @@ const DomainModel = ({ open, onClose }) => {
                   size="small"
                   fullWidth
                   margin="normal"
-                  value={domainName}
+                  value={networkName}
                   onChange={(e) => {
-                    setDomainName(e.target.value);
-                    setErrors((prev) => ({ ...prev, domainName: "" }));
+                    setNetworkName(e.target.value);
+                    setErrors((prev) => ({ ...prev, networkName: "" }));
                   }}
                   sx={{
                     "& .MuiInputBase-root": {
@@ -91,13 +91,13 @@ const DomainModel = ({ open, onClose }) => {
                       padding: "6px 14px",
                     },
                   }}
-                  error={!!errors.domainName}
-                  helperText={errors.domainName}
+                  error={!!errors.networkName}
+                  helperText={errors.networkName}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" align="left" gutterBottom>
-                  Domain URL
+                  Network URL
                 </Typography>
                 <TextField
                   label="Enter URL"
@@ -105,10 +105,10 @@ const DomainModel = ({ open, onClose }) => {
                   size="small"
                   fullWidth
                   margin="normal"
-                  value={domainURL}
+                  value={networkURL}
                   onChange={(e) => {
-                    setDomainURL(e.target.value);
-                    setErrors((prev) => ({ ...prev, domainURL: "" }));
+                    setNetworkURL(e.target.value);
+                    setErrors((prev) => ({ ...prev, networkURL: "" }));
                   }}
                   sx={{
                     "& .MuiInputBase-root": {
@@ -118,8 +118,8 @@ const DomainModel = ({ open, onClose }) => {
                       padding: "6px 14px",
                     },
                   }}
-                  error={!!errors.domainURL}
-                  helperText={errors.domainURL}
+                  error={!!errors.networkURL}
+                  helperText={errors.networkURL}
                 />
               </Grid>
             </Grid>

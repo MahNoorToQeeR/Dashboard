@@ -1,7 +1,7 @@
 
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import NetworkReportTable from "../components/NetworkReport/NetworkReportTable";
+import NetworkManagement from "../components/AddNetwork/NetworkManagement";
 
 const NetworkReport = () => {
   return (
@@ -15,7 +15,7 @@ const NetworkReport = () => {
       >
         All Networks
       </Typography>
-      <NetworkReportTable/>
+      <NetworkManagement/>
     </Box>
   );
 };
