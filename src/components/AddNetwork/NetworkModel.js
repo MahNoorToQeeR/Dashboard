@@ -18,8 +18,6 @@ const DomainModel = ({ open, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let hasError = false;
-
-    // Validation
     if (!networkName) {
       setErrors((prev) => ({ ...prev, networkName: "Network Name is required" }));
       hasError = true;
@@ -31,22 +29,22 @@ const DomainModel = ({ open, onClose }) => {
     }
 
     if (!hasError) {
-      // Log data to console
+     
       console.log({
         networkName,
         networkURL,
       });
-      // Optionally close the dialog here
-      handleCancel(); // Close the dialog and reset form
+      
+      handleCancel(); 
     }
   };
 
   const handleCancel = () => {
-    // Clear the form and errors
+   
     setNetworkName("");
     setNetworkURL("");
     setErrors({ networkName: "", networkURL: "" });
-    onClose(); // Close the dialog
+    onClose(); 
   };
 
   return (
