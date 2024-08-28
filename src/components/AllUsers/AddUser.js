@@ -8,6 +8,7 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
+import adduserimage from "../../src/data/adduser-bg-imag.jpg";
 
 function AddUsers() {
   const [formData, setFormData] = useState({
@@ -15,57 +16,94 @@ function AddUsers() {
     email: "",
     password: "",
     phone_no: "",
+    address: "",  // Added address field
     CNIC: "",
   });
 
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validate = () => {
+    let tempErrors = {};
+    tempErrors.name = formData.name ? "" : "Name is required.";
+    tempErrors.email = formData.email ? "" : "Email is required.";
+    tempErrors.password = formData.password ? "" : "Password is required.";
+    tempErrors.phone_no = formData.phone_no ? "" : "Phone Number is required.";
+    tempErrors.address = formData.address ? "" : "Address is required.";  // Added address validation
+    tempErrors.CNIC = formData.CNIC ? "" : "CNIC is required.";
+
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Email is not valid.";
+    }
+
+    if (formData.password && formData.password.length < 6) {
+      tempErrors.password = "Password must be at least 6 characters long.";
+    }
+
+    if (formData.phone_no && formData.phone_no.length < 10) {
+      tempErrors.phone_no = "Phone Number must be at least 10 digits long.";
+    }
+
+    setErrors(tempErrors);
+    return Object.values(tempErrors).every((x) => x === "");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      console.log(formData);
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        phone_no: "",
-        CNIC: "",
-      });
-      setLoading(false);
-    }, 2000); // Simulate an API call with a 2-second delay
+    if (validate()) {
+      setLoading(true);
+      setTimeout(() => {
+        console.log(formData);
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          phone_no: "",
+          address: "",  // Reset address field
+          CNIC: "",
+        });
+        setErrors({});
+        setLoading(false);
+      }, 2000); 
+    }
   };
 
   return (
-    <Container
-      maxWidth="xs" // Set maxWidth to xs to ensure responsiveness
-      style={{
+    <Box
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        backgroundImage: `url(${adduserimage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
+        position: "relative",
       }}
     >
-      <Box
+      <Container
+        maxWidth="xs"
         sx={{
-          padding: { xs: 2, sm: 4 }, // Adjust padding based on screen size
-          boxShadow: 3,
-          borderRadius: 2,
+          zIndex: 1,
           backgroundColor: "white",
+          borderRadius: 2,
+          padding: { xs: 2, sm: 4 },
+          boxShadow: 3,
           textAlign: "center",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ mb: { xs: 2, sm: 3 } }} // Adjust margin bottom based on screen size
-        >
+        <Typography variant="h5" sx={{ mb: { xs: 2, sm: 3 } }}>
           Add User
         </Typography>
-        <form Validate autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="body1" align="left" gutterBottom>
@@ -79,9 +117,10 @@ function AddUsers() {
                 fullWidth
                 margin="normal"
                 type="text"
-                required
                 value={formData.name}
                 onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -104,9 +143,10 @@ function AddUsers() {
                 fullWidth
                 margin="normal"
                 type="email"
-                required
                 value={formData.email}
                 onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -129,9 +169,10 @@ function AddUsers() {
                 fullWidth
                 margin="normal"
                 type="password"
-                required
                 value={formData.password}
                 onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -153,10 +194,37 @@ function AddUsers() {
                 size="small"
                 fullWidth
                 margin="normal"
-                type="number"
-                required
+                type="text"
                 value={formData.phone_no}
                 onChange={handleChange}
+                error={!!errors.phone_no}
+                helperText={errors.phone_no}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 32,
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "6px 14px",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left" gutterBottom>
+                Address
+              </Typography>
+              <TextField
+                label="Address"
+                name="address"
+                variant="outlined"
+                size="small"
+                fullWidth
+                margin="normal"
+                type="text"
+                value={formData.address}
+                onChange={handleChange}
+                error={!!errors.address}
+                helperText={errors.address}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -178,10 +246,11 @@ function AddUsers() {
                 size="small"
                 fullWidth
                 margin="normal"
-                type="number"
-                required
+                type="text"
                 value={formData.CNIC}
                 onChange={handleChange}
+                error={!!errors.CNIC}
+                helperText={errors.CNIC}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -211,8 +280,8 @@ function AddUsers() {
             </Grid>
           </Grid>
         </form>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 

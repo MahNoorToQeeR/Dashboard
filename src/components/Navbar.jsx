@@ -2,17 +2,16 @@ import React, { useEffect } from "react";
 import { Tooltip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LanguageIcon from "@mui/icons-material/Language";
+import { toast } from "react-toastify";
 import avatar from "../data/SS-Pro-img4.png";
 import { useStateContext } from "../contexts/ContextProvider";
 import { UserProfile } from ".";
 
 const Navbar = ({ title }) => {
   const { handleClick, isClicked, setScreenSize } = useStateContext();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [languageAnchorEl, setLanguageAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
   const languageOpen = Boolean(languageAnchorEl);
-  const currentColor = '#0171BE';
+  const currentColor = "#0171BE";
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -21,17 +20,24 @@ const Navbar = ({ title }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setScreenSize]);
 
-  const handleNotificationClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleLanguageClick = (event) => {
     setLanguageAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
     setLanguageAnchorEl(null);
+  };
+
+  const showNotification = () => {
+    toast("New Notification!", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -41,32 +47,13 @@ const Navbar = ({ title }) => {
       </Typography>
       <div className="flex items-center gap-2">
         <Tooltip title="Notifications" arrow>
-          <IconButton
-            size="small"
-            onClick={handleNotificationClick}
-          >
+          <IconButton size="small" color="primary" onClick={showNotification}>
             <NotificationsIcon />
           </IconButton>
         </Tooltip>
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              width: '300px',
-            },
-          }}
-        >
-          <MenuItem onClick={handleClose}>Notification 1</MenuItem>
-          <MenuItem onClick={handleClose}>Notification 2</MenuItem>
-        </Menu>
-        
+
         <Tooltip title="Language" arrow>
-          <IconButton
-            size="small"
-            onClick={handleLanguageClick}
-          >
+          <IconButton size="small" color="secondary" onClick={handleLanguageClick}>
             <LanguageIcon />
           </IconButton>
         </Tooltip>
@@ -76,7 +63,7 @@ const Navbar = ({ title }) => {
           onClose={handleClose}
           PaperProps={{
             style: {
-              width: '150px',
+              width: "150px",
             },
           }}
         >

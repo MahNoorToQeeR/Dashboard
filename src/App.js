@@ -9,7 +9,7 @@ import UserReport from "./Pages/UserReport";
 import OfferReport from "./Pages/OfferReport";
 import AllOffers from "./Pages/AllOffers";
 import Login from "./Pages/Login";
-import AddUser from "./components/AddUser";
+import AddUser from "./components/AllUsers/AddUser";
 import NetworkReport from "./Pages/NetworkReport";
 import AllUserOffers from "./Pages/AllUserOffers";
 import ClickReports from "./Pages/ClickReports";
@@ -23,10 +23,14 @@ import DayReport from "./Pages/DayReport";
 import Salary from "./Pages/Salary";
 import Settings from "./Pages/Setting";
 import AllReports from "./Pages/AllReports";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AllUsers from "./Pages/AllUsers"
 
 const App = () => {
   return (
     <BrowserRouter>
+     <ToastContainer />
       <Routes>
         <Route path="/Login" element={<LoginLayout />}>
           <Route path="/Login" element={<Login />} />
@@ -53,6 +57,7 @@ const App = () => {
           <Route path="/Salary" element={<Salary />} />
           <Route path="/Settings" element={<Settings />} />
           <Route path="/All Reports" element={<AllReports />} />
+          <Route path="/All Users" element={<AllUsers />} />
         </Route>
       </Routes>
     </BrowserRouter>

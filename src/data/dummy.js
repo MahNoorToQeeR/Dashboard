@@ -26,6 +26,10 @@ export const links = [
         name: 'All Offers',
         icon: <FiClipboard />,
       },
+      {
+        name: 'All Users',
+        icon: <FiClipboard />,
+      },
       // {
       //   name: 'Assig noffer',
       //   icon: <FiClipboard />,
@@ -62,22 +66,22 @@ export const links = [
         name: 'All Reports',
         icon: <FiBarChart2 />,
       },
-      {
-        name: 'Clicks Report',
-        icon: <FiBarChart2 />,
-      },
-      {
-        name: 'Today Report',
-        icon: <FiClock />,
-      },
-      {
-        name: 'Yesterday Report',
-        icon: <FiClock />,
-      },
-      {
-        name: 'Day Report',
-        icon: <FiCalendar />,
-      },
+      // {
+      //   name: 'Clicks Report',
+      //   icon: <FiBarChart2 />,
+      // },
+      // {
+      //   name: 'Today Report',
+      //   icon: <FiClock />,
+      // },
+      // {
+      //   name: 'Yesterday Report',
+      //   icon: <FiClock />,
+      // },
+      // {
+      //   name: 'Day Report',
+      //   icon: <FiCalendar />,
+      // },
       {
         name: 'Salary',
         icon: <FiDollarSign />,
@@ -88,6 +92,10 @@ export const links = [
       },
       {
         name: 'Login',
+        icon: <FiLogIn />,
+      },
+      {
+        name: 'LogOut',
         icon: <FiLogIn />,
       },
     ],

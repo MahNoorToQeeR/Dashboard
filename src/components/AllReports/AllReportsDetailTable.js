@@ -1,135 +1,95 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  TextField,
-  Paper,
-  IconButton,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
+import { Box, Typography, Button, Card, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
-import SwitchWithLabel from "../SwitchWithLabel";
+import { Line, Bar, Pie, Radar } from "react-chartjs-2";
+
+// Import and register necessary Chart.js components
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  RadialLinearScale,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  RadialLinearScale,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AllReportsDetailTable = () => {
   const navigate = useNavigate();
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [search, setSearch] = useState("");
-  const [rows, setRows] = useState([
-    {
-      no: 1,
-      name: "User 1",
-      offernetwork: "Network 1",
-      offerlink: "Link 1",
-      totalClicks: 120,
-      totalSignup: 45,
-      totalDiverts: 10,
-      status: "Active",
+
+  const handleClickReports = () => {
+    navigate("/Clicks Report");
+  };
+
+  const handleTodayReport = () => {
+    navigate("/Today Report");
+  };
+
+  const handleYesterdayReport = () => {
+    navigate("/Yesterday Report");
+  };
+
+  const handleDayReport = () => {
+    navigate("/Day Report");
+  };
+
+  const chartData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    datasets: [
+      {
+        label: "Report Data",
+        data: [65, 59, 80, 81, 56, 55, 40],
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    maintainAspectRatio: false,
+    responsive: true,
+    animation: {
+      duration: 2000,
+      easing: "easeInOutQuart",
     },
-    {
-      no: 2,
-      name: "User 2",
-      offernetwork: "Network 2",
-      offerlink: "Link 2",
-      totalClicks: 98,
-      totalSignup: 32,
-      totalDiverts: 7,
-      status: "",
-    },
-    {
-      no: 3,
-      name: "User 3",
-      offernetwork: "Network 3",
-      offerlink: "Link 3",
-      totalClicks: 150,
-      totalSignup: 67,
-      totalDiverts: 20,
-      status: "Active",
-    },
-    {
-      no: 4,
-      name: "User 4",
-      offernetwork: "Network 4",
-      offerlink: "Link 4",
-      totalClicks: 120,
-      totalSignup: 45,
-      totalDiverts: 10,
-      status: "Active",
-    },
-  ]);
-  const totalClicks = rows.reduce((acc, row) => acc + row.totalClicks, 0);
-  const totalSignup = rows.reduce((acc, row) => acc + row.totalSignup, 0);
-  const totalDiverts = rows.reduce((acc, row) => acc + row.totalDiverts, 0);
-
-  const handleOfferStatus = () => {
-    navigate("/");
   };
 
-  const handleOfferDR = () => {
-    navigate("/");
-  };
-
-  const handleEdit = (no) => {
-    console.log(`Edit row with id: ${no}`);
-  };
-
-  const handleDelete = (no) => {
-    console.log(`Delete row with id: ${no}`);
-  };
-
-  const handleSearch = (no) => {
-    console.log(`Search row with id: ${no}`);
-  };
-  const handleDeleteSelectedRows = () => {
-    setRows(rows.filter((row) => !selectedRows.includes(row.no)));
-  };
-
-  const columns = [
-    { field: "no", headerName: "No", width: 90 },
-    { field: "name", headerName: "Offer Name", width: 150 },
-    { field: "offernetwork", headerName: "Offer Network", width: 150 },
-    { field: "offerlink", headerName: "Offer Link", width: 150 },
-    { field: "totalClicks", headerName: "Total Clicks", width: 150 },
-    { field: "totalSignup", headerName: "Total Signup", width: 150 },
-    { field: "totalDiverts", headerName: "Total Diverts", width: 150 },
-    { field: "status", headerName: "Status", width: 150 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 150,
-      sortable: false,
-      renderCell: (params) =>
-        params.row.no === "Total" ? null : (
-          <Box>
-            <IconButton
-              color="primary"
-              onClick={() => handleSearch(`Search row with id: ${params.row.no}`)}
-            >
-              <SearchIcon />
-            </IconButton>
-            <IconButton
-              color="primary"
-              onClick={() => handleEdit(params.row.no)}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              color="error"
-              onClick={() => handleDelete(params.row.no)}
-            >
-              <DeleteIcon />
-            </IconButton>
-            <SwitchWithLabel />
-          </Box>
-        ),
-    },
-  ];
   return (
-    <Card sx={{ mt: 4 }}>
+    <Card>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -139,7 +99,9 @@ const AllReportsDetailTable = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff" }}>Offer Reports</Typography>
+        <Typography sx={{ color: "#fff" }}>
+          All Reports Detail in Charts
+        </Typography>
         <Box display="flex" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
@@ -149,9 +111,9 @@ const AllReportsDetailTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleOfferStatus}
+            onClick={handleClickReports}
           >
-            Offer Status
+            Clicks Report
           </Button>
           <Button
             variant="outlined"
@@ -161,8 +123,9 @@ const AllReportsDetailTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={handleTodayReport}
           >
-            Pakistan
+            Today Report
           </Button>
           <Button
             variant="outlined"
@@ -172,8 +135,9 @@ const AllReportsDetailTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={handleYesterdayReport}
           >
-            USA
+            Yesterday Report
           </Button>
           <Button
             variant="outlined"
@@ -183,75 +147,103 @@ const AllReportsDetailTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleOfferDR}
+            onClick={handleDayReport}
           >
-            Offer D/R
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{
-              color: "#fff",
-              borderColor: "#fff",
-              height: "25px",
-              fontSize: "10px",
-            }}
-            onClick={handleDeleteSelectedRows}
-          >
-            Delete Selected
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{
-              color: "#fff",
-              borderColor: "#fff",
-              height: "25px",
-              fontSize: "10px",
-            }}
-          >
-           Show Fields
+            Day Report
           </Button>
         </Box>
       </Box>
-      <Paper sx={{ padding: "16px" }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          fullWidth
-          margin="normal"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+      <Paper sx={{ p: 3 }}>
+        <Box
           sx={{
-            "& .MuiInputBase-root": {
-              height: 32,
-            },
-            "& .MuiOutlinedInput-input": {
-              padding: "6px 14px",
-            },
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "45px",
           }}
-        />
-        <Box style={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={[
-              ...rows,
-              { no: "Total", name: "", totalClicks, totalSignup, totalDiverts },
-            ]}
-            columns={columns}
-            getRowId={(row) => row.no || "total"}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
+        >
+          <Box
+            sx={{
+              width: "500px",
+              height: "300px",
+              p: 2,
+              backgroundColor: "white",
+              border: 1, 
+              borderColor: "#00000021", 
+              borderRadius: 1,
             }}
-            pageSizeOptions={[5]}
-            disableRowSelectionOnClick
-            checkboxSelection
-            onRowSelectionModelChange={(newSelection) => {
-              setSelectedRows(newSelection);
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Clicks Report (Line Chart)
+            </Typography>
+            <Box sx={{ height: "80%", width: "100%" }}>
+              <Line data={chartData} options={chartOptions} />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "500px",
+              height: "300px",
+              p: 2,
+              backgroundColor: "white",
+              border: 1,
+              borderColor: "#00000021", 
+              borderRadius: 1,
             }}
-          />
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Today Report (Bar Chart)
+            </Typography>
+            <Box sx={{ height: "80%", width: "100%" }}>
+              <Bar data={chartData} options={chartOptions} />
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "45px",
+            marginTop: "25px",
+          }}
+        >
+          <Box
+            sx={{
+              width: "500px",
+              height: "300px",
+              p: 2,
+              backgroundColor: "white",
+              border: 1,
+              borderColor: "#00000021", 
+              borderRadius: 1,
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Yesterday Report (Pie Chart)
+            </Typography>
+            <Box sx={{ height: "80%", width: "100%" }}>
+              <Pie data={chartData} options={chartOptions} />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "500px",
+              height: "300px",
+              p: 2,
+              backgroundColor: "white",
+              border: 1, 
+              borderColor: "#00000021", 
+              borderRadius: 1,
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Day Report (Radar Chart)
+            </Typography>
+            <Box sx={{ height: "80%", width: "100%" }}>
+              <Radar data={chartData} options={chartOptions} />
+            </Box>
+          </Box>
         </Box>
       </Paper>
     </Card>
