@@ -22,6 +22,7 @@ import YesterdayReport from "./Pages/YesterdayReport";
 import DayReport from "./Pages/DayReport";
 import Salary from "./Pages/Salary";
 import Settings from "./Pages/Setting";
+import AllReports from "./Pages/AllReports";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/Day Report" element={<DayReport />} />
           <Route path="/Salary" element={<Salary />} />
           <Route path="/Settings" element={<Settings />} />
+          <Route path="/All Reports" element={<AllReports />} />
         </Route>
       </Routes>
     </BrowserRouter>
