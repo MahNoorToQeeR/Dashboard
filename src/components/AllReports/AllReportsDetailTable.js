@@ -2,8 +2,6 @@ import React from "react";
 import { Box, Typography, Button, Card, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Line, Bar, Pie, Radar } from "react-chartjs-2";
-
-// Import and register necessary Chart.js components
 import {
   Chart as ChartJS,
   CategoryScale,

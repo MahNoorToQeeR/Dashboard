@@ -8,7 +8,8 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
-import adduserimage from "../../src/data/adduser-bg-imag.jpg";
+import adduserimage from "../../data/adduser-bg-imag.jpg";
+import { useNavigate } from "react-router-dom";
 
 function AddUsers() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ function AddUsers() {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +60,7 @@ function AddUsers() {
     e.preventDefault();
     if (validate()) {
       setLoading(true);
+      navigate("/All Users");
       setTimeout(() => {
         console.log(formData);
         setFormData({
@@ -65,7 +68,7 @@ function AddUsers() {
           email: "",
           password: "",
           phone_no: "",
-          address: "",  // Reset address field
+          address: "", 
           CNIC: "",
         });
         setErrors({});

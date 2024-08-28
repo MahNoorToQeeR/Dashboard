@@ -4,34 +4,40 @@ import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TodayIcon from "@mui/icons-material/Today";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import CountUp from 'react-countup';
+
+// Helper function to format the count with commas (optional)
+const formatCount = (count) => {
+  return count.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 const DataCards = () => {
   const cardData = [
     {
       color: "#FFCDD2",
       icon: BarChartIcon,
-      count: "120",
+      count: 120,
       percentage: { label: "Today Signup", color: "#F44336" },
       iconColor: "#B71C1C",
     },
     {
       color: "#BBDEFB",
       icon: SignalCellularAltIcon,
-      count: "1,200",
+      count: 1200,
       percentage: { label: "Yesterday Signup", color: "#2196F3" },
       iconColor: "#0D47A1",
     },
     {
       color: "#C8E6C9",
       icon: TodayIcon,
-      count: "$34,000",
+      count: 34000,
       percentage: { label: "This Month Signup", color: "green" },
       iconColor: "#1B5E20",
     },
     {
       color: "#D1C4E9",
       icon: CalendarMonthIcon,
-      count: "5,000",
+      count: 5000,
       percentage: { label: "Last Month Signup", color: "purple" },
       iconColor: "#4A148C",
     },
@@ -79,7 +85,13 @@ const DataCards = () => {
               </Box>
               <Box textAlign="right">
                 <Typography variant="h6" fontSize="26px">
-                  {card.count}
+                  <CountUp
+                    start={0}
+                    end={card.count}
+                    duration={2.5} // Duration of the animation in seconds
+                    separator=","
+                    prefix={card.count > 10000 ? '$' : ''}
+                  />
                 </Typography>
               </Box>
             </Box>

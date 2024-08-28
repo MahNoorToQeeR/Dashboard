@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import AllUsersRecordeTable from "../components/AllUsers/AllUsersRecordeTable"
+
 
 const AllUsers = () => {
   return (
@@ -13,6 +15,8 @@ const AllUsers = () => {
       >
         SG Report
       </Typography>
+      <AllUsersRecordeTable/>
+
     </Box>
   );
 };

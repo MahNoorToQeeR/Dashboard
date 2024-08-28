@@ -160,14 +160,10 @@ function CardComponent() {
           </motion.span>
         ))}
       </Box>
-      <motion.div
-        variants={cardAnimation}
-        initial="hidden"
-        animate="visible"
-      >
+      <motion.div variants={cardAnimation} initial="hidden" animate="visible">
         <Box
           sx={{
-            width: { xs: '90%', sm: '400px', md: '500px' },
+            width: { xs: "90%", sm: "400px", md: "500px" },
             padding: { xs: 3, sm: 5 },
             boxShadow: 3,
             borderRadius: "1.5rem",
@@ -290,12 +286,12 @@ function CardComponent() {
             Close
           </Button>
         }
-        sx={{ zIndex: 1300 }}  // Ensure it's above other elements
+        sx={{ zIndex: 1300 }} // Ensure it's above other elements
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
           severity={snackbarSeverity}
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {snackbarMessage}
         </Alert>

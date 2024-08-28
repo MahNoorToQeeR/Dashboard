@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Button, Card, Typography, TextField, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Typography,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,6 +19,7 @@ const rows = [
   { no: 1, name: "User One", email: "user1@example.com", password: "*****" },
   { no: 2, name: "User Two", email: "user2@example.com", password: "*****" },
 ];
+
 const handleEdit = (no) => {
   console.log(`Edit row with id: ${no}`);
 };
@@ -19,6 +27,7 @@ const handleEdit = (no) => {
 const handleDelete = (no) => {
   console.log(`Delete row with id: ${no}`);
 };
+
 const handleSearch = (no) => {
   console.log(`Search row with id: ${no}`);
 };
@@ -26,9 +35,11 @@ const handleSearch = (no) => {
 const handleInsertDriveFileIcon = (no) => {
   console.log(`Insert File row with id: ${no}`);
 };
+
 const handleRemoveRedEyeIcon = (no) => {
-  console.log(`view row with id: ${no}`);
+  console.log(`View row with id: ${no}`);
 };
+
 const columns = [
   { field: "no", headerName: "No", width: 90 },
   { field: "name", headerName: "Name", width: 150 },
@@ -53,10 +64,16 @@ const columns = [
         <IconButton color="error" onClick={() => handleDelete(params.row.no)}>
           <DeleteIcon />
         </IconButton>
-        <IconButton color="primary" onClick={() => handleInsertDriveFileIcon(params.row.no)}>
-          <InsertDriveFileIcon  />
+        <IconButton
+          color="primary"
+          onClick={() => handleInsertDriveFileIcon(params.row.no)}
+        >
+          <InsertDriveFileIcon />
         </IconButton>
-        <IconButton color="primary" onClick={() => handleRemoveRedEyeIcon(params.row.no)}>
+        <IconButton
+          color="primary"
+          onClick={() => handleRemoveRedEyeIcon(params.row.no)}
+        >
           <RemoveRedEyeIcon />
         </IconButton>
       </Box>
@@ -67,8 +84,9 @@ const columns = [
 const AllUsersRecordeTable = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
   const handleAddUser = () => {
-    navigate("/add user");
+    navigate("/add user"); 
   };
 
   return (
@@ -83,9 +101,7 @@ const AllUsersRecordeTable = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff", fontSize: "16px" }}>
-          All Users
-        </Typography>
+        <Typography sx={{ color: "#fff", fontSize: "16px" }}>All Users</Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
