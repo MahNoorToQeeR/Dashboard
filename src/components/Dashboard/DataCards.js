@@ -88,7 +88,7 @@ const DataCards = () => {
                   <CountUp
                     start={0}
                     end={card.count}
-                    duration={2.5} // Duration of the animation in seconds
+                    duration={2.5} 
                     separator=","
                     prefix={card.count > 10000 ? '$' : ''}
                   />

@@ -15,9 +15,26 @@ import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
 
+// Updated rows data to match column headers
 const rows = [
-  { no: 1, name: "User One", email: "user1@example.com", password: "*****" },
-  { no: 2, name: "User Two", email: "user2@example.com", password: "*****" },
+  {
+    no: 1,
+    name: "User One",
+    email: "user1@example.com",
+    password: "*****",
+    phone: "123-456-7890",
+    address: "123 Main St",
+    cnic: "12345-6789012-3",
+  },
+  {
+    no: 2,
+    name: "User Two",
+    email: "user2@example.com",
+    password: "*****",
+    phone: "234-567-8901",
+    address: "456 Elm St",
+    cnic: "23456-7890123-4",
+  },
 ];
 
 const handleEdit = (no) => {
@@ -85,8 +102,14 @@ const AllUsersRecordeTable = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
+  const handleAddOffer = () => {
+    navigate("/add offer");
+  };
   const handleAddUser = () => {
-    navigate("/add user"); 
+    navigate("/add user");
+  };
+  const handleAddDomian = () => {
+    navigate("/add domain");
   };
 
   return (
@@ -103,6 +126,41 @@ const AllUsersRecordeTable = () => {
       >
         <Typography sx={{ color: "#fff", fontSize: "16px" }}>All Users</Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
+        <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+            onClick={handleAddDomian}
+          >
+            Add Domain
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+            onClick={handleAddOffer}
+          >
+            Add Offer
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
+            Add Network
+          </Button>
           <Button
             variant="outlined"
             sx={{

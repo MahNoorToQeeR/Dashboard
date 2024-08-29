@@ -15,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
 
+// Updated rows data to match column headers
 const rows = [
   {
     no: 1,
@@ -97,7 +98,7 @@ const columns = [
   },
 ];
 
-const CardComponent = () => {
+const AllUsersRecordeTable = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -112,7 +113,7 @@ const CardComponent = () => {
   };
 
   return (
-    <Card sx={{ mt: 4 }}>
+    <Card sx={{ mt: 5 }}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -123,16 +124,9 @@ const CardComponent = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff", fontSize: "16px" }}>
-          All Users
-        </Typography>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="end"
-          sx={{ gap: "5px" }}
-        >
-          <Button
+        <Typography sx={{ color: "#fff", fontSize: "16px" }}>All Users</Typography>
+        <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
+        <Button
             variant="outlined"
             sx={{
               color: "#fff",
@@ -199,17 +193,7 @@ const CardComponent = () => {
             },
           }}
         />
-        <Box
-          sx={{
-            height: { xs: 300, md: 400 }, // Set height dynamically based on screen size
-            width: "100%",
-            maxHeight: 400, // Set max height to ensure it doesn't occupy too much space
-            "@media (max-width: 600px)": {
-              // Adjust styles for smaller screens
-              height: 250,
-            },
-          }}
-        >
+        <Box style={{ height: 400, width: "100%" }}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -230,4 +214,4 @@ const CardComponent = () => {
   );
 };
 
-export default CardComponent;
+export default AllUsersRecordeTable;
