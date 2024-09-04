@@ -20,6 +20,7 @@
     "@syncfusion/ej2-react-popups": "^19.4.52",
     "@syncfusion/ej2-react-richtexteditor": "^19.4.50",
     "@syncfusion/ej2-react-schedule": "^19.4.50",
+    "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.3.30",
@@ -35,7 +36,8 @@
     "react-spring": "^9.7.4",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.12",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "react-hook-form": "^7.51.5"
   },
   "scripts": {
     "start": "react-scripts start",

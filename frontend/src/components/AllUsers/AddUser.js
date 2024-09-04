@@ -10,70 +10,40 @@ import {
 } from "@mui/material";
 import adduserimage from "../../data/adduser-bg-imag.jpg";
 import { useNavigate } from "react-router-dom";
+import { Register } from "../../api/axiosInterceptors";
+import { useForm } from "react-hook-form";
 
 function AddUsers() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone_no: "",
-    address: "",  // Added address field
-    CNIC: "",
-  });
-
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
-  };
-
-  const validate = () => {
-    let tempErrors = {};
-    tempErrors.name = formData.name ? "" : "Name is required.";
-    tempErrors.email = formData.email ? "" : "Email is required.";
-    tempErrors.password = formData.password ? "" : "Password is required.";
-    tempErrors.phone_no = formData.phone_no ? "" : "Phone Number is required.";
-    tempErrors.address = formData.address ? "" : "Address is required.";  // Added address validation
-    tempErrors.CNIC = formData.CNIC ? "" : "CNIC is required.";
-
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Email is not valid.";
-    }
-
-    if (formData.password && formData.password.length < 6) {
-      tempErrors.password = "Password must be at least 6 characters long.";
-    }
-
-    if (formData.phone_no && formData.phone_no.length < 10) {
-      tempErrors.phone_no = "Phone Number must be at least 10 digits long.";
-    }
-
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((x) => x === "");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      setLoading(true);
-      navigate("/All Users");
-      setTimeout(() => {
-        console.log(formData);
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          phone_no: "",
-          address: "", 
-          CNIC: "",
-        });
-        setErrors({});
-        setLoading(false);
-      }, 2000); 
+  const handleRegister = async (data) => {
+    debugger;
+    setLoading(true); 
+    const body = {
+      name:data.name,
+      email: data.email,
+      password: data.password,
+      phone_no: data.phone_no,
+      CNIC: data.CNIC,
+      status: data.status,
+      address: data.address,
+      type: data.role,
+    };
+    try {
+      const res = await Register(body);
+      console.log(res.data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("error", error.response?.data?.message || "Register failed");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -106,7 +76,7 @@ function AddUsers() {
         <Typography variant="h5" sx={{ mb: { xs: 2, sm: 3 } }}>
           Add User
         </Typography>
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="body1" align="left" gutterBottom>
@@ -115,15 +85,20 @@ function AddUsers() {
               <TextField
                 label="Name"
                 name="name"
+                id="name"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
                 type="text"
-                value={formData.name}
-                onChange={handleChange}
-                error={!!errors.name}
-                helperText={errors.name}
+                {...register("name", {
+                  required: {
+                    value: true,
+                    message: "name is required",
+                  },
+                })}
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -141,15 +116,20 @@ function AddUsers() {
               <TextField
                 label="Email"
                 name="email"
+                id="email"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
                 type="email"
-                value={formData.email}
-                onChange={handleChange}
-                error={!!errors.email}
-                helperText={errors.email}
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "email is required",
+                  },
+                })}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -167,15 +147,20 @@ function AddUsers() {
               <TextField
                 label="Password"
                 name="password"
+                id="password"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
                 type="password"
-                value={formData.password}
-                onChange={handleChange}
-                error={!!errors.password}
-                helperText={errors.password}
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "password is required",
+                  },
+                })}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -193,15 +178,20 @@ function AddUsers() {
               <TextField
                 label="Phone Number"
                 name="phone_no"
+                id="phone_no"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
-                type="text"
-                value={formData.phone_no}
-                onChange={handleChange}
-                error={!!errors.phone_no}
-                helperText={errors.phone_no}
+                type="number"
+                {...register("phone_no", {
+                  required: {
+                    value: true,
+                    message: "phone no is required",
+                  },
+                })}
+                error={Boolean(errors.phone_no)}
+                helperText={errors.phone_no?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -219,15 +209,20 @@ function AddUsers() {
               <TextField
                 label="Address"
                 name="address"
+                id="address"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
                 type="text"
-                value={formData.address}
-                onChange={handleChange}
-                error={!!errors.address}
-                helperText={errors.address}
+                {...register("address", {
+                  required: {
+                    value: true,
+                    message: "address is required",
+                  },
+                })}
+                error={Boolean(errors.address)}
+                helperText={errors.address?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,
@@ -245,15 +240,20 @@ function AddUsers() {
               <TextField
                 label="CNIC"
                 name="CNIC"
+                id="CNIC"
                 variant="outlined"
                 size="small"
                 fullWidth
                 margin="normal"
                 type="text"
-                value={formData.CNIC}
-                onChange={handleChange}
-                error={!!errors.CNIC}
-                helperText={errors.CNIC}
+                {...register("CNIC", {
+                  required: {
+                    value: true,
+                    message: "CNIC is required",
+                  },
+                })}
+                error={Boolean(errors.CNIC)}
+                helperText={errors.CNIC?.message}
                 sx={{
                   "& .MuiInputBase-root": {
                     height: 32,

@@ -8,79 +8,49 @@ import {
   Grid,
   CircularProgress,
   Link,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Snackbar,
   Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { Login } from "../../api/axiosInterceptors";
 
 function CardComponent() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    role: "user",
-  });
-
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
-
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleRoleChange = (e) => {
-    setFormData({ ...formData, role: e.target.value });
-  };
-
-  const validate = () => {
-    let tempErrors = { email: "", password: "" };
-    let isValid = true;
-
-    if (!formData.email) {
-      tempErrors.email = "Email is required.";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Email is not valid.";
-      isValid = false;
-    }
-    if (!formData.password) {
-      tempErrors.password = "Password is required.";
-      isValid = false;
-    }
-
-    setErrors(tempErrors);
-    return isValid;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      setLoading(true);
-      setTimeout(() => {
-        console.log(formData);
-        setFormData({ email: "", password: "", role: "user" });
-        setLoading(false);
-        setSnackbarMessage("Login successful!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
-        navigate("/dashboard");
-      }, 2000);
-    } else {
-      setSnackbarMessage("Please fix the errors in the form.");
+  const handleLogin = async (data) => {
+    debugger;
+    setLoading(true); 
+    const body = {
+      email: data.email,
+      password: data.password,
+      type: data.role,
+    };
+    try {
+      const res = await Login(body);
+      console.log(res.data);
+      navigate("/dashboard");
+      setSnackbarMessage("Login successful!");
+      setSnackbarSeverity("success");
+    } catch (error) {
+      console.log("error", error.response?.data?.message || "Login failed");
+      setSnackbarMessage(error.response?.data?.message || "Login failed");
       setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+    } finally {
+      setLoading(false); 
+      setSnackbarOpen(true); 
     }
   };
 
@@ -177,22 +147,26 @@ function CardComponent() {
           <Typography variant="h5" sx={{ mb: { xs: 2, sm: 3 } }}>
             Login
           </Typography>
-          <form autoComplete="off" onSubmit={handleSubmit}>
+          <form autoComplete="off" role="form" onSubmit={handleSubmit(handleLogin)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   label="Email"
-                  name="email"
                   variant="outlined"
                   size="small"
                   fullWidth
                   margin="normal"
                   type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={Boolean(errors.email)}
-                  helperText={errors.email}
+                  id="email"
+                  name="email"
+                  {...register("email", {
+                    required: {
+                      value: true,
+                      message: "Email is required",
+                    },
+                  })}
+                  error={Boolean(errors.email)} // set error prop
+                  helperText={errors.email?.message}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: 40,
@@ -212,11 +186,15 @@ function CardComponent() {
                   fullWidth
                   margin="normal"
                   type="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={Boolean(errors.password)}
-                  helperText={errors.password}
+                  id="password"
+                  {...register("password", {
+                    required: {
+                      value: true,
+                      message: "Password is required",
+                    },
+                  })}
+                  error={Boolean(errors.password)} // set error prop
+                  helperText={errors.password?.message}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: 40,
@@ -228,24 +206,25 @@ function CardComponent() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <RadioGroup
-                  name="role"
-                  value={formData.role}
-                  onChange={handleRoleChange}
-                  row
-                  sx={{ justifyContent: "center", mt: 2 }}
-                >
-                  <FormControlLabel
-                    value="admin"
-                    control={<Radio />}
-                    label="Admin"
-                  />
-                  <FormControlLabel
-                    value="user"
-                    control={<Radio />}
-                    label="User"
-                  />
-                </RadioGroup>
+                <Box>
+                  <label>
+                    <input
+                      type="radio"
+                      value="admin"
+                      {...register('role', { required: 'This field is required' })}
+                    />
+                    Admin
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="user"
+                      {...register('role', { required: 'This field is required' })}
+                    />
+                    User
+                  </label>
+                </Box>
+                {errors.role && <p>{errors.role.message}</p>}
               </Grid>
               <Grid item xs={12}>
                 <Button
@@ -286,7 +265,7 @@ function CardComponent() {
             Close
           </Button>
         }
-        sx={{ zIndex: 1300 }} // Ensure it's above other elements
+        sx={{ zIndex: 1300 }} 
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
