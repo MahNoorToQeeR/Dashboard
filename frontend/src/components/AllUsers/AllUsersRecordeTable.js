@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,106 +14,113 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
+import { All } from "../../api/axiosInterceptors"; 
 
-// Updated rows data to match column headers
-const rows = [
-  {
-    no: 1,
-    name: "User One",
-    email: "user1@example.com",
-    password: "*****",
-    phone: "123-456-7890",
-    address: "123 Main St",
-    cnic: "12345-6789012-3",
-  },
-  {
-    no: 2,
-    name: "User Two",
-    email: "user2@example.com",
-    password: "*****",
-    phone: "234-567-8901",
-    address: "456 Elm St",
-    cnic: "23456-7890123-4",
-  },
-];
-
-const handleEdit = (no) => {
-  console.log(`Edit row with id: ${no}`);
-};
-
-const handleDelete = (no) => {
-  console.log(`Delete row with id: ${no}`);
-};
-
-const handleSearch = (no) => {
-  console.log(`Search row with id: ${no}`);
-};
-
-const handleInsertDriveFileIcon = (no) => {
-  console.log(`Insert File row with id: ${no}`);
-};
-
-const handleRemoveRedEyeIcon = (no) => {
-  console.log(`View row with id: ${no}`);
-};
-
-const columns = [
-  { field: "no", headerName: "No", width: 90 },
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 200 },
-  { field: "password", headerName: "Password", width: 150 },
-  { field: "phone", headerName: "Phone No", width: 150 },
-  { field: "address", headerName: "Address", width: 150 },
-  { field: "cnic", headerName: "CNIC", width: 150 },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 250,
-    sortable: false,
-    renderCell: (params) => (
-      <Box>
-        <IconButton color="primary" onClick={() => handleSearch(params.row.no)}>
-          <SearchIcon />
-        </IconButton>
-        <IconButton color="primary" onClick={() => handleEdit(params.row.no)}>
-          <EditIcon />
-        </IconButton>
-        <IconButton color="error" onClick={() => handleDelete(params.row.no)}>
-          <DeleteIcon />
-        </IconButton>
-        <IconButton
-          color="primary"
-          onClick={() => handleInsertDriveFileIcon(params.row.no)}
-        >
-          <InsertDriveFileIcon />
-        </IconButton>
-        <IconButton
-          color="primary"
-          onClick={() => handleRemoveRedEyeIcon(params.row.no)}
-        >
-          <RemoveRedEyeIcon />
-        </IconButton>
-      </Box>
-    ),
-  },
-];
-
-const AllUsersRecordeTable = () => {
+const AllUserRecordeTable = () => {
+  const [userList, setUserList] = useState([]); 
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+
+  const fetchData = async () => {
+    try {
+      debugger;
+      const res = await All(); 
+      setUserList(res?.data?.data); 
+      console.log(res)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log("userList"+userList)
+ 
+  const handleEdit = (no) => {
+    console.log(`Edit row with id: ${no}`);
+  };
+
+  const handleDelete = (no) => {
+    console.log(`Delete row with id: ${no}`);
+  };
+
+  const handleSearch = (no) => {
+    console.log(`Search row with id: ${no}`);
+  };
+
+  const handleInsertDriveFileIcon = (no) => {
+    console.log(`Insert File row with id: ${no}`);
+  };
+
+  const handleRemoveRedEyeIcon = (no) => {
+    console.log(`View row with id: ${no}`);
+  };
+
+  const columns = [
+    { field: "no", headerName: "No", width: 90 },
+    { field: "image", headerName: "Image", width: 150 },
+    { field: "name", headerName: "Name", width: 150 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "password", headerName: "Password", width: 150 },
+    { field: "phone_no", headerName: "Phone No", width: 150 },
+    { field: "address", headerName: "Address", width: 150 },
+    { field: "CNIC", headerName: "CNIC", width: 150 },
+    { field: "type", headerName: "Type", width: 150 },
+    { field: "status", headerName: "Status", width: 150 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 250,
+      sortable: false,
+      renderCell: (params) => (
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={() => handleSearch(params.row.no)}
+          >
+            <SearchIcon />
+          </IconButton>
+          <IconButton color="primary" onClick={() => handleEdit(params.row.no)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            color="error"
+            onClick={() => handleDelete(params.row.no)}
+          >
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            onClick={() => handleInsertDriveFileIcon(params.row.no)}
+          >
+            <InsertDriveFileIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            onClick={() => handleRemoveRedEyeIcon(params.row.no)}
+          >
+            <RemoveRedEyeIcon />
+          </IconButton>
+        </Box>
+      ),
+    },
+  ];
 
   const handleAddOffer = () => {
     navigate("/add offer");
   };
+
   const handleAddUser = () => {
     navigate("/add user");
   };
-  const handleAddDomian = () => {
+
+  const handleAddDomain = () => {
     navigate("/add domain");
   };
 
   return (
-    <Card sx={{ mt: 4 }}>
+    <Card sx={{ mt: 5 }}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -124,9 +131,16 @@ const AllUsersRecordeTable = () => {
           gap: "5px",
         }}
       >
-        <Typography sx={{ color: "#fff", fontSize: "16px" }}>All Users</Typography>
-        <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
-        <Button
+        <Typography sx={{ color: "#fff", fontSize: "16px" }}>
+          All Users
+        </Typography>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="end"
+          sx={{ gap: "5px" }}
+        >
+          <Button
             variant="outlined"
             sx={{
               color: "#fff",
@@ -134,7 +148,7 @@ const AllUsersRecordeTable = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleAddDomian}
+            onClick={handleAddDomain}
           >
             Add Domain
           </Button>
@@ -195,9 +209,9 @@ const AllUsersRecordeTable = () => {
         />
         <Box style={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={rows}
+            rows={userList}
             columns={columns}
-            getRowId={(row) => row.no}
+            getRowId={(row) => row._id}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -214,4 +228,4 @@ const AllUsersRecordeTable = () => {
   );
 };
 
-export default AllUsersRecordeTable;
+export default AllUserRecordeTable;
