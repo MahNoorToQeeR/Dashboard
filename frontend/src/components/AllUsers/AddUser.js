@@ -10,7 +10,6 @@ import {
   Avatar,
   IconButton,
 } from "@mui/material";
-import { PhotoCamera } from "@mui/icons-material";
 import adduserimage from "../../data/adduser-bg-imag.jpg";
 import { useNavigate } from "react-router-dom";
 import { Register } from "../../api/axiosInterceptors";
@@ -18,7 +17,6 @@ import { useForm } from "react-hook-form";
 
 function AddUsers() {
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
   const navigate = useNavigate();
   const {
     register,
@@ -27,19 +25,10 @@ function AddUsers() {
     setValue,
   } = useForm();
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-      setValue("image", file); 
-    }
-  };
 
   const handleRegister = async (data) => {
     setLoading(true);
     const body = {
-      image: data.image,
       name: data.name,
       email: data.email,
       password: data.password,
@@ -91,41 +80,6 @@ function AddUsers() {
         </Typography>
         <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
           <Grid container spacing={2} justifyContent="center">
-          <Grid item>
-            <Box
-              sx={{
-                position: "relative", 
-                display: "inline-block", 
-              }}
-            >
-              <Avatar
-                src={selectedImage || ""}
-                sx={{ width: 60, height: 60 }}
-              />
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  backgroundColor: "white", 
-                  padding: 0.5,
-                  zIndex: 2, 
-                }}
-              >
-                <PhotoCamera />
-                <input
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="image-upload"
-                  type="file"
-                  onChange={handleImageUpload}
-                />
-              </IconButton>
-            </Box>
-          </Grid>
             <Grid item xs={12}>
               <Typography variant="body1" align="left" gutterBottom>
                 Name

@@ -9,17 +9,16 @@ import {
   DialogActions,
   Typography,
 } from "@mui/material";
+import { CreateLandingData } from "../../api/axiosInterceptors";
 
 const LandingModel = ({ open, onClose }) => {
   const [websiteName, setWebsiteName] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
   const [errors, setErrors] = useState({ websiteName: "", websiteURL: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e)  => {
     e.preventDefault();
     let hasError = false;
-
-    // Validation
     if (!websiteName) {
       setErrors((prev) => ({ ...prev, websiteName: "Website Name is required" }));
       hasError = true;
@@ -31,22 +30,24 @@ const LandingModel = ({ open, onClose }) => {
     }
 
     if (!hasError) {
-      // Log data to console
-      console.log({
-        websiteName,
-        websiteURL,
-      });
-      // Optionally close the dialog here
-      handleCancel(); // Close the dialog and reset form
+      try {
+        debugger;
+        const res = await CreateLandingData({
+          name: websiteName,
+          url: websiteURL,
+        });
+        console.log("API Response: ", res.data);
+        handleCancel(); 
+      } catch (error) {
+        console.error("Error submitting form: ", error.message);
+      }
     }
   };
-
   const handleCancel = () => {
-    // Clear the form and errors
     setWebsiteName("");
     setWebsiteURL("");
     setErrors({ websiteName: "", websiteURL: "" });
-    onClose(); // Close the dialog
+    onClose(); 
   };
 
   return (

@@ -14,47 +14,58 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
-import { All } from "../../api/axiosInterceptors"; 
+import { All, Delete, Update } from "../../api/axiosInterceptors";
 
 const CardComponent = () => {
-  const [userList, setUserList] = useState([]); 
+  const [userList, setUserList] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-
   const fetchData = async () => {
     try {
-      debugger;
-      const res = await All(); 
-      setUserList(res?.data?.data); 
-      console.log(res)
+      const res = await All();
+      setUserList(res?.data?.data);
+      console.log(res);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
-  console.log("userList"+userList)
- 
-  const handleEdit = (no) => {
-    console.log(`Edit row with id: ${no}`);
+
+  const handleEdit = (_id) => {
+    console.log(`Edit row with id: ${_id}`);
   };
 
-  const handleDelete = (no) => {
-    console.log(`Delete row with id: ${no}`);
+  const handleDelete = async (email) => {
+    debugger;
+    try {
+      const res = await Delete({ email: email });
+      if (res?.status === 200) {
+        console.log(`Deleted user with id: ${email}`);
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    } finally {
+      fetchData();
+    }
   };
 
-  const handleSearch = (no) => {
-    console.log(`Search row with id: ${no}`);
+  const handleSearch = (_id) => {
+    console.log(`Search row with id: ${_id}`);
+    // Add your search functionality here
   };
 
-  const handleInsertDriveFileIcon = (no) => {
-    console.log(`Insert File row with id: ${no}`);
+  const handleInsertDriveFileIcon = (_id) => {
+    console.log(`Insert File row with id: ${_id}`);
+    // Add your file handling functionality here
   };
 
-  const handleRemoveRedEyeIcon = (no) => {
-    console.log(`View row with id: ${no}`);
+  const handleRemoveRedEyeIcon = (_id) => {
+    console.log(`View row with id: ${_id}`);
+    // Add your view functionality here
   };
 
   const columns = [
@@ -77,28 +88,28 @@ const CardComponent = () => {
         <Box>
           <IconButton
             color="primary"
-            onClick={() => handleSearch(params.row.no)}
+            onClick={() => handleSearch(params.row._id)}
           >
             <SearchIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => handleEdit(params.row.no)}>
+          <IconButton color="primary" onClick={() => handleEdit(params.row._id)}>
             <EditIcon />
           </IconButton>
           <IconButton
             color="error"
-            onClick={() => handleDelete(params.row.no)}
+            onClick={() => handleDelete(params.row.email)}
           >
             <DeleteIcon />
           </IconButton>
           <IconButton
             color="primary"
-            onClick={() => handleInsertDriveFileIcon(params.row.no)}
+            onClick={() => handleInsertDriveFileIcon(params.row._id)}
           >
             <InsertDriveFileIcon />
           </IconButton>
           <IconButton
             color="primary"
-            onClick={() => handleRemoveRedEyeIcon(params.row.no)}
+            onClick={() => handleRemoveRedEyeIcon(params.row._id)}
           >
             <RemoveRedEyeIcon />
           </IconButton>

@@ -32,7 +32,7 @@ router.post('/update', async (req, res) => {
         return res.status(400).json({ status: 0, message: `Link is required to update domain` });
     }
 
-    let domainExist = await Domain.find({ link: link });
+    let domainExist = await Domain.findOne({ link: link });
     console.log(domainExist);
     if (!!domainExist) {
         return res.status(400).json({ status: 0, message: `No domain found to update` });

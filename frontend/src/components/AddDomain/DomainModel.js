@@ -9,17 +9,17 @@ import {
   DialogActions,
   Typography,
 } from "@mui/material";
+import { CreateDomain } from "../../api/axiosInterceptors";
+
 
 const DomainModel = ({ open, onClose }) => {
   const [domainName, setDomainName] = useState("");
   const [domainURL, setDomainURL] = useState("");
   const [errors, setErrors] = useState({ domainName: "", domainURL: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let hasError = false;
-
-    // Validation
     if (!domainName) {
       setErrors((prev) => ({ ...prev, domainName: "Domain Name is required" }));
       hasError = true;
@@ -31,22 +31,24 @@ const DomainModel = ({ open, onClose }) => {
     }
 
     if (!hasError) {
-      // Log data to console
-      console.log({
-        domainName,
-        domainURL,
-      });
-      // Optionally close the dialog here
-      handleCancel(); // Close the dialog and reset form
+      try {
+        const response = await CreateDomain({
+          name: domainName,
+          link: domainURL,
+        });
+        console.log("API Response: ", response.data);
+        handleCancel(); 
+      } catch (error) {
+        console.error("Error submitting form: ", error.message);
+      }
     }
   };
 
   const handleCancel = () => {
-    // Clear the form and errors
     setDomainName("");
     setDomainURL("");
     setErrors({ domainName: "", domainURL: "" });
-    onClose(); // Close the dialog
+    onClose(); 
   };
 
   return (
