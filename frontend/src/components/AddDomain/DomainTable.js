@@ -53,45 +53,48 @@ const DomainTable = ({ onAddDomain }) => {
     setSelectedDomainId(id);
     setOpenDeleteDialog(true);
   };
+
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
     setSelectedDomainId(null);
   };
+
   const handleConfirmDelete = async () => {
     try {
-        if (selectedDomainId) {
-            const res = await deleteDomains(selectedDomainId);
-            if (res?.status === 200) {
-                setDomains((prevDomains) =>
-                    prevDomains.filter((domain) => domain._id !== selectedDomainId)
-                );
-                setSnackbarMessage('Domain deleted successfully');
-                setSnackbarOpen(true); 
-            } else {
-                setSnackbarMessage('Error deleting domain');
-                setSnackbarOpen(true);
-            }
+      if (selectedDomainId) {
+        const res = await deleteDomains(selectedDomainId);
+        if (res?.status === 200) {
+          setDomains((prevDomains) =>
+            prevDomains.filter((domain) => domain._id !== selectedDomainId)
+          );
+          setSnackbarMessage('Domain deleted successfully');
+        } else {
+          setSnackbarMessage('Error deleting domain');
         }
+        setSnackbarOpen(true);
+      }
     } catch (error) {
-        console.error("Error deleting domain:", error);
-        setSnackbarMessage('Error deleting domain');
-        setSnackbarOpen(true); 
+      console.error("Error deleting domain:", error);
+      setSnackbarMessage('Error deleting domain');
+      setSnackbarOpen(true);
     } finally {
-        handleCloseDeleteDialog();  
-        fetchDomains();  
+      handleCloseDeleteDialog();
+      fetchDomains();  // Refresh the table after deleting
     }
   };
+
   const handleOpenEditDialog = (domain) => {
-    debugger;
     setSelectedDomainData({ name: domain.name, link: domain.link });
     setSelectedDomainId(domain._id);
     setOpenEditDialog(true);
   };
+
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
     setSelectedDomainId(null);
     setSelectedDomainData({ name: '', link: '' });
   };
+
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setSelectedDomainData((prevData) => ({
@@ -99,41 +102,44 @@ const DomainTable = ({ onAddDomain }) => {
       [name]: value,
     }));
   };
+
   const handleConfirmEdit = async () => {
-    debugger
-    try {
-      if (selectedDomainId) {
-        const updateData = {
-          name: selectedDomainData.name,
-          link: selectedDomainData.link 
-        };
-  
-        const res = await updateDomain(updateData); 
-        if (res?.status === 200 && res?.data?.status === 1) {
-          setDomains((prevDomains) =>
-            prevDomains.map((domain) =>
-              domain._id === selectedDomainId
-                ? { ...domain, ...updateData }  
-                : domain
-            )
-          );
-          setSnackbarMessage('Domain updated successfully');
-          setSnackbarOpen(true);
-        } else {
-          setSnackbarMessage(res?.data?.message || 'Error updating domain');
-          setSnackbarOpen(true);
-        }
+  try {
+    if (selectedDomainId) {
+      // Prepare the updated data
+      const updatedData = {
+        name: selectedDomainData.name,
+        link: selectedDomainData.link,
+      };
+
+      // Make the update API call
+      const res = await updateDomain(selectedDomainId, updatedData);
+      
+      if (res?.status === 200) {
+        setSnackbarMessage("Domain updated successfully");
+        setSnackbarOpen(true);
+
+        // Update table data by updating the modified domain in the list
+        setDomains((prevDomains) =>
+          prevDomains.map((domain) =>
+            domain._id === selectedDomainId ? { ...domain, ...updatedData } : domain
+          )
+        );
+      } else {
+        setSnackbarMessage(res?.data?.message || "Error updating domain");
+        setSnackbarOpen(true);
       }
-    } catch (error) {
-      console.error("Error updating domain:", error);
-      setSnackbarMessage('Error updating domain');
-      setSnackbarOpen(true);
-    } finally {
-      handleCloseEditDialog(); 
-      // fetchDomains(); 
     }
-  };
-  
+  } catch (error) {
+    console.error("Error updating domain:", error);
+    setSnackbarMessage("Error updating domain");
+    setSnackbarOpen(true);
+  } finally {
+    handleCloseEditDialog(); // Close the edit dialog
+  }
+};
+
+
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
@@ -331,10 +337,9 @@ const DomainTable = ({ onAddDomain }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar for success or error message */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={4000}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         message={snackbarMessage}
       />

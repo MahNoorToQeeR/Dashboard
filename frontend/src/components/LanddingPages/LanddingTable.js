@@ -11,19 +11,21 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  TextField,
   Snackbar,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getAllLandingData, deleteLandingPage } from "../../api/axiosInterceptors";
-
+import { getAllLandingData, deleteLandingPage, updateLandingPage } from "../../api/axiosInterceptors";
 
 const LandingTable = ({ onAddLandingPage }) => {
   const [landingPages, setLandingPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false); // For edit modal
   const [selectedLandingPageId, setSelectedLandingPageId] = useState(null);
+  const [selectedLandingPage, setSelectedLandingPage] = useState({ name: "", url: "" }); // Stores landing page data for editing
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -57,6 +59,18 @@ const LandingTable = ({ onAddLandingPage }) => {
     setSelectedLandingPageId(null);
   };
 
+  const handleOpenEditDialog = (landingPage) => {
+    setSelectedLandingPage(landingPage);
+    setSelectedLandingPageId(landingPage._id);
+    setOpenEditDialog(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+    setSelectedLandingPageId(null);
+    setSelectedLandingPage({ name: "", url: "" });
+  };
+
   const handleConfirmDelete = async () => {
     try {
       if (selectedLandingPageId) {
@@ -78,13 +92,43 @@ const LandingTable = ({ onAddLandingPage }) => {
       setSnackbarOpen(true);
     } finally {
       handleCloseDeleteDialog();
-      fetchLandingData(); 
+      fetchLandingData();
+    }
+  };
+
+  const handleConfirmEdit = async () => {
+    debugger;
+    try {
+      if (selectedLandingPageId) {
+        const updatedData = { name: selectedLandingPage.name, url: selectedLandingPage.url };
+        const res = await updateLandingPage(selectedLandingPageId, updatedData);
+        if (res?.status === 200) {
+          setSnackbarMessage("Landing Page updated successfully");
+          setSnackbarOpen(true);
+          // Update table data
+          setLandingPages((prevLandingPages) =>
+            prevLandingPages.map((page) =>
+              page._id === selectedLandingPageId ? { ...page, ...updatedData } : page
+            )
+          );
+        } else {
+          setSnackbarMessage("Error updating Landing Page");
+          setSnackbarOpen(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error updating landing page:", error);
+      setSnackbarMessage("Error updating Landing Page");
+      setSnackbarOpen(true);
+    } finally {
+      handleCloseEditDialog();
     }
   };
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
   const columns = [
     { field: "no", headerName: "No", width: 90 },
     {
@@ -106,22 +150,17 @@ const LandingTable = ({ onAddLandingPage }) => {
       sortable: false,
       renderCell: (params) => (
         <Box>
-          <IconButton
-            color="primary"
-       
-          >
+          <IconButton color="primary" onClick={() => handleOpenEditDialog(params.row)}>
             <EditIcon />
           </IconButton>
-          <IconButton
-            color="error"
-            onClick={() => handleOpenDeleteDialog(params.row._id)}
-          >
+          <IconButton color="error" onClick={() => handleOpenDeleteDialog(params.row._id)}>
             <DeleteIcon />
           </IconButton>
         </Box>
       ),
     },
   ];
+
   return (
     <Card sx={{ mt: 4 }}>
       <Box
@@ -130,12 +169,7 @@ const LandingTable = ({ onAddLandingPage }) => {
         sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px" }}
       >
         <Typography sx={{ color: "#fff" }}>Landing Pages</Typography>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="end"
-          sx={{ gap: "5px" }}
-        >
+        <Box display="flex" flexWrap="wrap" justifyContent="end" sx={{ gap: "5px" }}>
           <Button
             variant="outlined"
             sx={{
@@ -170,16 +204,14 @@ const LandingTable = ({ onAddLandingPage }) => {
         </Box>
       </Paper>
 
-      {/* Confirmation Dialog */}
+      {/* Delete Confirmation Dialog */}
       <Dialog
         open={openDeleteDialog}
         onClose={handleCloseDeleteDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Delete Landing Page"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Delete Landing Page"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to delete this landing page?
@@ -215,10 +247,48 @@ const LandingTable = ({ onAddLandingPage }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar for success or error message */}
+      {/* Edit Dialog */}
+      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+        <DialogTitle>Edit Landing Page</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={selectedLandingPage.name}
+            onChange={(e) =>
+              setSelectedLandingPage((prev) => ({ ...prev, name: e.target.value }))
+            }
+          />
+          <TextField
+            margin="dense"
+            label="URL"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={selectedLandingPage.url}
+            onChange={(e) =>
+              setSelectedLandingPage((prev) => ({ ...prev, url: e.target.value }))
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmEdit} color="primary" variant="contained">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar for notifications */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={4000}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         message={snackbarMessage}
       />
