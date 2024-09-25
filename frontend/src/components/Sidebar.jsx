@@ -4,7 +4,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { useStateContext } from '../contexts/ContextProvider';
 import { links } from '../data/dummy';
-import logo from '../data/logo-image1.png';
+import logo from '../data/logo-image11.png';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
@@ -19,9 +19,9 @@ const Sidebar = () => {
     fontSize: '16px',
     margin: '8px',
     backgroundColor: currentColor,
-   
 
-    
+
+
   };
 
   const normalLink = {
@@ -32,7 +32,7 @@ const Sidebar = () => {
     fontSize: '16px',
     color: 'gray',
     margin: '8px',
-    
+
   };
 
   const drawerWidth = 240;
@@ -54,8 +54,13 @@ const Sidebar = () => {
     >
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center gap-3 ml-3">
-          <img src={logo} alt="logo" className="w-10 h-10" />
-          {activeMenu && <span className="text-3xl font-extrabold">Media</span>}
+          <img src={logo} alt="logo" style={{
+            width: "100%",
+            height: "85px",
+            display: "block",
+            objectFit: "cover",
+          }} />
+          {/* {activeMenu && <span className="text-3xl font-extrabold">Media</span>} */}
         </div>
         <Tooltip title="Toggle Drawer" placement="right">
           <IconButton
@@ -78,7 +83,7 @@ const Sidebar = () => {
               >
                 <ListItem button>
                   <ListItemIcon
-                    style={{ color: link.isActive ? "#fff" : '' }} 
+                    style={{ color: link.isActive ? "#fff" : '' }}
                   >
                     {link.icon}
                   </ListItemIcon>

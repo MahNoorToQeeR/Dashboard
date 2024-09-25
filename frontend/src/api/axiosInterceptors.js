@@ -101,4 +101,11 @@ export const Register = (body) => {
       },
     });
   };
-  
+  export const AddOffers = (body) => {
+    return Axios.post(`/api/offer/addOffer`, body, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+ 

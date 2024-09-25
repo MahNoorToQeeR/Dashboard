@@ -21,11 +21,6 @@ const names = [
   "April Tucker",
   "Ralph Hubbard",
   "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
 ];
 
 const CardComponent = () => {
@@ -57,27 +52,31 @@ const CardComponent = () => {
   const handleAllOffer = () => {
     navigate("/all offers");
   };
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
-
-    // Clear the error if there are selected users
-    if (value.length > 0) {
-      setErrors({ ...errors, users: '' });
-    }
-  };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
     setErrors({ ...errors, [name]: "" }); 
+  if (value) {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  }
   };
-
+  const handleUserChange = (selectedUsers) => {
+    setFormValues({
+      ...formValues,
+      users: selectedUsers,
+    });
+  
+    // Remove error if users array is not empty
+    if (selectedUsers.length > 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        users: "",
+      }));
+    }
+  };
   const validateForm = () => {
     const newErrors = {};
     // Check for empty fields
@@ -88,14 +87,6 @@ const CardComponent = () => {
     });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (validateForm()) {
-      // Submit the form or perform further actions
-      console.log("Form submitted successfully", formValues);
-    }
   };
   const handleReset = () => {
     setFormValues({
@@ -119,6 +110,14 @@ const CardComponent = () => {
     setErrors({});
     setPersonName([]);
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted successfully", formValues);
+      handleReset();
+    }
+  };
+ 
   return (
     <Card sx={{ mt: 4 }}>
       <Box
@@ -295,7 +294,7 @@ const CardComponent = () => {
                         multiple
                         native
                         value={personName}
-                        onChange={handleChangeMultiple}
+                        onChange={(e) => handleUserChange([...e.target.selectedOptions].map(o => o.value))}
                         label="Select Users"
                         inputProps={{
                           id: "select-multiple-native",
@@ -318,6 +317,7 @@ const CardComponent = () => {
                       name="landingPage"
                       value={formValues.landingPage}
                       onChange={handleInputChange}
+                      select
                       label="Landing Page"
                       variant="outlined"
                       fullWidth

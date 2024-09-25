@@ -70,7 +70,6 @@ const CardComponent = () => {
 
   const columns = [
     { field: "no", headerName: "No", width: 90 },
-    { field: "image", headerName: "Image", width: 150 },
     { field: "name", headerName: "Name", width: 150 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "password", headerName: "Password", width: 150 },
