@@ -19,6 +19,9 @@ const Sidebar = () => {
     fontSize: '16px',
     margin: '8px',
     backgroundColor: currentColor,
+
+
+
   };
 
   const normalLink = {
@@ -50,10 +53,12 @@ const Sidebar = () => {
       }}
     >
       <div className="flex justify-between items-center mt-4">
-        <div className="flex items-center gap-3 ml-3 logo">
+        <div className="flex items-center gap-3 ml-3">
           <img src={logo} alt="logo" style={{
             width: "100%",
             height: "85px",
+            display: "block",
+            objectFit: "cover",
           }} />
           {/* {activeMenu && <span className="text-3xl font-extrabold">Media</span>} */}
         </div>
