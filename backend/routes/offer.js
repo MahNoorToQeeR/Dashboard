@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Offer = require('../models/Offer');
 const Domain = require('../models/Domain');
+const LandingPage = require('../models/LandingPage');
+
 const UserOffer = require('../models/UserOffer');
 const User = require('../models/User');
 
@@ -26,7 +28,7 @@ router.post('/addOffer', async (req, res) => {
             return res.status(400).json({ status: 0, message: 'Invalid domain ID' });
         }
 
-        const landingPageExists = await LandingPage.findById(landingpage);
+        const landingPageExists = await LandingPage.findById(landingPage);
         if (!landingPageExists) {
             return res.status(400).json({ status: 0, message: 'Invalid landing page ID' });
         }
