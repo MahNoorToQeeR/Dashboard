@@ -38,13 +38,13 @@ export const Register = (body) => {
       },
     });
   };
-  export const Update = (body) => {
+  export const UserUpdate = (body) => {
     return Axios.post(`/api/user/updateProfile`, body, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-  };
+  }
   export const CreateDomain = (body) => {
     return Axios.post(`/api/domain/create`, body, {
       headers: {

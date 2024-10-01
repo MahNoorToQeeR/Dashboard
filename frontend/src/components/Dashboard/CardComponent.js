@@ -6,6 +6,10 @@ import {
   Typography,
   TextField,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,60 +18,89 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
-import { All, Delete, Update } from "../../api/axiosInterceptors";
+import { All, Delete, UserUpdate } from "../../api/axiosInterceptors";
 
 const CardComponent = () => {
   const [userList, setUserList] = useState([]);
   const [search, setSearch] = useState("");
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [updatedUserData, setUpdatedUserData] = useState({});
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [rowToDelete, setRowToDelete] = useState(null);
   const navigate = useNavigate();
-
   const fetchData = async () => {
     try {
       const res = await All();
       setUserList(res?.data?.data);
-      console.log(res);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
-
-  const handleEdit = (_id) => {
-    console.log(`Edit row with id: ${_id}`);
+  const handleEdit = (rowData) => {
+    setSelectedRowData(rowData); 
+    setUpdatedUserData(rowData); 
+    setOpenEditModal(true); 
   };
-
-  const handleDelete = async (email) => {
-    debugger;
+  const handleDelete = async () => {
     try {
-      const res = await Delete({ email: email });
+      const res = await Delete({ email: rowToDelete?.email });
       if (res?.status === 200) {
-        console.log(`Deleted user with id: ${email}`);
+        console.log(`Deleted user with email: ${rowToDelete?.email}`);
       }
     } catch (error) {
       console.error("Error deleting user:", error);
     } finally {
+      setOpenDeleteModal(false); 
       fetchData();
     }
   };
-
+  const handleUpdate = async () => {
+    try {
+      const res = await UserUpdate(updatedUserData);
+      if (res?.status === 200) {
+        console.log("User updated successfully:", updatedUserData);
+        setOpenEditModal(false); 
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+  const handleInputChange = (e) => {
+    setUpdatedUserData({
+      ...updatedUserData,
+      [e.target.name]: e.target.value,
+    });
+  };
   const handleSearch = (_id) => {
     console.log(`Search row with id: ${_id}`);
     // Add your search functionality here
   };
-
   const handleInsertDriveFileIcon = (_id) => {
-    console.log(`Insert File row with id: ${_id}`);
+    console.log(`Insert File for row with id: ${_id}`);
     // Add your file handling functionality here
   };
-
   const handleRemoveRedEyeIcon = (_id) => {
     console.log(`View row with id: ${_id}`);
     // Add your view functionality here
   };
-
+  const handleOpenDeleteModal = (rowData) => {
+    setRowToDelete(rowData); 
+    setOpenDeleteModal(true);
+  };
+  const handleAddOffer = () => {
+    navigate("/add offer");
+  };
+  const handleAddUser = () => {
+    navigate("/add user");
+  };
+  const handleAddDomain = () => {
+    navigate("/add domain");
+  };
   const columns = [
     { field: "no", headerName: "No", width: 90 },
     { field: "name", headerName: "Name", width: 150 },
@@ -91,12 +124,12 @@ const CardComponent = () => {
           >
             <SearchIcon />
           </IconButton>
-          <IconButton color="primary" onClick={() => handleEdit(params.row._id)}>
+          <IconButton color="primary" onClick={() => handleEdit(params.row)}>
             <EditIcon />
           </IconButton>
           <IconButton
             color="error"
-            onClick={() => handleDelete(params.row.email)}
+            onClick={() => handleOpenDeleteModal(params.row)}
           >
             <DeleteIcon />
           </IconButton>
@@ -116,19 +149,6 @@ const CardComponent = () => {
       ),
     },
   ];
-
-  const handleAddOffer = () => {
-    navigate("/add offer");
-  };
-
-  const handleAddUser = () => {
-    navigate("/add user");
-  };
-
-  const handleAddDomain = () => {
-    navigate("/add domain");
-  };
-
   return (
     <Card sx={{ mt: 5 }}>
       <Box
@@ -199,6 +219,7 @@ const CardComponent = () => {
           </Button>
         </Box>
       </Box>
+
       <Box sx={{ p: 2 }}>
         <TextField
           label="Search"
@@ -209,12 +230,8 @@ const CardComponent = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           sx={{
-            "& .MuiInputBase-root": {
-              height: 32,
-            },
-            "& .MuiOutlinedInput-input": {
-              padding: "6px 14px",
-            },
+            "& .MuiInputBase-root": { height: 32 },
+            "& .MuiOutlinedInput-input": { padding: "6px 14px" },
           }}
         />
         <Box style={{ height: 400, width: "100%" }}>
@@ -223,19 +240,84 @@ const CardComponent = () => {
             columns={columns}
             getRowId={(row) => row._id}
             initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
+              pagination: { paginationModel: { pageSize: 5 } },
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
           />
         </Box>
       </Box>
+
+      {/* Modal for Editing */}
+      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
+        <DialogTitle>Edit User</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            label="Name"
+            name="name"
+            fullWidth
+            value={updatedUserData?.name || ""}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Email"
+            name="email"
+            fullWidth
+            value={updatedUserData?.email || ""}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="Phone No"
+            name="phone_no"
+            fullWidth
+            value={updatedUserData?.phone_no || ""}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            label="CNIC"
+            name="CNIC"
+            fullWidth
+            value={updatedUserData?.CNIC || ""}
+            onChange={handleInputChange}
+          />
+          {/* Add more fields as needed */}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditModal(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleUpdate} color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal for Delete Confirmation */}
+      <Dialog
+        open={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+      >
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete the user with email:{" "}
+            {rowToDelete?.email}?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteModal(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error">
+            Confirm Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
-
 export default CardComponent;

@@ -14,7 +14,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SearchIcon from "@mui/icons-material/Search";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
-import { All } from "../../api/axiosInterceptors"; 
+import { All, UserUpdate } from "../../api/axiosInterceptors"; 
 
 const AllUserRecordeTable = () => {
   const [userList, setUserList] = useState([]); 
