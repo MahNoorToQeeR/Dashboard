@@ -23,9 +23,9 @@ const LandingTable = ({ onAddLandingPage }) => {
   const [landingPages, setLandingPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false); // For edit modal
+  const [openEditDialog, setOpenEditDialog] = useState(false); 
   const [selectedLandingPageId, setSelectedLandingPageId] = useState(null);
-  const [selectedLandingPage, setSelectedLandingPage] = useState({ name: "", url: "" }); // Stores landing page data for editing
+  const [selectedLandingPage, setSelectedLandingPage] = useState({ name: "", url: "" }); 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -105,7 +105,6 @@ const LandingTable = ({ onAddLandingPage }) => {
         if (res?.status === 200) {
           setSnackbarMessage("Landing Page updated successfully");
           setSnackbarOpen(true);
-          // Update table data
           setLandingPages((prevLandingPages) =>
             prevLandingPages.map((page) =>
               page._id === selectedLandingPageId ? { ...page, ...updatedData } : page
