@@ -270,6 +270,14 @@ const CardComponent = () => {
           />
           <TextField
             margin="dense"
+            label="password"
+            name="password"
+            fullWidth
+            value={updatedUserData?.password || ""}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
             label="Phone No"
             name="phone_no"
             fullWidth
@@ -284,7 +292,6 @@ const CardComponent = () => {
             value={updatedUserData?.CNIC || ""}
             onChange={handleInputChange}
           />
-          {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenEditModal(false)} color="secondary">
