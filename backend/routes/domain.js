@@ -25,19 +25,20 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.post('/update', async (req, res) => {
+router.post('/update/:id', async (req, res) => {
+    const id = req.params.id;
     const { name, link } = req.body;
-    console.log(`name: ${name}, link: ${link}`);
-    if (!link) {
-        return res.status(400).json({ status: 0, message: `Link is required to update domain` });
+    console.log(`name: ${name}, link: ${link}, id: ${id}`);
+    if (!id) {
+        return res.status(400).json({ status: 0, message: `id is required to update domain` });
     }
 
-    let domainExist = await Domain.findOne({ link: link });
+    let domainExist = await Domain.findById(id);
     console.log(domainExist);
-    if (!!domainExist) {
+    if (!domainExist) {
         return res.status(400).json({ status: 0, message: `No domain found to update` });
     }
-    let domain = await Domain.findOneAndUpdate({ link: link }, { name: name }, { new: true });
+    let domain = await Domain.findByIdAndUpdate(id, { name: name, link: link  }, { new: true });
     res.json({ status: 1, message: `Domain updated successfully`, data: domain });
 });
 

@@ -31,7 +31,6 @@ function CardComponent() {
   } = useForm();
 
   const handleLogin = async (data) => {
-    debugger;
     setLoading(true); 
     const body = {
       email: data.email,

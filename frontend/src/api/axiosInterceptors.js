@@ -53,8 +53,8 @@ export const Register = (body) => {
       headers: headers
     });
   };
-  export const updateDomain = (body) => {
-    return Axios.post(`/api/domain/update`, body, {
+  export const updateDomain = (id, body) => {
+    return Axios.post(`/api/domain/update/${id}`, body, {
       headers: headers
     });
   };
