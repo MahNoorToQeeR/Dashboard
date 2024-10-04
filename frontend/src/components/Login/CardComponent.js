@@ -40,10 +40,14 @@ function CardComponent() {
     };
     try {
       const res = await Login(body);
-      console.log(res.data);
-      navigate("/dashboard");
-      setSnackbarMessage("Login successful!");
-      setSnackbarSeverity("success");
+      if(res.data.status === 1){
+        navigate("/dashboard");
+        setSnackbarMessage("Login successful!");
+        setSnackbarSeverity("success");
+      }else{
+        setSnackbarMessage(res.error || "Login failed");
+        setSnackbarSeverity("error");
+      }
     } catch (error) {
       console.log("error", error.response?.data?.message || "Login failed");
       setSnackbarMessage(error.response?.data?.message || "Login failed");

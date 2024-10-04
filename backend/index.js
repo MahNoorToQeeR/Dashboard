@@ -23,10 +23,7 @@ app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 try {
-  mongoose.connect(uri, {
-    useNewUrlParser : true, 
-    useUnifiedTopology:true
-  })
+  mongoose.connect(uri)
   console.log('Connected to MongoDB');
 
 } catch (error) {
