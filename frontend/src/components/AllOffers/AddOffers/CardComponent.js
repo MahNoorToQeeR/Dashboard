@@ -81,7 +81,7 @@ const CardComponent = () => {
   const handleAddDomain = async (data) => {
     const body = {
       domain: data.domain, offerData: data,
-      landingPage: data.landingPage, offerData: data
+      landingpage: data.landingPage, offerData: data
 
     }
     try {

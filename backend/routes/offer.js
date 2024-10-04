@@ -3,6 +3,7 @@ const router = express.Router();
 const Offer = require('../models/Offer');
 const Domain = require('../models/Domain');
 const UserOffer = require('../models/UserOffer');
+const LandingPage = require('../models/LandingPage');
 const User = require('../models/User');
 
 // Get All Offers
@@ -19,7 +20,8 @@ router.get('/all', async (req, res) => {
 // Add Offer API
 router.post('/addOffer', async (req, res) => {
     try {
-        const { domain, ...offerData } = req.body;
+        const { domain, landingpage, ...offerData } = req.body;
+        console.log(domain, landingpage, offerData)
 
         const domainExists = await Domain.findById(domain);
         if (!domainExists) {
