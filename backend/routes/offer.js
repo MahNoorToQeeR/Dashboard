@@ -86,6 +86,71 @@ router.post('/:offerId/assign/:userId', async (req, res) => {
     }
 });
 
+// Update offer status by ID
+router.post('/offers/:id/status', async (req, res) => {
+    try {
+        const offerId = req.params.id;
+        const { status } = req.body;
+
+        // Validate status value
+        if (!status) {
+            return res.status(400).json({ message: 'Status is required' });
+        }
+
+        const updatedOffer = await Offer.findByIdAndUpdate(
+            offerId,
+            { status },
+            { new: true, runValidators: true } // Returns the updated document
+        );
+
+        if (!updatedOffer) {
+            return res.status(404).json({ message: 'Offer not found' });
+        }
+
+        res.status(200).json({ message: 'Offer status updated successfully', updatedOffer });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating offer status', error });
+    }
+});
+
+// Update an offer by ID
+router.post('/offers/:id', async (req, res) => {
+    try {
+        const offerId = req.params.id;
+        const updatedData = req.body;
+
+        const updatedOffer = await Offer.findByIdAndUpdate(
+            offerId,
+            updatedData,
+            { new: true, runValidators: true } // Returns the updated document
+        );
+
+        if (!updatedOffer) {
+            return res.status(404).json({ message: 'Offer not found' });
+        }
+
+        res.status(200).json({ message: 'Offer updated successfully', updatedOffer });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating offer', error });
+    }
+});
+
+// Delete an offer by ID
+router.post('/offers/:id', async (req, res) => {
+    try {
+        const offerId = req.params.id;
+        const deletedOffer = await Offer.findByIdAndDelete(offerId);
+        
+        if (!deletedOffer) {
+            return res.status(404).json({ message: 'Offer not found' });
+        }
+
+        res.status(200).json({ message: 'Offer deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting offer', error });
+    }
+});
+
 
 
 module.exports = router;

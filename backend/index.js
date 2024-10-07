@@ -6,6 +6,7 @@ const userRoutes = require('./routes/user');
 const domainRoutes = require('./routes/domain');
 const offerRoutes = require('./routes/offer');
 const landingPageRoutes = require('./routes/landingPage');
+const networkRoutes = require('./routes/network');
 const connectDB = require('./config/db_connection');
 const path = require('path'); // Import the path module
 
@@ -45,6 +46,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/domain', domainRoutes);
 app.use('/api/offer', offerRoutes);
 app.use('/api/landingpage', landingPageRoutes);
+app.use('/api/network', networkRoutes);
 
 
 // Start server
