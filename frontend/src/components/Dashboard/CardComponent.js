@@ -76,17 +76,11 @@ const CardComponent = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleSearch = (_id) => {
-    console.log(`Search row with id: ${_id}`);
-    // Add your search functionality here
-  };
   const handleInsertDriveFileIcon = (_id) => {
     console.log(`Insert File for row with id: ${_id}`);
-    // Add your file handling functionality here
   };
   const handleRemoveRedEyeIcon = (_id) => {
     console.log(`View row with id: ${_id}`);
-    // Add your view functionality here
   };
   const handleOpenDeleteModal = (rowData) => {
     setRowToDelete(rowData); 
@@ -100,6 +94,9 @@ const CardComponent = () => {
   };
   const handleAddDomain = () => {
     navigate("/add domain");
+  };
+  const handleAddNetwork = () => {
+    navigate("/Network Report");
   };
   const columns = [
     { field: "no", headerName: "No", width: 90 },
@@ -118,12 +115,6 @@ const CardComponent = () => {
       sortable: false,
       renderCell: (params) => (
         <Box>
-          <IconButton
-            color="primary"
-            onClick={() => handleSearch(params.row._id)}
-          >
-            <SearchIcon />
-          </IconButton>
           <IconButton color="primary" onClick={() => handleEdit(params.row)}>
             <EditIcon />
           </IconButton>
@@ -202,6 +193,7 @@ const CardComponent = () => {
               height: "25px",
               fontSize: "10px",
             }}
+            onClick={handleAddNetwork}
           >
             Add Network
           </Button>

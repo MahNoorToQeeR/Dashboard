@@ -83,4 +83,23 @@ export const Register = (body) => {
       headers: headers
     });
   };
- 
+  export const AddNetwork = (body) => {
+    return Axios.post(`/api/network/create`, body, {
+      headers: headers
+    });
+  };
+  export const GetAllNetworks = (body) => {
+    return Axios.get(`/api/network/all`, body, {
+      headers: headers
+    });
+  };
+  export const DeleteNetwork = (id) => {
+    return Axios.post(`/api/network/delete/${id}`, {
+      headers: headers
+    });
+  };
+  export const UpdateNetwork = (id, body) => {
+    return Axios.post(`/api/network/update/${id}`, body,{
+      headers: headers
+    });
+  };

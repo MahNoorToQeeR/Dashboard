@@ -23,9 +23,9 @@ const LandingTable = ({ onAddLandingPage }) => {
   const [landingPages, setLandingPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false); 
+  const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedLandingPageId, setSelectedLandingPageId] = useState(null);
-  const [selectedLandingPage, setSelectedLandingPage] = useState({ name: "", url: "" }); 
+  const [selectedLandingPage, setSelectedLandingPage] = useState({ name: "", url: "" });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -247,8 +247,14 @@ const LandingTable = ({ onAddLandingPage }) => {
       </Dialog>
 
       {/* Edit Dialog */}
-      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-        <DialogTitle>Edit Landing Page</DialogTitle>
+      <Dialog
+        open={openEditDialog}
+        onClose={handleCloseEditDialog}
+        aria-labelledby="edit-dialog-title"
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle id="edit-dialog-title" sx={{ backgroundColor: "#0171BE", color: "#fff" }}>{"Edit Landing Page"}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -256,33 +262,69 @@ const LandingTable = ({ onAddLandingPage }) => {
             label="Name"
             type="text"
             fullWidth
-            variant="outlined"
+            variant="standard"
             value={selectedLandingPage.name}
             onChange={(e) =>
               setSelectedLandingPage((prev) => ({ ...prev, name: e.target.value }))
             }
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
           <TextField
             margin="dense"
             label="URL"
             type="text"
             fullWidth
-            variant="outlined"
+            variant="standard"
             value={selectedLandingPage.url}
             onChange={(e) =>
               setSelectedLandingPage((prev) => ({ ...prev, url: e.target.value }))
             }
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog} color="primary">
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleCloseEditDialog}
+            sx={{
+              color: "#0171be",
+              borderColor: "#0171be",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleConfirmEdit} color="primary" variant="contained">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleConfirmEdit}
+            sx={{
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}
+          >
             Update
           </Button>
         </DialogActions>
       </Dialog>
+
 
       {/* Snackbar for notifications */}
       <Snackbar

@@ -12,9 +12,10 @@ import {
   InputLabel,
   Select,
   Button,
+  Snackbar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAllDomains, getAllLandingData, AddOffers } from "../../../api/axiosInterceptors";
+import { All, getAllDomains, getAllLandingData, AddOffers, GetAllNetworks } from "../../../api/axiosInterceptors";
 import { useForm } from "react-hook-form";
 
 const names = [
@@ -38,9 +39,39 @@ const CardComponent = () => {
   } = useForm();
   const navigate = useNavigate();
   const [domains, setDomains] = useState([]);
-  const [landingPages, setLandingPages] = useState([]);
+  const [landingpage, setLandingpages] = useState([]);
+  const [networks, setNetworks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [userList, setUserList] = useState([]);
+  const fetchData = async () => {
+    try {
+      const res = await All();
+      setUserList(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchAllNetworks = async () => {
+    try {
+      const res = await GetAllNetworks();
+      const fetchNetworks = res?.data?.data || [];
+      const mappedNetworks = fetchNetworks.map((network, index) => ({
+        no: index + 1,
+        ...network,
+      }));
+      setNetworks(mappedNetworks);
+      setLoading(false);
+      setSnackbarMessage("Network fetched successfully!");
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error fetching network: ", error);
+      setLoading(false);
+      setSnackbarMessage("Failed to load networks.");
+      setSnackbarOpen(true);
+    }
+  };
   const fetchDomains = async () => {
     try {
       const res = await getAllDomains();
@@ -48,26 +79,61 @@ const CardComponent = () => {
 
       setDomains(fetchedDomains);
       setLoading(false);
+      setSnackbarMessage("Domains fetched successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error fetching domains: ", error);
       setLoading(false);
+
+      // Show error message
+      setSnackbarMessage("Failed to fetch domains.");
+      setSnackbarOpen(true);
     }
   };
   const fetchLandingData = async () => {
     try {
       const res = await getAllLandingData();
       const fetchedLandingData = res?.data?.data;
-      setLandingPages(fetchedLandingData);
+      setLandingpages(fetchedLandingData);
       setLoading(false);
+      setSnackbarMessage("Landing pages fetched successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error fetching landing pages: ", error);
       setLoading(false);
+      setSnackbarMessage("Failed to fetch landing pages.");
+      setSnackbarOpen(true);
     }
   };
   useEffect(() => {
+    fetchData();
     fetchDomains();
     fetchLandingData();
+    fetchAllNetworks();
   }, []);
+  const handleAddOffer = async (data) => {
+    const body = {
+      domain: data.domain,
+      landingpage: data.landingpage, offerData: data
+    }
+    try {
+      const response = await AddOffers(body);
+      console.log("Response from API:", response.data);
+      setSnackbarMessage("Offer added successfully!");
+      setSnackbarOpen(true);
+
+      reset();
+    } catch (error) {
+      console.error("Error adding offer:", error);
+      setSnackbarMessage("Failed to add offer.");
+      setSnackbarOpen(true);
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+      } else {
+        console.error("Error message:", error.message);
+      }
+    }
+  };
   const handleAssginOffer = () => {
     navigate("/assign offer");
   };
@@ -78,32 +144,14 @@ const CardComponent = () => {
     setPersonName(selectedUsers);
     setValue("users", selectedUsers);
   };
-  const handleAddDomain = async (data) => {
-    const body = {
-      domain: data.domain, offerData: data,
-      landingpage: data.landingPage, offerData: data
-
-    }
-    try {
-      debugger;
-
-        const response = await AddOffers(body);
-        console.log("Response from API:", response.data);
-
-        reset();
-    } catch (error) {
-        console.error("Error adding offer:", error);
-        if (error.response) {
-            console.error("Server responded with:", error.response.data);
-        } else {
-            console.error("Error message:", error.message);
-        }
-    }
-};
   const handleReset = () => {
     reset();
     setPersonName([]);
   }
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Card sx={{ mt: 4 }}>
       <Box
@@ -140,7 +188,7 @@ const CardComponent = () => {
               fontSize: "10px",
             }}
             onClick={handleAssginOffer}
-          >''
+          >
             Assign Offer
           </Button>
         </Box>
@@ -149,28 +197,28 @@ const CardComponent = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} md={12} sm={12}>
             <Card>
-              <CardContent onSubmit={handleSubmit(handleAddDomain)} component={"form"}>
+              <CardContent onSubmit={handleSubmit(handleAddOffer)} component={"form"}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1" align="left" gutterBottom>
                       Offer Name *
                     </Typography>
                     <TextField
-                      name="offerName"
-                      id="offerName"
+                      name="offer_name"
+                      id="offer_name"
                       label="Offer Name"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("offerName", {
+                      {...register("offer_name", {
                         required: {
                           value: true,
-                          message: "offerName is required",
+                          message: "offer_name is required",
                         },
                       })}
-                      error={Boolean(errors.offerName)}
-                      helperText={errors.offerName?.message}
+                      error={Boolean(errors.offer_name)}
+                      helperText={errors.offer_name?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -184,21 +232,21 @@ const CardComponent = () => {
                       Default Offer *
                     </Typography>
                     <TextField
-                      name="defaultOffer"
-                      id="defaultOffer"
+                      name="default_offer"
+                      id="default_offer"
                       label="Default Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("defaultOffer", {
+                      {...register("default_offer", {
                         required: {
                           value: true,
-                          message: "defaultOffer is required",
+                          message: "default_offer is required",
                         },
                       })}
-                      error={Boolean(errors.defaultOffer)}
-                      helperText={errors.defaultOffer?.message}
+                      error={Boolean(errors.default_offer)}
+                      helperText={errors.default_offer?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -226,11 +274,11 @@ const CardComponent = () => {
                           message: "Domain is required",
                         },
                       })}
-                      value={watch('domain') || ''}  
+                      value={watch('domain') || ''}
                       onChange={(e) => {
-                        setValue('domain', e.target.value); 
+                        setValue('domain', e.target.value);
                         clearErrors('domain');
-                      }} 
+                      }}
                       error={Boolean(errors.domain)}
                       helperText={errors.domain?.message}
                       sx={{
@@ -266,11 +314,11 @@ const CardComponent = () => {
                           message: "network is required",
                         },
                       })}
-                      value={watch('network') || ''}  
+                      value={watch('network') || ''}
                       onChange={(e) => {
-                        setValue('network', e.target.value); 
+                        setValue('network', e.target.value);
                         clearErrors('network');
-                      }} 
+                      }}
                       error={Boolean(errors.network)}
                       helperText={errors.network?.message}
                       sx={{
@@ -282,8 +330,11 @@ const CardComponent = () => {
                         },
                       }}
                     >
-                      <MenuItem value="Option 1">Option 1</MenuItem>
-                      <MenuItem value="Option 2">Option 2</MenuItem>
+                      {networks.map((network) => (
+                        <MenuItem key={network._id} value={network._id}>
+                          {network.network_name}
+                        </MenuItem>
+                      ))}
                     </TextField>
                     <Typography variant="body1" align="left" gutterBottom>
                       Select Users *
@@ -312,45 +363,45 @@ const CardComponent = () => {
                         multiple
                         native
                         value={personName}
-                        onChange={(e) => handleUserChange([...e.target.selectedOptions].map(o => o.value))}
+                        onChange={(e) => handleUserChange([...e.target.selectedOptions].map(option => option.value))}
                         label="Select Users"
                         inputProps={{
                           id: "select-multiple-native",
                         }}
                       >
-                        {names.map((name) => (
-                          <option key={name} value={name}>
-                            {name}
+                        {userList.map((user) => (
+                          <option key={user._id} value={user._id}>
+                            {user.name}
                           </option>
                         ))}
                       </Select>
-
                     </FormControl>
+
                     <Typography variant="body1" align="left" gutterBottom>
                       Select LandingPage *
                     </Typography>
                     <TextField
-                      name="landingPage"
-                      id="landingPage"
+                      name="landingpage"
+                      id="landingpage"
                       select
                       label="Landing Page"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("landingPage", {
+                      {...register("landingpage", {
                         required: {
                           value: true,
-                          message: "landingPage is required",
+                          message: "landingpage is required",
                         },
                       })}
-                      value={watch('landingPage') || ''}  
+                      value={watch('landingpage') || ''}
                       onChange={(e) => {
-                        setValue('landingPage', e.target.value);
-                        clearErrors("landingPage");
-                      } }
-                      error={Boolean(errors.landingPage)}
-                      helperText={errors.landingPage?.message}
+                        setValue('landingpage', e.target.value);
+                        clearErrors("landingpage");
+                      }}
+                      error={Boolean(errors.landingpage)}
+                      helperText={errors.landingpage?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -361,8 +412,8 @@ const CardComponent = () => {
                       }}
                     >
                       {
-                        landingPages.map((landingPage) => (
-                          <MenuItem value={landingPage._id}>{landingPage.name}</MenuItem>
+                        landingpage.map((landingpage) => (
+                          <MenuItem value={landingpage._id}>{landingpage.name}</MenuItem>
 
                         ))
                       }
@@ -374,7 +425,7 @@ const CardComponent = () => {
                       select
                       name="countries"
                       id="countries"
-                      label="Countries"
+                      label="countries"
                       variant="outlined"
                       fullWidth
                       size="small"
@@ -385,7 +436,7 @@ const CardComponent = () => {
                           message: "countries is required",
                         },
                       })}
-                      value={watch('countries') || ''}  
+                      value={watch('countries') || ''}
                       onChange={(e) => {
                         setValue('countries', e.target.value);
                         clearErrors("countries");
@@ -410,21 +461,21 @@ const CardComponent = () => {
                       Offer Rate *
                     </Typography>
                     <TextField
-                      name="offerRate"
-                      id="offerRate"
+                      name="offer_rate"
+                      id="offer_rate"
                       label="Offer Rate"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("offerRate", {
+                      {...register("offer_rate", {
                         required: {
                           value: true,
-                          message: "offerRate is required",
+                          message: "offer_rate is required",
                         },
                       })}
-                      error={Boolean(errors.offerRate)}
-                      helperText={errors.offerRate?.message}
+                      error={Boolean(errors.offer_rate)}
+                      helperText={errors.offer_rate?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -440,7 +491,7 @@ const CardComponent = () => {
                     <TextField
                       name="comment"
                       id="comment"
-                      label="Comment"
+                      label="comment"
                       variant="outlined"
                       fullWidth
                       size="small"
@@ -466,21 +517,21 @@ const CardComponent = () => {
                       Web Offer *
                     </Typography>
                     <TextField
-                      name="webOffer"
-                      id="webOffer"
+                      name="web_offer"
+                      id="web_offer"
                       label="Web Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("webOffer", {
+                      {...register("web_offer", {
                         required: {
                           value: true,
-                          message: "webOffer is required",
+                          message: "web_offer is required",
                         },
                       })}
-                      error={Boolean(errors.webOffer)}
-                      helperText={errors.webOffer?.message}
+                      error={Boolean(errors.web_offer)}
+                      helperText={errors.web_offer?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -494,21 +545,21 @@ const CardComponent = () => {
                       Android Offer *
                     </Typography>
                     <TextField
-                      name="androidOffer"
-                      id="androidOffer"
+                      name="android_offer"
+                      id="android_offer"
                       label="Android Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("androidOffer", {
+                      {...register("android_offer", {
                         required: {
                           value: true,
-                          message: "androidOffer is required",
+                          message: "android_offer is required",
                         },
                       })}
-                      error={Boolean(errors.androidOffer)}
-                      helperText={errors.androidOffer?.message}
+                      error={Boolean(errors.android_offer)}
+                      helperText={errors.android_offer?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -522,21 +573,21 @@ const CardComponent = () => {
                       Ios Offer *
                     </Typography>
                     <TextField
-                      name="iosOffer"
-                      id="iosOffer"
+                      name="ios_offer"
+                      id="ios_offer"
                       label="iOS Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("iosOffer", {
+                      {...register("ios_offer", {
                         required: {
                           value: true,
-                          message: "iosOffer is required",
+                          message: "ios_offer is required",
                         },
                       })}
-                      error={Boolean(errors.iosOffer)}
-                      helperText={errors.iosOffer?.message}
+                      error={Boolean(errors.ios_offer)}
+                      helperText={errors.ios_offer?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -550,21 +601,21 @@ const CardComponent = () => {
                       Divert offer *
                     </Typography>
                     <TextField
-                      name="divertOffer"
-                      id="divertOffer"
+                      name="divert_offer"
+                      id="divert_offer"
                       label="Divert Offer"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("divertOffer", {
+                      {...register("divert_offer", {
                         required: {
                           value: true,
-                          message: "divertOffer is required",
+                          message: "divert_offer is required",
                         },
                       })}
-                      error={Boolean(errors.divertOffer)}
-                      helperText={errors.divertOffer?.message}
+                      error={Boolean(errors.divert_offer)}
+                      helperText={errors.divert_offer?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -579,26 +630,26 @@ const CardComponent = () => {
                     </Typography>
                     <TextField
                       select
-                      name="referralStatus"
-                      id="referralStatus"
+                      name="referral_status"
+                      id="referral_status"
                       label="Referral Status"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("referralStatus", {
+                      {...register("referral_status", {
                         required: {
                           value: true,
-                          message: "referralStatus is required",
+                          message: "referral_status is required",
                         },
                       })}
-                      value={watch('referralStatus') || ''}  
+                      value={watch('referral_status') || ''}
                       onChange={(e) => {
-                        setValue('referralStatus', e.target.value);
-                        clearErrors('referralStatus');
-                      }} 
-                      error={Boolean(errors.referralStatus)}
-                      helperText={errors.referralStatus?.message}
+                        setValue('referral_status', e.target.value);
+                        clearErrors('referral_status');
+                      }}
+                      error={Boolean(errors.referral_status)}
+                      helperText={errors.referral_status?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -616,26 +667,26 @@ const CardComponent = () => {
                     </Typography>
                     <TextField
                       select
-                      name="proxyStatus"
-                      id="proxyStatus"
+                      name="proxy_status"
+                      id="proxy_status"
                       label="Proxy Status"
                       variant="outlined"
                       fullWidth
                       size="small"
                       margin="normal"
-                      {...register("proxyStatus", {
+                      {...register("proxy_status", {
                         required: {
                           value: true,
-                          message: "proxyStatus is required",
+                          message: "proxy_status is required",
                         },
                       })}
-                      value={watch('proxyStatus') || ''}  
+                      value={watch('proxy_status') || ''}
                       onChange={(e) => {
-                        setValue('proxyStatus', e.target.value);
-                        clearErrors('proxyStatus');
-                      }} 
-                      error={Boolean(errors.proxyStatus)}
-                      helperText={errors.proxyStatus?.message}
+                        setValue('proxy_status', e.target.value);
+                        clearErrors('proxy_status');
+                      }}
+                      error={Boolean(errors.proxy_status)}
+                      helperText={errors.proxy_status?.message}
                       sx={{
                         "& .MuiInputBase-root": {
                           height: 32,
@@ -690,6 +741,7 @@ const CardComponent = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    loading={loading}
                     sx={{
                       color: "#fff",
                       borderColor: "#fff",
@@ -719,6 +771,14 @@ const CardComponent = () => {
           </Grid>
         </Grid>
       </Paper>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+
     </Card>
   );
 };

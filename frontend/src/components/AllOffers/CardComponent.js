@@ -20,9 +20,9 @@ const CardComponent = () => {
   const navigate = useNavigate();
 
   const rows = [
-    { no: 1, name: "Offer 1" },
-    { no: 2, name: "Offer 2" },
-    { no: 3, name: "Offer 3" },
+    { no: 1, name: "Offer 1", status: "active" },
+    { no: 2, name: "Offer 2", status: "inactive" },
+    { no: 3, name: "Offer 3", status: "active" },
   ];
 
   const handleAddOffer = () => {
@@ -44,6 +44,7 @@ const CardComponent = () => {
   const columns = [
     { field: "no", headerName: "No", width: 90 },
     { field: "name", headerName: "Name", width: 150 },
+    { field: "status", headerName: "Status", width: 150 },
     {
       field: "actions",
       headerName: "Actions",

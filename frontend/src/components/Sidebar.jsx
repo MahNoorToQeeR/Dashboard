@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -8,6 +8,7 @@ import logo from '../data/logo-image11.png';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
+  const navigate = useNavigate(); // Use useNavigate for navigation
   const currentColor = '#0171BE';
 
   const activeLink = {
@@ -19,9 +20,6 @@ const Sidebar = () => {
     fontSize: '16px',
     margin: '8px',
     backgroundColor: currentColor,
-
-
-
   };
 
   const normalLink = {
@@ -32,10 +30,15 @@ const Sidebar = () => {
     fontSize: '16px',
     color: 'gray',
     margin: '8px',
-
   };
 
   const drawerWidth = 240;
+
+  const handleLogout = () => {
+    localStorage.removeItem('role');
+    localStorage.removeItem('isAuthenticated');
+    navigate("/Login"); 
+  };
 
   return (
     <Drawer
@@ -60,7 +63,6 @@ const Sidebar = () => {
             display: "block",
             objectFit: "cover",
           }} />
-          {/* {activeMenu && <span className="text-3xl font-extrabold">Media</span>} */}
         </div>
         <Tooltip title="Toggle Drawer" placement="right">
           <IconButton
@@ -81,7 +83,7 @@ const Sidebar = () => {
                 key={link.name}
                 style={({ isActive }) => (isActive ? activeLink : normalLink)}
               >
-                <ListItem button>
+                <ListItem button onClick={link.name === 'Logout' ? handleLogout : null}>
                   <ListItemIcon
                     style={{ color: link.isActive ? "#fff" : '' }}
                   >

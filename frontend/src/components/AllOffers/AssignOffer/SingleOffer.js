@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -11,38 +11,30 @@ import {
   Select,
   TextField,
   MenuItem,
-  FormHelperText,
 } from "@mui/material";
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
+import { All } from "../../../api/axiosInterceptors";
 
 const SingleOffer = () => {
   const [personName, setPersonName] = useState([]);
   const [offer, setOffer] = useState("");
   const [errors, setErrors] = useState({ personName: "", offer: "" });
+  const [userList, setUserList] = useState([]);
 
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
+  const fetchData = async () => {
+    try {
+      const res = await All();
+      setUserList(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-    setPersonName(value);
-    // Clear error when selection is made
-    setErrors((prev) => ({ ...prev, personName: "" }));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleUserChange = (selectedUsers) => {
+    setPersonName(selectedUsers);
   };
 
   const handleSubmit = (e) => {
@@ -138,7 +130,6 @@ const SingleOffer = () => {
                       padding: "6px 14px",
                     },
                   }}
-                  error={!!errors.personName}
                 >
                   <InputLabel shrink htmlFor="select-multiple-native">
                     Select Users
@@ -147,19 +138,20 @@ const SingleOffer = () => {
                     multiple
                     native
                     value={personName}
-                    onChange={handleChangeMultiple}
+                    onChange={(e) =>
+                      handleUserChange([...e.target.selectedOptions].map((option) => option.value))
+                    }
                     label="Select Users"
                     inputProps={{
                       id: "select-multiple-native",
                     }}
                   >
-                    {names.map((name) => (
-                      <option key={name} value={name}>
-                        {name}
+                    {userList.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.name}
                       </option>
                     ))}
                   </Select>
-                  {errors.personName && <FormHelperText>{errors.personName}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>

@@ -31,19 +31,28 @@ function CardComponent() {
   } = useForm();
 
   const handleLogin = async (data) => {
-    setLoading(true); 
+    debugger;
+    setLoading(true);
     const body = {
       email: data.email,
       password: data.password,
-      type: data.role,
+      type: data.role, 
     };
     try {
       const res = await Login(body);
-      if(res.data.status === 1){
-        navigate("/dashboard");
+      if (res.data.status === 1) {
+        localStorage.setItem("role", body.type);
+        localStorage.setItem("isAuthenticated", true); 
+        
         setSnackbarMessage("Login successful!");
         setSnackbarSeverity("success");
-      }else{
+        
+        if (body.type === "admin") {
+          navigate("/admin_dashboard");
+        } else {
+          navigate("/dashboard"); 
+        }
+      } else {
         setSnackbarMessage(res.error || "Login failed");
         setSnackbarSeverity("error");
       }
@@ -52,8 +61,8 @@ function CardComponent() {
       setSnackbarMessage(error.response?.data?.message || "Login failed");
       setSnackbarSeverity("error");
     } finally {
-      setLoading(false); 
-      setSnackbarOpen(true); 
+      setLoading(false);
+      setSnackbarOpen(true);
     }
   };
 

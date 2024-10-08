@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,12 +8,25 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
+import { All } from "../../../api/axiosInterceptors";
+
 
 const CardComponent = () => {
   const [user, setUser] = useState("");
   const [offer, setOffer] = useState("");
   const [errors, setErrors] = useState({ user: "", offer: "" });
-
+  const [userList, setUserList] = useState([]);
+  const fetchData = async () => {
+    try {
+      const res = await All();
+      setUserList(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     let hasError = false;
@@ -51,7 +64,7 @@ const CardComponent = () => {
         sx={{ backgroundColor: "#0171be", padding: "10px", gap: "5px" }}
       >
         <Typography sx={{ color: "#fff" }}>
-        Multi Offers for Single User
+          Multi Offers for Single User
         </Typography>
       </Box>
       <Grid container spacing={2} sx={{ padding: "8px" }}>
@@ -84,8 +97,11 @@ const CardComponent = () => {
                 error={!!errors.user}
                 helperText={errors.user}
               >
-                <MenuItem value="Option 1">Option 1</MenuItem>
-                <MenuItem value="Option 2">Option 2</MenuItem>
+                {userList.map((user) => (
+                  <MenuItem key={user._id} value={user._id}>
+                    {user.name}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={12}>

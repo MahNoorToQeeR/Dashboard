@@ -104,40 +104,40 @@ const DomainTable = ({ onAddDomain }) => {
   };
 
   const handleConfirmEdit = async () => {
-  try {
-    if (selectedDomainId) {
-      // Prepare the updated data
-      const updatedData = {
-        name: selectedDomainData.name,
-        link: selectedDomainData.link,
-      };
+    try {
+      if (selectedDomainId) {
+        // Prepare the updated data
+        const updatedData = {
+          name: selectedDomainData.name,
+          link: selectedDomainData.link,
+        };
 
-      // Make the update API call
-      const res = await updateDomain(selectedDomainId, updatedData);
-      
-      if (res?.status === 200) {
-        setSnackbarMessage("Domain updated successfully");
-        setSnackbarOpen(true);
+        // Make the update API call
+        const res = await updateDomain(selectedDomainId, updatedData);
 
-        // Update table data by updating the modified domain in the list
-        setDomains((prevDomains) =>
-          prevDomains.map((domain) =>
-            domain._id === selectedDomainId ? { ...domain, ...updatedData } : domain
-          )
-        );
-      } else {
-        setSnackbarMessage(res?.data?.message || "Error updating domain");
-        setSnackbarOpen(true);
+        if (res?.status === 200) {
+          setSnackbarMessage("Domain updated successfully");
+          setSnackbarOpen(true);
+
+          // Update table data by updating the modified domain in the list
+          setDomains((prevDomains) =>
+            prevDomains.map((domain) =>
+              domain._id === selectedDomainId ? { ...domain, ...updatedData } : domain
+            )
+          );
+        } else {
+          setSnackbarMessage(res?.data?.message || "Error updating domain");
+          setSnackbarOpen(true);
+        }
       }
+    } catch (error) {
+      console.error("Error updating domain:", error);
+      setSnackbarMessage("Error updating domain");
+      setSnackbarOpen(true);
+    } finally {
+      handleCloseEditDialog(); // Close the edit dialog
     }
-  } catch (error) {
-    console.error("Error updating domain:", error);
-    setSnackbarMessage("Error updating domain");
-    setSnackbarOpen(true);
-  } finally {
-    handleCloseEditDialog(); // Close the edit dialog
-  }
-};
+  };
 
 
   const handleCloseSnackbar = () => {
@@ -236,10 +236,12 @@ const DomainTable = ({ onAddDomain }) => {
         onClose={handleCloseDeleteDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="md"
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Domain"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" sx={{ backgroundColor: "#0171BE", color: "#fff" }}>{"Delete Domain"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" sx={{mt: 5, textAlign: "center", fontSize: "20px", color: "black"}}>
             Are you sure you want to delete this domain?
           </DialogContentText>
         </DialogContent>
@@ -278,12 +280,11 @@ const DomainTable = ({ onAddDomain }) => {
         open={openEditDialog}
         onClose={handleCloseEditDialog}
         aria-labelledby="edit-dialog-title"
+        fullWidth
+        maxWidth="md"
       >
-        <DialogTitle id="edit-dialog-title">{"Edit Domain"}</DialogTitle>
+        <DialogTitle id="edit-dialog-title" sx={{ backgroundColor: "#0171BE", color: "#fff" }}>{"Edit Domain"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Update the domain details below.
-          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"

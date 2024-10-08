@@ -9,42 +9,79 @@ import {
   DialogActions,
   Typography,
 } from "@mui/material";
+import { AddNetwork } from "../../api/axiosInterceptors";
 
-const DomainModel = ({ open, onClose }) => {
-  const [networkName, setNetworkName] = useState("");
-  const [networkURL, setNetworkURL] = useState("");
-  const [errors, setErrors] = useState({ networkName: "", networkURL: "" });
+const NetworkModel = ({ open, onClose }) => {
+  const [formData, setFormData] = useState({
+    network_name: "",
+    network_url: "",
+    pramameter_1: "",
+    pramameter_2: "",
+  });
+  const [errors, setErrors] = useState({
+    network_name: "",
+    network_url: "",
+    pramameter_1: "",
+    pramameter_2: "",
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let hasError = false;
-    if (!networkName) {
-      setErrors((prev) => ({ ...prev, networkName: "Network Name is required" }));
-      hasError = true;
+    // Clear the corresponding error message
+    setErrors({ ...errors, [name]: "" });
+
+    // Update form data
+    setFormData({ ...formData, [name]: value });
+  };
+  const resetForm = () => {
+    setFormData({
+      network_name: "",
+      network_url: "",
+      pramameter_1: "",
+      pramameter_2: "",
+    });
+    setErrors({ // Clear errors on reset
+      network_name: "",
+      network_url: "",
+      pramameter_1: "",
+      pramameter_2: "",
+    });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.network_name) {
+      newErrors.network_name = "Network name is required.";
     }
-
-    if (!networkURL) {
-      setErrors((prev) => ({ ...prev, networkURL: "Network URL is required" }));
-      hasError = true;
+    if (!formData.network_url) {
+      newErrors.network_url = "Network URL is required.";
     }
+    if (!formData.pramameter_1) {
+      newErrors.pramameter_1 = "Parameter 1 is required.";
+    }
+    if (!formData.pramameter_2) {
+      newErrors.pramameter_2 = "Parameter 2 is required.";
+    }
+    return newErrors;
+  };
 
-    if (!hasError) {
-     
-      console.log({
-        networkName,
-        networkURL,
-      });
-      
-      handleCancel(); 
+  const onSubmit = async () => {
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors); 
+      return; 
+    }
+    try {
+      await AddNetwork(formData);
+      handleCancel();
+    } catch (error) {
+      console.error("Error submitting network data:", error);
     }
   };
 
   const handleCancel = () => {
-   
-    setNetworkName("");
-    setNetworkURL("");
-    setErrors({ networkName: "", networkURL: "" });
-    onClose(); 
+    resetForm();
+    onClose();
   };
 
   return (
@@ -71,16 +108,17 @@ const DomainModel = ({ open, onClose }) => {
                   Network Name
                 </Typography>
                 <TextField
+                  id="network_name"
+                  name="network_name"
                   label="Enter Name"
                   variant="outlined"
                   size="small"
                   fullWidth
                   margin="normal"
-                  value={networkName}
-                  onChange={(e) => {
-                    setNetworkName(e.target.value);
-                    setErrors((prev) => ({ ...prev, networkName: "" }));
-                  }}
+                  value={formData.network_name}
+                  onChange={handleInputChange}
+                  error={Boolean(errors.network_name)}
+                  helperText={errors.network_name}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: 32,
@@ -89,8 +127,6 @@ const DomainModel = ({ open, onClose }) => {
                       padding: "6px 14px",
                     },
                   }}
-                  error={!!errors.networkName}
-                  helperText={errors.networkName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,16 +134,17 @@ const DomainModel = ({ open, onClose }) => {
                   Network URL
                 </Typography>
                 <TextField
+                  id="network_url"
+                  name="network_url"
                   label="Enter URL"
                   variant="outlined"
                   size="small"
                   fullWidth
                   margin="normal"
-                  value={networkURL}
-                  onChange={(e) => {
-                    setNetworkURL(e.target.value);
-                    setErrors((prev) => ({ ...prev, networkURL: "" }));
-                  }}
+                  value={formData.network_url}
+                  onChange={handleInputChange}
+                  error={Boolean(errors.network_url)}
+                  helperText={errors.network_url}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: 32,
@@ -116,8 +153,58 @@ const DomainModel = ({ open, onClose }) => {
                       padding: "6px 14px",
                     },
                   }}
-                  error={!!errors.networkURL}
-                  helperText={errors.networkURL}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1" align="left" gutterBottom>
+                  Parameter 1
+                </Typography>
+                <TextField
+                  id="pramameter_1"
+                  name="pramameter_1"
+                  label="Enter Parameter 1"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  margin="normal"
+                  value={formData.pramameter_1}
+                  onChange={handleInputChange}
+                  error={Boolean(errors.pramameter_1)}
+                  helperText={errors.pramameter_1}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      height: 32,
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      padding: "6px 14px",
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1" align="left" gutterBottom>
+                  Parameter 2
+                </Typography>
+                <TextField
+                  id="pramameter_2"
+                  name="pramameter_2"
+                  label="Enter Parameter 2"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  margin="normal"
+                  value={formData.pramameter_2}
+                  onChange={handleInputChange}
+                  error={Boolean(errors.pramameter_2)}
+                  helperText={errors.pramameter_2}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      height: 32,
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      padding: "6px 14px",
+                    },
+                  }}
                 />
               </Grid>
             </Grid>
@@ -128,7 +215,7 @@ const DomainModel = ({ open, onClose }) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
+          onClick={onSubmit} 
           sx={{
             color: "#fff",
             borderColor: "#fff",
@@ -141,7 +228,7 @@ const DomainModel = ({ open, onClose }) => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={handleCancel}
+          onClick={handleCancel} 
           sx={{
             color: "#0171be",
             borderColor: "#0171be",
@@ -156,4 +243,4 @@ const DomainModel = ({ open, onClose }) => {
   );
 };
 
-export default DomainModel;
+export default NetworkModel;

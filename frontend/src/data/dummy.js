@@ -13,6 +13,7 @@ import {
   FiClock,
   FiCalendar,
   FiCreditCard,
+  FiLogOut,
 } from 'react-icons/fi';
 import {BsCurrencyDollar, BsShield,} from 'react-icons/bs';
 export const links = [
@@ -95,9 +96,9 @@ export const links = [
         icon: <FiLogIn />,
       },
       {
-        name: 'LogOut',
-        icon: <FiLogIn />,
-      },
+        name: 'Logout',
+        icon: <FiLogOut />, 
+      }
     ],
   },
 ];
