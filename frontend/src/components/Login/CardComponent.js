@@ -40,17 +40,18 @@ function CardComponent() {
     };
     try {
       const res = await Login(body);
+      debugger
       if (res.data.status === 1) {
-        localStorage.setItem("role", body.type);
+        localStorage.setItem("role", res.data.data.type);
         localStorage.setItem("isAuthenticated", true); 
         
         setSnackbarMessage("Login successful!");
         setSnackbarSeverity("success");
         
-        if (body.type === "admin") {
+        if (res.data.data.type === "admin") {
           navigate("/admin_dashboard");
         } else {
-          navigate("/dashboard"); 
+          navigate("/"); 
         }
       } else {
         setSnackbarMessage(res.error || "Login failed");

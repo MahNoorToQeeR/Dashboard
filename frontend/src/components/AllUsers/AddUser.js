@@ -41,7 +41,7 @@ function AddUsers() {
     try {
       const res = await Register(body);
       console.log(res.data);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.log("error", error.response?.data?.message || "Register failed");
     } finally {

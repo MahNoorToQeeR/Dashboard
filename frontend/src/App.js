@@ -13,6 +13,7 @@ import AddUser from "./components/AllUsers/AddUser";
 import NetworkReport from "./Pages/NetworkReport";
 import AllUserOffers from "./Pages/AllUserOffers";
 import ClickReports from "./Pages/ClickReports";
+import NotFound from "./Pages/NotFound";
 import LoginLayout from "./layouts/LoginLayout";  
 import MainLayout from "./layouts/MainLayout"; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -34,7 +35,7 @@ const PrivateRoute = ({ children, role }) => {
   }
 
   if (role && role !== userRole) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/" />;
   }
 
   return children;
@@ -42,64 +43,38 @@ const PrivateRoute = ({ children, role }) => {
 const App = () => {
   return (
     <BrowserRouter>
-      <ToastContainer />
-      <Routes>
-        <Route path="/Login" element={<LoginLayout />}>
-          <Route path="/Login" element={<Login />} />
-        </Route>
-        <Route path="/Add User" element={<LoginLayout />}>
-          <Route path="/Add User" element={<AddUser />} />
-        </Route>
-        <Route path="/" element={<MainLayout />}>
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/assign offer"
-            element={
-              <PrivateRoute role="admin"> {/* Only admin can access */}
-                <AssignOffer />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/add offer"
-            element={
-              <PrivateRoute role="admin">
-                <AddOffer />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/add domain"
-            element={
-              <PrivateRoute role="admin">
-                <AddDomain />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/landding pages" element={<LanddingPages />} />
-          <Route path="/User Report" element={<UserReport />} />
-          <Route path="/offer report" element={<OfferReport />} />
-          <Route path="/All Offers" element={<AllOffers />} />
-          <Route path="/Network Report" element={<NetworkReport />} />
-          <Route path="/All User Offers" element={<AllUserOffers />} />
-          <Route path="/Clicks Report" element={<ClickReports />} />
-          <Route path="/Today Report" element={<TodayReport />} />
-          <Route path="/Yesterday Report" element={<YesterdayReport />} />
-          <Route path="/Day Report" element={<DayReport />} />
-          <Route path="/Salary" element={<Salary />} />
-          <Route path="/Settings" element={<Settings />} />
-          <Route path="/All Reports" element={<AllReports />} />
-          <Route path="/All Users" element={<AllUsers />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ToastContainer />
+    <Routes>
+      <Route path="/Login" element={<LoginLayout />}>
+        <Route path="/Login" element={<Login />} />
+      </Route>
+      <Route path="/Add User" element={<LoginLayout />}>
+        <Route path="/Add User" element={<AddUser />} />
+      </Route>
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/assign offer" element={<PrivateRoute role="admin"><AssignOffer /></PrivateRoute>} />
+        <Route path="/add offer" element={<PrivateRoute role="admin"><AddOffer /></PrivateRoute>} />
+        <Route path="/add domain" element={<PrivateRoute role="admin"><AddDomain /></PrivateRoute>} />
+        <Route path="/landding pages" element={<LanddingPages />} />
+        <Route path="/User Report" element={<UserReport />} />
+        <Route path="/offer report" element={<OfferReport />} />
+        <Route path="/All Offers" element={<AllOffers />} />
+        <Route path="/Network Report" element={<NetworkReport />} />
+        <Route path="/All User Offers" element={<AllUserOffers />} />
+        <Route path="/Clicks Report" element={<ClickReports />} />
+        <Route path="/Today Report" element={<TodayReport />} />
+        <Route path="/Yesterday Report" element={<YesterdayReport />} />
+        <Route path="/Day Report" element={<DayReport />} />
+        <Route path="/Salary" element={<Salary />} />
+        <Route path="/Settings" element={<Settings />} />
+        <Route path="/All Reports" element={<AllReports />} />
+        <Route path="/All Users" element={<AllUsers />} />
+      </Route>
+      {/* Catch-all route for undefined paths */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </BrowserRouter>
     // <BrowserRouter>
     //  <ToastContainer />
     //   <Routes>
