@@ -56,12 +56,6 @@ const NetworkModel = ({ open, onClose }) => {
     if (!formData.network_url) {
       newErrors.network_url = "Network URL is required.";
     }
-    if (!formData.pramameter_1) {
-      newErrors.pramameter_1 = "Parameter 1 is required.";
-    }
-    if (!formData.pramameter_2) {
-      newErrors.pramameter_2 = "Parameter 2 is required.";
-    }
     return newErrors;
   };
 

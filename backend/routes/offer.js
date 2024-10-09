@@ -4,6 +4,7 @@ const Offer = require('../models/Offer');
 const Domain = require('../models/Domain');
 const UserOffer = require('../models/UserOffer');
 const LandingPage = require('../models/LandingPage');
+const Network = require('../models/Network');
 const User = require('../models/User');
 
 // Get All Offers
@@ -20,7 +21,7 @@ router.get('/all', async (req, res) => {
 // Add Offer API
 router.post('/addOffer', async (req, res) => {
     try {
-        const { domain, landingpage, ...offerData } = req.body;
+        const { domain, landingpage, offerData } = req.body;
         console.log(domain, landingpage, offerData)
 
         const domainExists = await Domain.findById(domain);
@@ -32,7 +33,10 @@ router.post('/addOffer', async (req, res) => {
         if (!landingPageExists) {
             return res.status(400).json({ status: 0, message: 'Invalid landing page ID' });
         }
-
+        const networkExists = await Network.findById(offerData['network']);
+        if (!networkExists) {
+            return res.status(400).json({ status: 0, message: 'Invalid Network ID' });
+        }
         const offer = new Offer({ domain, landingpage, ...offerData });
         await offer.save();
         res.status(201).json({ status: 1, message: 'Offer created successfully!', data: offer });
