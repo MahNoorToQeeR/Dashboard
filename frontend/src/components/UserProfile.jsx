@@ -4,9 +4,17 @@ import { Button } from ".";
 import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/SS-Pro-img4.png";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
+  const navigate = useNavigate(); // Move useNavigate here
+
+  const handleLogout = () => {
+    localStorage.removeItem('role');
+    localStorage.removeItem('isAuthenticated');
+    navigate("/Login"); 
+  };
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -28,15 +36,12 @@ const UserProfile = () => {
         />
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">
-            
             Shahmeer Sultan
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
-            
             Administrator
           </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
-            
            ShahmeerSultan.Media@gmail.com
           </p>
         </div>
@@ -45,20 +50,19 @@ const UserProfile = () => {
         {userProfileData.map((item, index) => (
           <div
             key={index}
-            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
+            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer dark:hover:bg-[#42464D]"
           >
             <button
               type="button"
               style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-              className=" text-xl rounded-lg p-3 hover:bg-light-gray"
+              className="text-xl rounded-lg p-3 hover:bg-light-gray"
             >
               {item.icon}
             </button>
 
             <div>
-              <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
+              <p className="font-semibold dark:text-gray-200">{item.title}</p>
               <p className="text-gray-500 text-sm dark:text-gray-400">
-                
                 {item.desc}
               </p>
             </div>
@@ -72,6 +76,7 @@ const UserProfile = () => {
           text="Logout"
           borderRadius="10px"
           width="full"
+          onClick={handleLogout}
         />
       </div>
     </div>

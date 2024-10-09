@@ -34,12 +34,6 @@ const Sidebar = () => {
 
   const drawerWidth = 240;
 
-  const handleLogout = () => {
-    localStorage.removeItem('role');
-    localStorage.removeItem('isAuthenticated');
-    navigate("/Login"); 
-  };
-
   return (
     <Drawer
       variant="permanent"
@@ -83,7 +77,7 @@ const Sidebar = () => {
                 key={link.name}
                 style={({ isActive }) => (isActive ? activeLink : normalLink)}
               >
-                <ListItem button onClick={link.name === 'Logout' ? handleLogout : null}>
+                <ListItem>
                   <ListItemIcon
                     style={{ color: link.isActive ? "#fff" : '' }}
                   >

@@ -94,10 +94,6 @@ export const links = [
       {
         name: 'Login',
         icon: <FiLogIn />,
-      },
-      {
-        name: 'Logout',
-        icon: <FiLogOut />, 
       }
     ],
   },
