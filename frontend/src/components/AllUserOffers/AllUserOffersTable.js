@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,45 +13,58 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SwitchWithLabel from "../SwitchWithLabel";
+import { All, GetAllOffer } from "../../api/axiosInterceptors";
 
 const AllUserOffers = () => {
   const navigate = useNavigate();
-  const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
-  const [rows, setRows] = useState([
-    {
-      no: 1,
-      user: "User 1",
-      offer: "Offer 1",
-      network: "Network 1",
-      rate: "$10",
-      status: "Active",
-    },
-    {
-      no: 2,
-      user: "User 2",
-      offer: "Offer 2",
-      network: "Network 2",
-      rate: "$15",
-      status: "Inactive",
-    },
-    {
-      no: 3,
-      user: "User 3",
-      offer: "Offer 3",
-      network: "Network 3",
-      rate: "$20",
-      status: "Active",
-    },
-    {
-      no: 4,
-      user: "User 4",
-      offer: "Offer 4",
-      network: "Network 4",
-      rate: "$25",
-      status: "Inactive",
-    },
-  ]);
+  const [userList, setUserList] = useState([]);
+  const [allOffers, setAllOffers] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
+
+  // Fetch offers
+  const fetchOfferData = async () => {
+    try {
+      const res = await GetAllOffer();
+      setAllOffers(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Fetch users
+  const fetchData = async () => {
+    try {
+      const res = await All();
+      setUserList(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+ // Combine offers and users data
+const combineOfferAndUser = () => {
+  const mergedData = allOffers.map((offer) => {
+    const user = userList.find((u) => u._id === offer.user_id); // match user with offer by user_id
+    return {
+      ...offer,
+      user: user && user.name ? user.name : offer.user_id ? "Unknown User" : "", // Show "Unknown User" if user_id exists but user isn't found, otherwise empty string
+    };
+  });
+  setCombinedData(mergedData);
+};
+
+
+  useEffect(() => {
+    fetchData();
+    fetchOfferData();
+  }, []);
+
+  useEffect(() => {
+    if (userList.length && allOffers.length) {
+      combineOfferAndUser();
+    }
+  }, [userList, allOffers]);
 
   const handleActiveOffers = () => {
     navigate("/");
@@ -61,24 +74,16 @@ const AllUserOffers = () => {
     navigate("/");
   };
 
-  const handleEdit = (no) => {
-    console.log(`Edit row with id: ${no}`);
-  };
-
-  const handleDelete = (no) => {
-    console.log(`Delete row with id: ${no}`);
-  };
-
-  const handleDeleteSelectedRows = () => {
-    setRows(rows.filter((row) => !selectedRows.includes(row.no)));
-  };
-
+  // Define the columns for the DataGrid
   const columns = [
-    { field: "no", headerName: "No", width: 90 },
-    { field: "user", headerName: "User", width: 150 },
-    { field: "offer", headerName: "Offer", width: 150 },
+    {
+      field: "user",
+      headerName: "User",
+      width: 150,
+    },
+    { field: "offer_name", headerName: "Offer", width: 150 },
     { field: "network", headerName: "Network", width: 150 },
-    { field: "rate", headerName: "Rate", width: 150 },
+    { field: "offer_rate", headerName: "Rate", width: 150 },
     { field: "status", headerName: "Offer Status", width: 150 },
     {
       field: "actions",
@@ -86,23 +91,17 @@ const AllUserOffers = () => {
       width: 150,
       sortable: false,
       renderCell: (params) =>
-        params.row.no === "Total" ? null : (
+        params.row ? (
           <Box>
-            <IconButton
-              color="primary"
-              onClick={() => handleEdit(params.row.no)}
-            >
+            <IconButton color="primary">
               <EditIcon />
             </IconButton>
-            <IconButton
-              color="error"
-              onClick={() => handleDelete(params.row.no)}
-            >
+            <IconButton color="error">
               <DeleteIcon />
             </IconButton>
             <SwitchWithLabel />
           </Box>
-        ),
+        ) : null,
     },
   ];
 
@@ -151,7 +150,6 @@ const AllUserOffers = () => {
               height: "25px",
               fontSize: "10px",
             }}
-            onClick={handleDeleteSelectedRows}
           >
             Delete Selected
           </Button>
@@ -177,9 +175,9 @@ const AllUserOffers = () => {
         />
         <Box style={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={rows}
+            rows={combinedData}  // Use the combined data
             columns={columns}
-            getRowId={(row) => row.no}
+            getRowId={(row) => row._id}  
             initialState={{
               pagination: {
                 paginationModel: {
@@ -189,10 +187,6 @@ const AllUserOffers = () => {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
-            checkboxSelection
-            onRowSelectionModelChange={(newSelection) => {
-              setSelectedRows(newSelection);
-            }}
           />
         </Box>
       </Paper>

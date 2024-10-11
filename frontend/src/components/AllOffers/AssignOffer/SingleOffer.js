@@ -12,14 +12,22 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { All } from "../../../api/axiosInterceptors";
+import { All, GetAllOffer } from "../../../api/axiosInterceptors";
 
 const SingleOffer = () => {
   const [personName, setPersonName] = useState([]);
   const [offer, setOffer] = useState("");
   const [errors, setErrors] = useState({ personName: "", offer: "" });
   const [userList, setUserList] = useState([]);
-
+  const [allOffers, setAllOffers] = useState([]);
+  const fetchOfferData = async () => {
+    try {
+      const res = await GetAllOffer();
+      setAllOffers(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const fetchData = async () => {
     try {
       const res = await All();
@@ -31,6 +39,7 @@ const SingleOffer = () => {
 
   useEffect(() => {
     fetchData();
+    fetchOfferData();
   }, []);
 
   const handleUserChange = (selectedUsers) => {
@@ -108,8 +117,11 @@ const SingleOffer = () => {
                   error={!!errors.offer}
                   helperText={errors.offer}
                 >
-                  <MenuItem value="Option 1">Option 1</MenuItem>
-                  <MenuItem value="Option 2">Option 2</MenuItem>
+                 {allOffers.map((offer) => (
+                  <MenuItem key={offer._id} value={offer._id}>
+                    {offer.offer_name}
+                  </MenuItem>
+                ))}
                 </TextField>
                 <Typography variant="body1" align="left" gutterBottom>
                   Select Users *

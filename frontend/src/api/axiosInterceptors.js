@@ -83,6 +83,29 @@ export const Register = (body) => {
       headers: headers
     });
   };
+  export const GetAllOffer = (body) => {
+    return Axios.get(`/api/offer/all`, body,{
+      headers: headers
+    });
+  };
+  export const UpdateOffers = (id, updatedData) => {
+    return Axios.post(`/api/offer/offers/${id}`,updatedData,{
+      headers: headers
+    });
+  };
+  export const DeleteOffers = (offerId) => {
+    return Axios.post(`/api/offer/offers/delete/${offerId}`,{
+      headers: headers
+    });
+  };
+  
+  export const GetMultiOfferMultiUsers = (userId, offerId) => {
+    return Axios.post(`/api/${offerId}/assign/${userId}`, { userId, offerId }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
   export const AddNetwork = (body) => {
     return Axios.post(`/api/network/create`, body, {
       headers: headers
@@ -103,3 +126,4 @@ export const Register = (body) => {
       headers: headers
     });
   };
+ 

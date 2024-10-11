@@ -121,7 +121,6 @@ const CardComponent = () => {
       console.log("Response from API:", response.data);
       setSnackbarMessage("Offer added successfully!");
       setSnackbarOpen(true);
-
       reset();
     } catch (error) {
       console.error("Error adding offer:", error);

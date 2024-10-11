@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FiShoppingBag,
   FiSettings,
   FiLogIn,
   FiUser,
@@ -10,94 +9,101 @@ import {
   FiBarChart2,
   FiGlobe,
   FiUserCheck,
-  FiClock,
-  FiCalendar,
   FiCreditCard,
-  FiLogOut,
 } from 'react-icons/fi';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SalaryIcon from '@mui/icons-material/MonetizationOn'; 
+import SettingsIcon from '@mui/icons-material/Settings';
+import LoginIcon from '@mui/icons-material/Login';
+
 import {BsCurrencyDollar, BsShield,} from 'react-icons/bs';
 export const links = [
   {
+    title: 'General',
     links: [
-      {
-        name: 'dashboard',
-        icon: <FiShoppingBag />,
-      },
-      {
-        name: 'All Offers',
-        icon: <FiClipboard />,
-      },
-      {
-        name: 'All Users',
-        icon: <FiClipboard />,
-      },
-      // {
-      //   name: 'Assig noffer',
-      //   icon: <FiClipboard />,
-      // },
-      // {
-      //   name: 'add offer',
-      //   icon: <FiClipboard />,
-      // },
-      {
-        name: 'add domain',
-        icon: <FiGlobe />,
-      },
-      {
-        name: 'Landding Pages',
-        icon: <FiGlobe />,
-      },
-      {
-        name: 'User Report',
-        icon: <FiUser />,
-      },
-      {
-        name: 'Offer Report',
-        icon: <FiClipboard />,
-      },
-      {
-        name: 'Network Report',
-        icon: <FiTrendingUp />,
-      },
-      {
-        name: 'All User Offers',
-        icon: <FiUserCheck />,
-      },
-      {
-        name: 'All Reports',
-        icon: <FiBarChart2 />,
-      },
-      // {
-      //   name: 'Clicks Report',
-      //   icon: <FiBarChart2 />,
-      // },
-      // {
-      //   name: 'Today Report',
-      //   icon: <FiClock />,
-      // },
-      // {
-      //   name: 'Yesterday Report',
-      //   icon: <FiClock />,
-      // },
-      // {
-      //   name: 'Day Report',
-      //   icon: <FiCalendar />,
-      // },
-      {
-        name: 'Salary',
-        icon: <FiDollarSign />,
-      },
-      {
-        name: 'Settings',
-        icon: <FiSettings />,
-      },
-      {
-        name: 'Login',
-        icon: <FiLogIn />,
-      }
+      { name: 'dashboard', icon: <DashboardIcon />, isActive: false },
+      { name: 'salary', icon: <SalaryIcon />, isActive: false },
+      { name: 'settings', icon: <SettingsIcon />, isActive: false },
+      { name: 'login', icon: <LoginIcon />, isActive: false },
+    ],
+  },
+  {
+    title: 'Admin',
+    links: [
+      { name: 'dashboard', icon: <DashboardIcon />, isActive: false },
+      { name: 'All Offers', icon: <FiClipboard /> },
+      { name: 'All Users', icon: <FiClipboard /> },
+      { name: 'add domain', icon: <FiGlobe /> },
+      { name: 'landding pages', icon: <FiGlobe /> },
+      { name: 'User Report', icon: <FiUser /> },
+      { name: 'Offer Report', icon: <FiClipboard /> },
+      { name: 'Network Report', icon: <FiTrendingUp /> },
+      { name: 'All User Offers', icon: <FiUserCheck /> },
+      { name: 'All Reports', icon: <FiBarChart2 /> },
+      { name: 'Salary', icon: <FiDollarSign /> },
+      { name: 'Settings', icon: <FiSettings /> },
+      { name: 'Login', icon: <FiLogIn /> },
     ],
   },
 ];
+// export const links = [
+//   {
+//     links: [
+//       {
+//         name: 'dashboard',
+//         icon: <FiShoppingBag />,
+//       },
+//       {
+//         name: 'All Offers',
+//         icon: <FiClipboard />,
+//       },
+//       {
+//         name: 'All Users',
+//         icon: <FiClipboard />,
+//       },
+//       {
+//         name: 'add domain',
+//         icon: <FiGlobe />,
+//       },
+//       {
+//         name: 'Landding Pages',
+//         icon: <FiGlobe />,
+//       },
+//       {
+//         name: 'User Report',
+//         icon: <FiUser />,
+//       },
+//       {
+//         name: 'Offer Report',
+//         icon: <FiClipboard />,
+//       },
+//       {
+//         name: 'Network Report',
+//         icon: <FiTrendingUp />,
+//       },
+//       {
+//         name: 'All User Offers',
+//         icon: <FiUserCheck />,
+//       },
+//       {
+//         name: 'All Reports',
+//         icon: <FiBarChart2 />,
+//       },
+//       {
+//         name: 'Salary',
+//         icon: <FiDollarSign />,
+//       },
+//       {
+//         name: 'Settings',
+//         icon: <FiSettings />,
+//       },
+//       {
+//         name: 'Login',
+//         icon: <FiLogIn />,
+//       }
+//     ],
+//   },
+// ];
 export const userProfileData = [
   {
     icon: <BsCurrencyDollar />,

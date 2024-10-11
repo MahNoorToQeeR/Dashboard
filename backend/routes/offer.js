@@ -126,7 +126,7 @@ router.post('/offers/:id', async (req, res) => {
         const updatedOffer = await Offer.findByIdAndUpdate(
             offerId,
             updatedData,
-            { new: true, runValidators: true } // Returns the updated document
+            { new: true, runValidators: true } 
         );
 
         if (!updatedOffer) {
@@ -140,7 +140,7 @@ router.post('/offers/:id', async (req, res) => {
 });
 
 // Delete an offer by ID
-router.post('/offers/:id', async (req, res) => {
+router.post('/offers/delete/:id', async (req, res) => {
     try {
         const offerId = req.params.id;
         const deletedOffer = await Offer.findByIdAndDelete(offerId);

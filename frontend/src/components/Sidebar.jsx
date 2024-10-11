@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
@@ -8,8 +8,20 @@ import logo from '../data/logo-image11.png';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu } = useStateContext();
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const navigate = useNavigate(); 
   const currentColor = '#0171BE';
+  
+  const userRole = localStorage.getItem('role') || 'user'; 
+
+  const filteredLinks = links.filter((category) => {
+    if (userRole === 'admin') {
+      return category.title !== 'General'; 
+    } 
+    else if (userRole === 'user') {
+      return category.title !== 'Admin'; 
+    }
+    return true;
+  });
 
   const activeLink = {
     display: 'flex',
@@ -69,18 +81,16 @@ const Sidebar = () => {
       </div>
 
       <List>
-        {links.map((item) => (
-          <div key={item.title}>
-            {item.links.map((link) => (
+        {filteredLinks.map((category) => (
+          <div key={category.title}>
+            {category.links.map((link) => (
               <NavLink
                 to={`/${link.name}`}
                 key={link.name}
                 style={({ isActive }) => (isActive ? activeLink : normalLink)}
               >
                 <ListItem>
-                  <ListItemIcon
-                    style={{ color: link.isActive ? "#fff" : '' }}
-                  >
+                  <ListItemIcon style={{ color: link.isActive ? "#fff" : '' }}>
                     {link.icon}
                   </ListItemIcon>
                   {activeMenu && (

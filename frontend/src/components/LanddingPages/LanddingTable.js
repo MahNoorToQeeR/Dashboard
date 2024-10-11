@@ -207,12 +207,14 @@ const LandingTable = ({ onAddLandingPage }) => {
       <Dialog
         open={openDeleteDialog}
         onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
+        aria-labelledby="edit-dialog-title"
         aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="md"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Landing Page"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" sx={{ backgroundColor: "#0171BE", color: "#fff" }}>{"Delete Landing Page"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" sx={{mt: 5, textAlign: "center", color: "black", fontSize: "20px"}}>
             Are you sure you want to delete this landing page?
           </DialogContentText>
         </DialogContent>

@@ -79,7 +79,7 @@ const DomainTable = ({ onAddDomain }) => {
       setSnackbarOpen(true);
     } finally {
       handleCloseDeleteDialog();
-      fetchDomains();  // Refresh the table after deleting
+      fetchDomains();  
     }
   };
 

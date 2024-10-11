@@ -8,48 +8,70 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { All } from "../../../api/axiosInterceptors";
-
+import { All, GetAllOffer, GetMultiOfferMultiUsers } from "../../../api/axiosInterceptors";
 
 const CardComponent = () => {
   const [user, setUser] = useState("");
   const [offer, setOffer] = useState("");
   const [errors, setErrors] = useState({ user: "", offer: "" });
   const [userList, setUserList] = useState([]);
+  const [allOffers, setAllOffers] = useState([]);
+
+  // Fetch all users
   const fetchData = async () => {
     try {
       const res = await All();
       setUserList(res?.data?.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching users:", error);
     }
   };
+
+  // Fetch all offers
+  const fetchOfferData = async () => {
+    try {
+      const res = await GetAllOffer();
+      setAllOffers(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching offers:", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchOfferData();
   }, []);
-  const handleSubmit = (e) => {
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let hasError = false;
 
+    // Form validation
     if (!user) {
       setErrors((prev) => ({ ...prev, user: "User is required" }));
       hasError = true;
     }
-
     if (!offer) {
       setErrors((prev) => ({ ...prev, offer: "Offer is required" }));
       hasError = true;
     }
 
     if (!hasError) {
-      // Log form data to the console
-      console.log({
-        user,
-        offer,
-      });
+      try {
+        // API call to assign offer to user
+        const response = await GetMultiOfferMultiUsers(user, offer);
+        console.log("API Response:", response.data);
+
+        // Clear the form after successful submission
+        handleReset();
+      } catch (error) {
+        console.error("Error submitting data:", error);
+      }
     }
   };
 
+  // Handle form reset
   const handleReset = () => {
     setUser("");
     setOffer("");
@@ -131,8 +153,11 @@ const CardComponent = () => {
                 error={!!errors.offer}
                 helperText={errors.offer}
               >
-                <MenuItem value="Option 1">Option 1</MenuItem>
-                <MenuItem value="Option 2">Option 2</MenuItem>
+                {allOffers.map((offer) => (
+                  <MenuItem key={offer._id} value={offer._id}>
+                    {offer.offer_name}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
           </Grid>

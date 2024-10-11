@@ -241,8 +241,10 @@ const CardComponent = () => {
       </Box>
 
       {/* Modal for Editing */}
-      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
-        <DialogTitle>Edit User</DialogTitle>
+      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}   
+      fullWidth
+        maxWidth="md">
+        <DialogTitle sx={{ backgroundColor: "#0171BE", color: "#fff" }}>Edit User</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
@@ -251,6 +253,15 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.name || ""}
             onChange={handleInputChange}
+             variant="standard"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -259,6 +270,15 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.email || ""}
             onChange={handleInputChange}
+            variant="standard"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -267,6 +287,15 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.password || ""}
             onChange={handleInputChange}
+            variant="standard"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -275,6 +304,15 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.phone_no || ""}
             onChange={handleInputChange}
+            variant="standard"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -283,13 +321,35 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.CNIC || ""}
             onChange={handleInputChange}
+            variant="standard"
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 14px",
+              },
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)} color="secondary">
+          <Button onClick={() => setOpenEditModal(false)}  variant="outlined"
+            color="primary" sx={{
+              color: "#0171be",
+              borderColor: "#0171be",
+              height: "25px",
+              fontSize: "10px",
+            }}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate} color="primary">
+          <Button onClick={handleUpdate}  variant="contained"
+            color="primary"
+            sx={{
+              color: "#fff",
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}>
             Update
           </Button>
         </DialogActions>
@@ -299,19 +359,30 @@ const CardComponent = () => {
       <Dialog
         open={openDeleteModal}
         onClose={() => setOpenDeleteModal(false)}
+        fullWidth
+        maxWidth="md"
       >
-        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogTitle sx={{ backgroundColor: "#0171BE", color: "#fff" }}>Delete Confirmation</DialogTitle>
         <DialogContent>
-          <Typography>
+          <Typography sx={{mt: 5, textAlign: "center", color: "black", fontSize: "20px"}}>
             Are you sure you want to delete the user with email:{" "}
             {rowToDelete?.email}?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteModal(false)} color="secondary">
+          <Button onClick={() => setOpenDeleteModal(false)} color="secondary" sx={{
+              color: "#0171be",
+              borderColor: "#0171be",
+              height: "25px",
+              fontSize: "10px",
+            }}>
             Cancel
           </Button>
-          <Button onClick={handleDelete} color="error">
+          <Button onClick={handleDelete} color="error"  sx={{
+              borderColor: "#fff",
+              height: "25px",
+              fontSize: "10px",
+            }}>
             Confirm Delete
           </Button>
         </DialogActions>

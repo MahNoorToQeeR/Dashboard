@@ -31,7 +31,6 @@ function CardComponent() {
   } = useForm();
 
   const handleLogin = async (data) => {
-    debugger;
     setLoading(true);
     const body = {
       email: data.email,
@@ -49,9 +48,9 @@ function CardComponent() {
         setSnackbarSeverity("success");
         
         if (res.data.data.type === "admin") {
-          navigate("/admin_dashboard");
+          navigate("/dashboard");
         } else {
-          navigate("/"); 
+          navigate("/dashboard"); 
         }
       } else {
         setSnackbarMessage(res.error || "Login failed");

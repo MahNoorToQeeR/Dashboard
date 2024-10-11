@@ -35,14 +35,14 @@ const PrivateRoute = ({ children, role }) => {
   }
 
   if (role && role !== userRole) {
-    return <Navigate to="/" />;
+    return <Navigate to="/dashboard" />;
   }
 
   return children;
 };
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
     <ToastContainer />
     <Routes>
       <Route path="/Login" element={<LoginLayout />}>
@@ -52,7 +52,7 @@ const App = () => {
         <Route path="/Add User" element={<AddUser />} />
       </Route>
       <Route path="/" element={<MainLayout />}>
-        <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/assign offer" element={<PrivateRoute role="admin"><AssignOffer /></PrivateRoute>} />
         <Route path="/add offer" element={<PrivateRoute role="admin"><AddOffer /></PrivateRoute>} />
         <Route path="/add domain" element={<PrivateRoute role="admin"><AddDomain /></PrivateRoute>} />
@@ -71,7 +71,6 @@ const App = () => {
         <Route path="/All Reports" element={<AllReports />} />
         <Route path="/All Users" element={<AllUsers />} />
       </Route>
-      {/* Catch-all route for undefined paths */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>
@@ -81,9 +80,9 @@ const App = () => {
     //     <Route path="/Login" element={<LoginLayout />}>
     //       <Route path="/Login" element={<Login />} />
     //     </Route>
-    //     {/* <Route path="/Add User" element={<LoginLayout />}>
-         
-    //     </Route> */}
+    //     <Route path="/Add User" element={<LoginLayout />}>
+    //       <Route path="/Add User" element={<AddUser />} />
+    //     </Route>
     //     <Route path="/" element={<MainLayout />}>
     //       <Route path="/" element={<Dashboard />} />
     //       <Route path="/dashboard" element={<Dashboard />} />
@@ -104,7 +103,6 @@ const App = () => {
     //       <Route path="/Settings" element={<Settings />} />
     //       <Route path="/All Reports" element={<AllReports />} />
     //       <Route path="/All Users" element={<AllUsers />} />
-    //       <Route path="/Add User" element={<AddUser />} />
     //     </Route>
     //   </Routes>
     // </BrowserRouter>
