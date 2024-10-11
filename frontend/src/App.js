@@ -57,15 +57,15 @@ const App = () => {
         <Route path="/add offer" element={<PrivateRoute role="admin"><AddOffer /></PrivateRoute>} />
         <Route path="/add domain" element={<PrivateRoute role="admin"><AddDomain /></PrivateRoute>} />
         <Route path="/landding pages" element={<LanddingPages />} />
-        <Route path="/User Report" element={<UserReport />} />
-        <Route path="/offer report" element={<OfferReport />} />
+        <Route path="/User Report" element={<PrivateRoute role="admin"><UserReport /></PrivateRoute>} />
+        <Route path="/offer report" element={<PrivateRoute role="admin"><OfferReport /></PrivateRoute>} />
         <Route path="/All Offers" element={<AllOffers />} />
-        <Route path="/Network Report" element={<NetworkReport />} />
+        <Route path="/Network Report" element={<PrivateRoute role="admin"><NetworkReport /></PrivateRoute>} />
         <Route path="/All User Offers" element={<AllUserOffers />} />
-        <Route path="/Clicks Report" element={<ClickReports />} />
-        <Route path="/Today Report" element={<TodayReport />} />
-        <Route path="/Yesterday Report" element={<YesterdayReport />} />
-        <Route path="/Day Report" element={<DayReport />} />
+        <Route path="/Clicks Report" element={<PrivateRoute role="admin"><ClickReports /></PrivateRoute>} />
+        <Route path="/Today Report" element={<PrivateRoute role="admin"><TodayReport /></PrivateRoute> }/>
+        <Route path="/Yesterday Report" element={<PrivateRoute role="admin"><YesterdayReport /></PrivateRoute>} />
+        <Route path="/Day Report" element={<PrivateRoute role="admin"><DayReport /></PrivateRoute>} />
         <Route path="/Salary" element={<Salary />} />
         <Route path="/Settings" element={<Settings />} />
         <Route path="/All Reports" element={<AllReports />} />

@@ -30,7 +30,7 @@ export const links = [
   {
     title: 'Admin',
     links: [
-      { name: 'dashboard', icon: <DashboardIcon />, isActive: false },
+      { name: 'dashboard', icon: <DashboardIcon /> },
       { name: 'All Offers', icon: <FiClipboard /> },
       { name: 'All Users', icon: <FiClipboard /> },
       { name: 'add domain', icon: <FiGlobe /> },
