@@ -10,6 +10,8 @@ import {
   FiGlobe,
   FiUserCheck,
   FiCreditCard,
+  FiUserPlus,
+  FiFileText,
 } from 'react-icons/fi';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SalaryIcon from '@mui/icons-material/MonetizationOn'; 
@@ -22,6 +24,8 @@ export const links = [
     title: 'General',
     links: [
       { name: 'dashboard', icon: <DashboardIcon />, isActive: false },
+      // { name: 'signup', icon: <FiUserPlus />, isActive: false }, 
+      // { name: 'click report', icon: <FiFileText />, isActive: false }, 
       { name: 'salary', icon: <SalaryIcon />, isActive: false },
       { name: 'settings', icon: <SettingsIcon />, isActive: false },
       { name: 'login', icon: <LoginIcon />, isActive: false },
