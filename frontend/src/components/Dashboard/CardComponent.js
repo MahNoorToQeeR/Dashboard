@@ -15,10 +15,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import SearchIcon from "@mui/icons-material/Search";
+
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
 import { All, Delete, UserUpdate } from "../../api/axiosInterceptors";
+import ViewUserDialog from "../../components/Dashboard/ViewModel";
 
 const CardComponent = () => {
   const [userList, setUserList] = useState([]);
@@ -28,6 +29,8 @@ const CardComponent = () => {
   const [updatedUserData, setUpdatedUserData] = useState({});
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [rowToDelete, setRowToDelete] = useState(null);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
@@ -41,9 +44,9 @@ const CardComponent = () => {
     fetchData();
   }, []);
   const handleEdit = (rowData) => {
-    setSelectedRowData(rowData); 
-    setUpdatedUserData(rowData); 
-    setOpenEditModal(true); 
+    setSelectedRowData(rowData);
+    setUpdatedUserData(rowData);
+    setOpenEditModal(true);
   };
   const handleDelete = async () => {
     try {
@@ -54,7 +57,7 @@ const CardComponent = () => {
     } catch (error) {
       console.error("Error deleting user:", error);
     } finally {
-      setOpenDeleteModal(false); 
+      setOpenDeleteModal(false);
       fetchData();
     }
   };
@@ -63,7 +66,7 @@ const CardComponent = () => {
       const res = await UserUpdate(updatedUserData);
       if (res?.status === 200) {
         console.log("User updated successfully:", updatedUserData);
-        setOpenEditModal(false); 
+        setOpenEditModal(false);
         fetchData();
       }
     } catch (error) {
@@ -79,11 +82,13 @@ const CardComponent = () => {
   const handleInsertDriveFileIcon = (_id) => {
     console.log(`Insert File for row with id: ${_id}`);
   };
-  const handleRemoveRedEyeIcon = (_id) => {
-    console.log(`View row with id: ${_id}`);
+  const handleRemoveRedEyeIcon = (rowData) => {
+    setSelectedUserData(rowData);
+    setOpenViewModal(true);
   };
+
   const handleOpenDeleteModal = (rowData) => {
-    setRowToDelete(rowData); 
+    setRowToDelete(rowData);
     setOpenDeleteModal(true);
   };
   const handleAddOffer = () => {
@@ -131,7 +136,7 @@ const CardComponent = () => {
           </IconButton>
           <IconButton
             color="primary"
-            onClick={() => handleRemoveRedEyeIcon(params.row._id)}
+            onClick={() => handleRemoveRedEyeIcon(params.row)}
           >
             <RemoveRedEyeIcon />
           </IconButton>
@@ -210,7 +215,6 @@ const CardComponent = () => {
           </Button>
         </Box>
       </Box>
-
       <Box sx={{ p: 2 }}>
         <TextField
           label="Search"
@@ -238,10 +242,9 @@ const CardComponent = () => {
           />
         </Box>
       </Box>
-
       {/* Modal for Editing */}
-      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}   
-      fullWidth
+      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}
+        fullWidth
         maxWidth="md">
         <DialogTitle sx={{ backgroundColor: "#0171BE", color: "#fff" }}>Edit User</DialogTitle>
         <DialogContent>
@@ -252,7 +255,7 @@ const CardComponent = () => {
             fullWidth
             value={updatedUserData?.name || ""}
             onChange={handleInputChange}
-             variant="standard"
+            variant="standard"
             sx={{
               "& .MuiInputBase-root": {
                 height: 32,
@@ -332,7 +335,7 @@ const CardComponent = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)}  variant="outlined"
+          <Button onClick={() => setOpenEditModal(false)} variant="outlined"
             color="primary" sx={{
               color: "#0171be",
               borderColor: "#0171be",
@@ -341,7 +344,7 @@ const CardComponent = () => {
             }}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate}  variant="contained"
+          <Button onClick={handleUpdate} variant="contained"
             color="primary"
             sx={{
               color: "#fff",
@@ -353,7 +356,6 @@ const CardComponent = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
       {/* Modal for Delete Confirmation */}
       <Dialog
         open={openDeleteModal}
@@ -363,29 +365,36 @@ const CardComponent = () => {
       >
         <DialogTitle sx={{ backgroundColor: "#0171BE", color: "#fff" }}>Delete Confirmation</DialogTitle>
         <DialogContent>
-          <Typography sx={{mt: 5, textAlign: "center", color: "black", fontSize: "20px"}}>
+          <Typography sx={{ mt: 5, textAlign: "center", color: "black", fontSize: "20px" }}>
             Are you sure you want to delete the user with email:{" "}
             {rowToDelete?.email}?
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDeleteModal(false)} color="secondary" sx={{
-              color: "#0171be",
-              borderColor: "#0171be",
-              height: "25px",
-              fontSize: "10px",
-            }}>
+            color: "#0171be",
+            borderColor: "#0171be",
+            height: "25px",
+            fontSize: "10px",
+          }}>
             Cancel
           </Button>
-          <Button onClick={handleDelete} color="error"  sx={{
-              borderColor: "#fff",
-              height: "25px",
-              fontSize: "10px",
-            }}>
+          <Button onClick={handleDelete} color="error" sx={{
+            borderColor: "#fff",
+            height: "25px",
+            fontSize: "10px",
+          }}>
             Confirm Delete
           </Button>
         </DialogActions>
       </Dialog>
+      {/* View User Dialog */}
+      <ViewUserDialog
+        open={openViewModal}
+        onClose={() => setOpenViewModal(false)}
+        userData={selectedUserData} 
+      />
+
     </Card>
   );
 };
